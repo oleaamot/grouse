@@ -5,6 +5,11 @@
 </head>
 <body>
 <?php
+function TestFunction($s_value) {
+        $regex = '/^[+\-]?(?:\d+(?:\.\d*)?|\.\d+)$/';
+        return preg_match($regex, $s_value);
+}
+         
 $row = 1;
 if (($handle = fopen("noark5kravspec.csv", "r")) !== FALSE) {
         while (($data = fgetcsv($handle, 5000, ";")) !== FALSE) {
@@ -27,7 +32,13 @@ if (($handle = fopen("noark5kravspec.csv", "r")) !== FALSE) {
                 if ($kravnr == "Krav nr.") {
                         echo "<h2>" . $ookrav . "<h2>\n";
                 }
-                // echo "INSERT INTO kravspec VALUES ('" . $kravnr . "','" . $ookrav . "','" . $type . "','" . $merknad . "','" . $forklaring . "','" . $konsekvens . "','" . $konfnivaa . "','" . $refkrav . "','" . $status . "','" . $ansvar . "');\n";
+                if (TestFunction($kravnr)==0) {
+                        if ($kravnr != "Krav nr.") {
+                                print "<h3>" . $kravnr . "</h3>\n";
+                                print "<h4>" . $ookrav . "</h4>\n";
+                        }
+                }
+                        // echo "INSERT INTO kravspec VALUES ('" . $kravnr . "','" . $ookrav . "','" . $type . "','" . $merknad . "','" . $forklaring . "','" . $konsekvens . "','" . $konfnivaa . "','" . $refkrav . "','" . $status . "','" . $ansvar . "');\n";
         }
         fclose($handle);
 }
