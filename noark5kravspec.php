@@ -1,6 +1,6 @@
 <?php
 $row = 1;
-if (($handle = fopen("Ole - Noark 5 krav arbeidsdokument.csv", "r")) !== FALSE) {
+if (($handle = fopen("noark5kravspec.csv", "r")) !== FALSE) {
         while (($data = fgetcsv($handle, 5000, ";")) !== FALSE) {
                 $num = count($data);
                 /* echo "<p>$num fields in line $row:<br /></p>\n"; */
