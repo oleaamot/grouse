@@ -1,0 +1,25 @@
+<?php
+$row = 1;
+if (($handle = fopen("Ole - Noark 5 krav arbeidsdokument.csv", "r")) !== FALSE) {
+        while (($data = fgetcsv($handle, 5000, ";")) !== FALSE) {
+                $num = count($data);
+                /* echo "<p>$num fields in line $row:<br /></p>\n"; */
+                $row++;
+                /* for ($c=0; $c < $num; $c++) { */
+                // echo $c . ": " . $data[$c] . "\t\n";
+                $kravnr = rtrim($data[0], "\n");
+                $kravnr = rtrim($data[0], " ");
+                $ookrav = rtrim($data[1], "\n");
+                $type = rtrim($data[2], "\n");
+                $merknad = rtrim($data[3], "\n");
+                $forklaring = rtrim($data[4], "\n");
+                $konsekvens = rtrim($data[5], "\n");
+                $konfnivaa = rtrim($data[6], "\n");
+                $refkrav = rtrim($data[7], "\n");
+                $status = rtrim($data[8], "\n");
+                $ansvar = rtrim($data[9], "\n");
+                echo "INSERT INTO kravspec VALUES ('" . $kravnr . "','" . $ookrav . "','" . $type . "','" . $merknad . "','" . $forklaring . "','" . $konsekvens . "','" . $konfnivaa . "','" . $refkrav . "','" . $status . "','" . $ansvar . "');\n";
+        }
+        fclose($handle);
+}
+?>
