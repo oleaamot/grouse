@@ -1,3 +1,9 @@
+<html>
+<head>
+<title>noark5-kravspec</title>
+<meta charset="utf-8" />
+</head>
+<body>
 <?php
 $row = 1;
 if (($handle = fopen("noark5kravspec.csv", "r")) !== FALSE) {
@@ -18,8 +24,13 @@ if (($handle = fopen("noark5kravspec.csv", "r")) !== FALSE) {
                 $refkrav = rtrim($data[7], "\n");
                 $status = rtrim($data[8], "\n");
                 $ansvar = rtrim($data[9], "\n");
-                echo "INSERT INTO kravspec VALUES ('" . $kravnr . "','" . $ookrav . "','" . $type . "','" . $merknad . "','" . $forklaring . "','" . $konsekvens . "','" . $konfnivaa . "','" . $refkrav . "','" . $status . "','" . $ansvar . "');\n";
+                if ($kravnr == "Krav nr.") {
+                        echo "<h2>" . $ookrav . "<h2>\n";
+                }
+                // echo "INSERT INTO kravspec VALUES ('" . $kravnr . "','" . $ookrav . "','" . $type . "','" . $merknad . "','" . $forklaring . "','" . $konsekvens . "','" . $konfnivaa . "','" . $refkrav . "','" . $status . "','" . $ansvar . "');\n";
         }
         fclose($handle);
 }
 ?>
+</body>
+</html>
