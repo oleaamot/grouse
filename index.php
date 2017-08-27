@@ -51,7 +51,7 @@ if (!isset($_GET['kravtype'])==0) {
 $db=sqlite_open("/home/oka/grouse/grouse/noark5kravspec.db",0644,$sqliteerror);
    $result=sqlite_query($db,"SELECT * FROM kravspec WHERE kravtype = '" . $_GET['kravtype'] . "';");
    print "<form method='GET' action='/grouse'>Kravtype:&nbsp;<select name='kravtype'><option value='B'>B</option><option value='O'>O</option><option value='V'>V</option><br /><input type='submit' value='Generere kravspec' /></select></form>\n";
-   print "<table>";
+   print "<table border='1'>";
    while ($entry = sqlite_fetch_array($result, SQLITE3_ASSOC)) {
    	 print "<tr><td>" . $entry['kravnr'] . "</td><td>" . $entry['ookrav'] . "</td><td>" . $entry['kravtype'] . "</td><td>" . $entry['merknad'] . "</td><td>" . $entry['forklaring'] . "</td><td>" . $entry['konsekvens'] . "</td><td>" . $entry['konfnivaa'] . "</td><td>" . $entry['refkrav'] . "</td><td>" . $entry['status'] . "</td><td>" . $entry['ansvar'] . "</td></tr>\n"; 
   }
