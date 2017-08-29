@@ -19,7 +19,7 @@ if (($handle = fopen("noark5kravspec.csv", "r")) !== FALSE) {
                 /* for ($c=0; $c < $num; $c++) { */
                 // echo $c . ": " . $data[$c] . "\t\n";
                 $kravnr = rtrim($data[0], "\n");
-                $kravnr = rtrim($data[0], " ");
+                $kravnr = rtrim($data[0], " ");
                 $ookrav = rtrim($data[1], "\n");
                 $type = rtrim($data[2], "\n");
                 $merknad = rtrim($data[3], "\n");
