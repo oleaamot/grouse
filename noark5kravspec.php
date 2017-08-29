@@ -1,10 +1,22 @@
-<html>
-<head>
-<title>noark5-kravspec</title>
-<meta charset="utf-8" />
-</head>
-<body>
 <?php
+print "DROP TABLE refkrav;\n";
+print "DROP TABLE kravspec;\n";
+print "CREATE TABLE refkrav (
+       navn varchar(100)
+);\n";
+print "CREATE TABLE kravspec (
+       kravnr varchar(100),
+       ookrav varchar(2000),
+       kravtype char(2),
+       merknad varchar(1000),
+       forklaring varchar(1000),
+       konsekvens varchar(1000),
+       konfnivaa varchar(100),
+       refkrav varchar(100) REFERENCES refkrav(navn),
+       status varchar(100),
+       ansvar varchar(100)
+);\n";
+print "INSERT INTO refkrav VALUES ('systemtype');\n";
 function TestFunction($s_value) {
         $regex = '/^[+\-]?(?:\d+(?:\.\d*)?|\.\d+)$/';
         return preg_match($regex, $s_value);
@@ -29,19 +41,17 @@ if (($handle = fopen("noark5kravspec.csv", "r")) !== FALSE) {
                 $refkrav = rtrim($data[7], "\n");
                 $status = rtrim($data[8], "\n");
                 $ansvar = rtrim($data[9], "\n");
+                echo "INSERT INTO kravspec VALUES ('" . $kravnr . "','" . $ookrav . "','" . $type . "','" . $merknad . "','" . $forklaring . "','" . $konsekvens . "','" . $konfnivaa . "','" . $refkrav . "','" . $status . "','" . $ansvar . "');\n";
                 if ($kravnr == "Krav nr.") {
-                        echo "<h2>" . $ookrav . "<h2>\n";
+                        /* echo "<h2>" . $ookrav . "<h2>\n"; */
                 }
                 if (TestFunction($kravnr)==0) {
                         if ($kravnr != "Krav nr.") {
-                                print "<h3>" . $kravnr . "</h3>\n";
-                                print "<h4>" . $ookrav . "</h4>\n";
+                                /* print "<h3>" . $kravnr . "</h3>\n"; */
+                                /* print "<h4>" . $ookrav . "</h4>\n"; */
                         }
                 }
-                        // echo "INSERT INTO kravspec VALUES ('" . $kravnr . "','" . $ookrav . "','" . $type . "','" . $merknad . "','" . $forklaring . "','" . $konsekvens . "','" . $konfnivaa . "','" . $refkrav . "','" . $status . "','" . $ansvar . "');\n";
         }
         fclose($handle);
 }
 ?>
-</body>
-</html>
