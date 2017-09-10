@@ -9,7 +9,22 @@
 	<packaging>jar</packaging>
 
 	<name>kravspec</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Noark5 Kravspec project for Spring Boot</description>
+
+	<developers>
+	  <developer>
+	    <email>thomas.sodring@hioa.no</email>
+	    <name>Thomas Sødring</name>
+	    <url>https://github.com/tsodring</url>
+	    <id>tsodring</id>
+	  </developer>
+	  <developer>
+	    <email>oka@oka.no</email>
+	    <name>Ole Aamot</name>
+	    <url>https://github.com/oleaamot</url>
+	    <id>oleaamot</id>
+	  </developer>
+	</developers>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
