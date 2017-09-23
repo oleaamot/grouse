@@ -5,26 +5,74 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.apache.poi.xwpf.usermodel.XWPFTable;
+import org.apache.poi.xwpf.usermodel.XWPFTableRow;
+
 @RestController
 @RequestMapping(value = "/documents")
 public class KravspecDocumentController {
-
 	private List<KravspecDocument> documents = new ArrayList();	
-
 	KravspecDocumentController() {
 		this.documents = buildDocuments();
 	}
-
 	@RequestMapping(method = RequestMethod.GET)
 	public List<KravspecDocument> getDocuments() {
 		return this.documents;
 	}
-
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public KravspecDocument getDocument(@PathVariable("id") Integer id) {
+		KravspecDocument lastDocument = this.documents.stream().skip(this.documents.size() - 1).findFirst().orElse(null);
+		try {
+			XWPFDocument document = new XWPFDocument();
+			XWPFParagraph tmpParagraph = document.createParagraph();
+			XWPFRun titleRun = tmpParagraph.createRun();
+			titleRun.setText(lastDocument.getTitle());
+			titleRun.setFontSize(18);
+			XWPFRun spaceRun = tmpParagraph.createRun();
+			spaceRun.setText("\n");
+			spaceRun.setFontSize(18);
+			XWPFRun commentRun = tmpParagraph.createRun();
+			commentRun.setText(lastDocument.getComment());
+			commentRun.setFontSize(18);
+			XWPFRun cRun = tmpParagraph.createRun();
+			cRun.setText("\n");
+			cRun.setFontSize(18);
+			XWPFRun referenceRun = tmpParagraph.createRun();
+			referenceRun.setText("Referanse: " + lastDocument.getReference());
+			referenceRun.setFontSize(18);
+			// XWPFTable table = document.createTable();
+			// // create first row
+			// XWPFTableRow tableRowOne = table.getRow(0);
+			// tableRowOne.getCell(0).setText(lastDocument.getTitle());
+			// tableRowOne.addNewTableCell().setText(lastDocument.getComment());
+			// tableRowOne.addNewTableCell().setText(lastDocument.getReference());
+			// // create second row
+			// XWPFTableRow tableRowTwo = table.createRow();
+			// tableRowTwo.getCell(0).setText("col one, row two");
+			// tableRowTwo.getCell(1).setText("col two, row two");
+			// tableRowTwo.getCell(2).setText("col three, row two");
+			// // create third row
+			// XWPFTableRow tableRowThree = table.createRow();
+			// tableRowThree.getCell(0).setText("col one, row three");
+		        // tableRowThree.getCell(1).setText("col two, row three");
+			// tableRowThree.getCell(2).setText("col three, row three");
+			FileOutputStream fos = new FileOutputStream(new File(lastDocument.getTitle() + ".doc"));
+			document.write(fos);
+			fos.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return this.documents.stream().filter(document-> document.getId() == id).findFirst().orElse(null);
 	}
-
 	@RequestMapping(method = RequestMethod.POST)
 	public KravspecDocument saveDocument(@RequestBody KravspecDocument document) {
 		Integer nextId = 0;
@@ -38,7 +86,6 @@ public class KravspecDocumentController {
 		return document;
 
 	}
-
 	@RequestMapping(method = RequestMethod.PUT)
 	public KravspecDocument updateDocument(@RequestBody KravspecDocument document) {
 		KravspecDocument modifiedDocument = this.documents.stream().filter(u -> u.getId() == document.getId()).findFirst().orElse(null);
@@ -47,7 +94,6 @@ public class KravspecDocumentController {
 		modifiedDocument.setReference(document.getReference());
 		return modifiedDocument;
 	}
-
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public boolean deleteDocument(@PathVariable Integer id) {
 		KravspecDocument deleteDocument = this.documents.stream().filter(document -> document.getId() == id).findFirst().orElse(null);
@@ -57,10 +103,7 @@ public class KravspecDocumentController {
 		} else  {
 			return false;
 		}
-
-
 	}
-
 	List<KravspecDocument> buildDocuments() {
 		List<KravspecDocument> documents = new ArrayList<>();
 
@@ -71,7 +114,6 @@ public class KravspecDocumentController {
 		return documents;
 
 	}
-
 	KravspecDocument buildDocument(Integer id, String title, String comment, String reference) {
 		KravspecDocument document = new KravspecDocument();
 		document.setId(id);
@@ -80,5 +122,4 @@ public class KravspecDocumentController {
 		document.setReference(reference);
 		return document;
 	}
-
 }
