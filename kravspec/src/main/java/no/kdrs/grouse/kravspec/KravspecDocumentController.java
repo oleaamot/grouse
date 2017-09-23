@@ -1,0 +1,84 @@
+package no.kdrs.grouse.kravspec;
+
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@RestController
+@RequestMapping(value = "/documents")
+public class KravspecDocumentController {
+
+	private List<KravspecDocument> documents = new ArrayList();	
+
+	KravspecDocumentController() {
+		this.documents = buildDocuments();
+	}
+
+	@RequestMapping(method = RequestMethod.GET)
+	public List<KravspecDocument> getDocuments() {
+		return this.documents;
+	}
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public KravspecDocument getDocument(@PathVariable("id") Integer id) {
+		return this.documents.stream().filter(document-> document.getId() == id).findFirst().orElse(null);
+	}
+
+	@RequestMapping(method = RequestMethod.POST)
+	public KravspecDocument saveDocument(@RequestBody KravspecDocument document) {
+		Integer nextId = 0;
+		if (this.documents.size() != 0) {
+			KravspecDocument lastDocument = this.documents.stream().skip(this.documents.size() - 1).findFirst().orElse(null);
+			nextId = lastDocument.getId() + 1;
+		}
+
+		document.setId(nextId);
+		this.documents.add(document);
+		return document;
+
+	}
+
+	@RequestMapping(method = RequestMethod.PUT)
+	public KravspecDocument updateDocument(@RequestBody KravspecDocument document) {
+		KravspecDocument modifiedDocument = this.documents.stream().filter(u -> u.getId() == document.getId()).findFirst().orElse(null);
+		modifiedDocument.setTitle(document.getTitle());
+		modifiedDocument.setComment(document.getComment());		
+		modifiedDocument.setReference(document.getReference());
+		return modifiedDocument;
+	}
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public boolean deleteDocument(@PathVariable Integer id) {
+		KravspecDocument deleteDocument = this.documents.stream().filter(document -> document.getId() == id).findFirst().orElse(null);
+		if (deleteDocument != null) {
+			this.documents.remove(deleteDocument);
+			return true;
+		} else  {
+			return false;
+		}
+
+
+	}
+
+	List<KravspecDocument> buildDocuments() {
+		List<KravspecDocument> documents = new ArrayList<>();
+
+		KravspecDocument document1 = buildDocument(1, "5.1.1", "For at et system skal kunne godkjennes etter Noark 5-standarden, må den konseptuelle modellen av arkivstrukturen og de funksjonelle muligheter den gir, kunne implementeres i det aktuelle systemets (fysiske) datastrukturer.", "noark5");
+
+		documents.add(document1);
+
+		return documents;
+
+	}
+
+	KravspecDocument buildDocument(Integer id, String title, String comment, String reference) {
+		KravspecDocument document = new KravspecDocument();
+		document.setId(id);
+		document.setTitle(title);
+		document.setComment(comment);		
+		document.setReference(reference);
+		return document;
+	}
+
+}
