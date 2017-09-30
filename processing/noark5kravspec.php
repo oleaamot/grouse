@@ -5,14 +5,14 @@ print "CREATE TABLE refkrav (
        navn varchar(100)
 );\n";
 print "CREATE TABLE kravspec (
-       kravnr varchar(100),
+       kravnr varchar(400),
        ookrav varchar(2000),
-       kravtype char(2),
+       kravtype char(4),
        merknad varchar(1000),
        forklaring varchar(1000),
        konsekvens varchar(1000),
        konfnivaa varchar(100),
-       refkrav varchar(100) REFERENCES refkrav(navn),
+       refkrav varchar(1000),
        status varchar(100),
        ansvar varchar(100)
 );\n";
