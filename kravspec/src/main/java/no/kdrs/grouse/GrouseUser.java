@@ -1,6 +1,6 @@
-package no.kdrs.grouse.kravspec;
+package no.kdrs.grouse;
 
-public class KravspecUser {
+public class GrouseUser {
 	private Integer id;
 	private String firstName;
 	private String lastName;	

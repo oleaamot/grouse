@@ -1,4 +1,4 @@
-package no.kdrs.grouse.kravspec;
+package no.kdrs.grouse;
 
 import org.springframework.web.bind.annotation.*;
 
@@ -17,18 +17,18 @@ import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 
 @RestController
 @RequestMapping(value = "/documents")
-public class KravspecDocumentController {
-	private List<KravspecDocument> documents = new ArrayList();	
-	KravspecDocumentController() {
+public class GrouseDocumentController {
+	private List<GrouseDocument> documents = new ArrayList();	
+	GrouseDocumentController() {
 		this.documents = buildDocuments();
 	}
 	@RequestMapping(method = RequestMethod.GET)
-	public List<KravspecDocument> getDocuments() {
+	public List<GrouseDocument> getDocuments() {
 		return this.documents;
 	}
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public KravspecDocument getDocument(@PathVariable("id") Integer id) {
-		KravspecDocument lastDocument = this.documents.stream().skip(this.documents.size() - 1).findFirst().orElse(null);
+	public GrouseDocument getDocument(@PathVariable("id") Integer id) {
+		GrouseDocument lastDocument = this.documents.stream().skip(this.documents.size() - 1).findFirst().orElse(null);
 		try {
 			XWPFDocument document = new XWPFDocument();
 			XWPFParagraph tmpParagraph = document.createParagraph();
@@ -74,10 +74,10 @@ public class KravspecDocumentController {
 		return this.documents.stream().filter(document-> document.getId() == id).findFirst().orElse(null);
 	}
 	@RequestMapping(method = RequestMethod.POST)
-	public KravspecDocument saveDocument(@RequestBody KravspecDocument document) {
+	public GrouseDocument saveDocument(@RequestBody GrouseDocument document) {
 		Integer nextId = 0;
 		if (this.documents.size() != 0) {
-			KravspecDocument lastDocument = this.documents.stream().skip(this.documents.size() - 1).findFirst().orElse(null);
+			GrouseDocument lastDocument = this.documents.stream().skip(this.documents.size() - 1).findFirst().orElse(null);
 			nextId = lastDocument.getId() + 1;
 		}
 
@@ -87,8 +87,8 @@ public class KravspecDocumentController {
 
 	}
 	@RequestMapping(method = RequestMethod.PUT)
-	public KravspecDocument updateDocument(@RequestBody KravspecDocument document) {
-		KravspecDocument modifiedDocument = this.documents.stream().filter(u -> u.getId() == document.getId()).findFirst().orElse(null);
+	public GrouseDocument updateDocument(@RequestBody GrouseDocument document) {
+		GrouseDocument modifiedDocument = this.documents.stream().filter(u -> u.getId() == document.getId()).findFirst().orElse(null);
 		modifiedDocument.setTitle(document.getTitle());
 		modifiedDocument.setComment(document.getComment());		
 		modifiedDocument.setReference(document.getReference());
@@ -96,7 +96,7 @@ public class KravspecDocumentController {
 	}
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public boolean deleteDocument(@PathVariable Integer id) {
-		KravspecDocument deleteDocument = this.documents.stream().filter(document -> document.getId() == id).findFirst().orElse(null);
+		GrouseDocument deleteDocument = this.documents.stream().filter(document -> document.getId() == id).findFirst().orElse(null);
 		if (deleteDocument != null) {
 			this.documents.remove(deleteDocument);
 			return true;
@@ -104,18 +104,18 @@ public class KravspecDocumentController {
 			return false;
 		}
 	}
-	List<KravspecDocument> buildDocuments() {
-		List<KravspecDocument> documents = new ArrayList<>();
+	List<GrouseDocument> buildDocuments() {
+		List<GrouseDocument> documents = new ArrayList<>();
 
-		KravspecDocument document1 = buildDocument(1, "5.1.1", "For at et system skal kunne godkjennes etter Noark 5-standarden, må den konseptuelle modellen av arkivstrukturen og de funksjonelle muligheter den gir, kunne implementeres i det aktuelle systemets (fysiske) datastrukturer.", "noark5");
+		GrouseDocument document1 = buildDocument(1, "5.1.1", "For at et system skal kunne godkjennes etter Noark 5-standarden, må den konseptuelle modellen av arkivstrukturen og de funksjonelle muligheter den gir, kunne implementeres i det aktuelle systemets (fysiske) datastrukturer.", "noark5");
 
 		documents.add(document1);
 
 		return documents;
 
 	}
-	KravspecDocument buildDocument(Integer id, String title, String comment, String reference) {
-		KravspecDocument document = new KravspecDocument();
+	GrouseDocument buildDocument(Integer id, String title, String comment, String reference) {
+		GrouseDocument document = new GrouseDocument();
 		document.setId(id);
 		document.setTitle(title);
 		document.setComment(comment);		

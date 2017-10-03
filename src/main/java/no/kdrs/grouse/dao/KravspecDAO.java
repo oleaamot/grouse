@@ -40,7 +40,7 @@ public class KravspecDAO implements IKravspecDAO {
 	}
 	@Override
 	public boolean kravspecExists(String title, String category) {
-		String hql = "FROM kravspecs as atcl WHERE atcl.title = ? and atcl.category = ?";
+		String hql = "FROM kravspec as atcl WHERE atcl.title = ? and atcl.category = ?";
 		int count = entityManager.createQuery(hql).setParameter(1, title)
 		              .setParameter(2, category).getResultList().size();
 		return count > 0 ? true : false;

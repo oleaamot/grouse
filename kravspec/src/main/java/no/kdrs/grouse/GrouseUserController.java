@@ -1,4 +1,4 @@
-package no.kdrs.grouse.kravspec;
+package no.kdrs.grouse;
 
 import org.springframework.web.bind.annotation.*;
 
@@ -7,29 +7,29 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/users")
-public class KravspecUserController {
+public class GrouseUserController {
 
-	private List<KravspecUser> users = new ArrayList();
+	private List<GrouseUser> users = new ArrayList();
 
-	KravspecUserController() {
+	GrouseUserController() {
 		this.users = buildUsers();
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public List<KravspecUser> getUsers() {
+	public List<GrouseUser> getUsers() {
 		return this.users;
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public KravspecUser getUser(@PathVariable("id") Integer id) {
+	public GrouseUser getUser(@PathVariable("id") Integer id) {
 		return this.users.stream().filter(user -> user.getId() == id).findFirst().orElse(null);
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public KravspecUser saveUser(@RequestBody KravspecUser user) {
+	public GrouseUser saveUser(@RequestBody GrouseUser user) {
 		Integer nextId = 0;
 		if (this.users.size() != 0) {
-			KravspecUser lastUser = this.users.stream().skip(this.users.size() - 1).findFirst().orElse(null);
+			GrouseUser lastUser = this.users.stream().skip(this.users.size() - 1).findFirst().orElse(null);
 			nextId = lastUser.getId() + 1;
 		}
 
@@ -40,8 +40,8 @@ public class KravspecUserController {
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
-	public KravspecUser updateUser(@RequestBody KravspecUser user) {
-		KravspecUser modifiedUser = this.users.stream().filter(u -> u.getId() == user.getId()).findFirst().orElse(null);
+	public GrouseUser updateUser(@RequestBody GrouseUser user) {
+		GrouseUser modifiedUser = this.users.stream().filter(u -> u.getId() == user.getId()).findFirst().orElse(null);
 		modifiedUser.setFirstName(user.getFirstName());
 		modifiedUser.setLastName(user.getLastName());
 		modifiedUser.setEmail(user.getEmail());
@@ -50,7 +50,7 @@ public class KravspecUserController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public boolean deleteUser(@PathVariable Integer id) {
-		KravspecUser deleteUser = this.users.stream().filter(user -> user.getId() == id).findFirst().orElse(null);
+		GrouseUser deleteUser = this.users.stream().filter(user -> user.getId() == id).findFirst().orElse(null);
 		if (deleteUser != null) {
 			this.users.remove(deleteUser);
 			return true;
@@ -61,12 +61,12 @@ public class KravspecUserController {
 
 	}
 
-	List<KravspecUser> buildUsers() {
-		List<KravspecUser> users = new ArrayList<>();
+	List<GrouseUser> buildUsers() {
+		List<GrouseUser> users = new ArrayList<>();
 
-		KravspecUser user1 = buildUser(1, "Thomas", "Sødring", "tsodring@gmail.com");
-		KravspecUser user2 = buildUser(2, "Tor Eivind", "Johansen", "tej@kdrs.no");
-		KravspecUser user3 = buildUser(3, "Ole", "Aamot", "ole.aamot@gmail.com");
+		GrouseUser user1 = buildUser(1, "Thomas", "Sødring", "tsodring@gmail.com");
+		GrouseUser user2 = buildUser(2, "Tor Eivind", "Johansen", "tej@kdrs.no");
+		GrouseUser user3 = buildUser(3, "Ole", "Aamot", "ole.aamot@gmail.com");
 
 		users.add(user1);
 		users.add(user2);
@@ -76,8 +76,8 @@ public class KravspecUserController {
 
 	}
 
-	KravspecUser buildUser(Integer id, String fname, String lname, String email) {
-		KravspecUser user = new KravspecUser();
+	GrouseUser buildUser(Integer id, String fname, String lname, String email) {
+		GrouseUser user = new GrouseUser();
 		user.setId(id);
 		user.setFirstName(fname);
 		user.setLastName(lname);

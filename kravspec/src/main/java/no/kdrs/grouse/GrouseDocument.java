@@ -1,6 +1,6 @@
-package no.kdrs.grouse.kravspec;
+package no.kdrs.grouse;
 
-public class KravspecDocument {
+public class GrouseDocument {
 	public Integer id;
 	public String title;
 	public String comment;
