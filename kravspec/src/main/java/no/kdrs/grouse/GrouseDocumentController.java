@@ -18,7 +18,7 @@ import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 @RestController
 @RequestMapping(value = "/documents")
 public class GrouseDocumentController {
-	private List<GrouseDocument> documents = new ArrayList();	
+	private List<GrouseDocument> documents = new ArrayList();
 	GrouseDocumentController() {
 		this.documents = buildDocuments();
 	}
@@ -63,7 +63,7 @@ public class GrouseDocumentController {
 			// tableRowThree.getCell(0).setText("col one, row three");
 		        // tableRowThree.getCell(1).setText("col two, row three");
 			// tableRowThree.getCell(2).setText("col three, row three");
-			FileOutputStream fos = new FileOutputStream(new File(lastDocument.getTitle() + ".doc"));
+			FileOutputStream fos = new FileOutputStream(new File(lastDocument.getId() + ".doc"));
 			document.write(fos);
 			fos.close();
 		} catch (FileNotFoundException e) {
