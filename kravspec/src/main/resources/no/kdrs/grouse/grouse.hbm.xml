@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="no.kdrs.grouse.GrouseDocument" table="kravspec" catalog="kravspec">
+        <id name="id" type="integer">
+            <column name="ID" />
+            <generator class="identity" />
+        </id>
+        <property name="kravnr" type="string">
+            <column name="KRAVNR" length="400" not-null="false" unique="true" />
+        </property>
+        <property name="ookrav" type="string">
+            <column name="OOKRAV" length="2000" not-null="false" unique="true" />
+        </property>
+        <property name="kravtype" type="string">
+            <column name="KRAVTYPE" length="4" not-null="false" unique="true" />
+        </property>
+        <property name="merknad" type="string">
+            <column name="MERKNAD" length="1000" not-null="false" unique="true" />
+        </property>
+        <property name="forklaring" type="string">
+            <column name="FORKLARING" length="1000" not-null="false" unique="true" />
+        </property>
+        <property name="konsekvens" type="string">
+          <column name="KONSEKVENS" length="1000" not-null="false" unique="true" />
+        </property>
+        <property name="konfnivaa" type="string">
+            <column name="KONFNIVAA" length="1000" not-null="false" unique="true" />
+        </property>
+        <property name="refkrav" type="string">
+            <column name="REFKRAV" length="1000" not-null="false" unique="true" />
+        </property>
+        <property name="status" type="string">
+            <column name="STATUS" length="100" not-null="false" unique="true" />
+        </property>
+        <property name="ansvar" type="string">
+            <column name="ANSVAR" length="100" not-null="false" unique="true" />
+        </property>
+    </class>
+</hibernate-mapping>
