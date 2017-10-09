@@ -1,5 +1,3 @@
-DROP TABLE refkrav;
-DROP TABLE kravspec;
 CREATE TABLE refkrav (
        navn varchar(100)
 );
