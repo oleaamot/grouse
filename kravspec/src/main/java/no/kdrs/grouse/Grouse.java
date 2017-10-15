@@ -38,7 +38,7 @@ public class Grouse {
 		try {
 		    FileOutputStream fos = new FileOutputStream(new File("noark5kravspec.doc"));
 		    XWPFDocument document = new XWPFDocument();
-		    XWPFTable tableOne = document.createTable(1878,11);
+		    XWPFTable tableOne = document.createTable(1877,11);
 		    setTableColumnWidths(tableOne);
 		    tableOne.setWidth(5*1440);
 		    Integer i = 0;
