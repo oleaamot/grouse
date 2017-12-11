@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="no" ng-app="grouse-app">
+<head>
+    <title>KDRS-Grouse Noark 5 kravspec</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="../angular-1.6.4/angular.min.js"></script>
+    <script src="../common.js"></script>
+    <script src="requirement.js"></script>
+
+    <!-- https://codepen.io/chrisdpratt/pen/IAymB -->
+    <style>
+        .bs-callout {
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid #eee;
+            border-left-width: 5px;
+            border-radius: 3px;
+        }
+
+        .bs-callout h4 {
+            margin-top: 0;
+            margin-bottom: 5px;
+        }
+
+        .bs-callout p:last-child {
+            margin-bottom: 0;
+        }
+
+        .bs-callout code {
+            border-radius: 3px;
+        }
+
+        .bs-callout + .bs-callout {
+            margin-top: -5px;
+        }
+
+        .bs-callout-default {
+            border-left-color: #777;
+        }
+
+        .bs-callout-default h4 {
+            color: #777;
+        }
+
+        .bs-callout-primary {
+            border-left-color: #428bca;
+        }
+
+        .bs-callout-primary h4 {
+            color: #428bca;
+        }
+
+        .bs-callout-success {
+            border-left-color: #5cb85c;
+        }
+
+        .bs-callout-success h4 {
+            color: #5cb85c;
+        }
+
+        .bs-callout-danger {
+            border-left-color: #d9534f;
+        }
+
+        .bs-callout-danger h4 {
+            color: #d9534f;
+        }
+
+        .bs-callout-warning {
+            border-left-color: #f0ad4e;
+        }
+
+        .bs-callout-warning h4 {
+            color: #f0ad4e;
+        }
+
+        .bs-callout-info {
+            border-left-color: #5bc0de;
+        }
+
+        .bs-callout-info h4 {
+            color: #5bc0de;
+        }
+    </style>
+</head>
+<body ng-controller="RequirementController">
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-check">
+                <div class="bs-callout bs-callout-default">
+                    <h4>Krav {{ requirement.requirementNumber }}</h4>
+                    <textarea class="form-control" rows="5"
+                              id="requirement_text">{{ requirement.requirementText }}</textarea>
+                </div>
+                <div class="bs-callout bs-callout-primary">
+                    <h4>Forklaring</h4>
+                    <textarea class="form-control" rows="5"
+                              id="explanation">{{ requirement.explanation }}</textarea>
+                </div>
+                <div class="bs-callout bs-callout-success">
+                    <h4>Konsekvens</h4>
+                    <textarea class="form-control" rows="5"
+                              id="consequence">{{ requirement.consequence }}</textarea>
+                </div>
+                <button type="button" style="float: right" ng-click="updateRequirement()"
+                        class="btn btn-primary">Oppdater krav
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
