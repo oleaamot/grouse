@@ -15,4 +15,10 @@ Grouse runs in two modes, default is production (no assigned profile) and demo (
 properties for the application are taken application-demo.yml and Grouse uses H2 as a database. In production mode 
 (default) Grouse expects access to a mysql database. You will have set properties accordingly in application.yml  
 
+You can test that Grouse is running with the following command: 
+
+    curl -v -s -X GET http://localhost:9294/grouse/funksjon
+
+It will show you a list of the functionality areas Grouse supports.
+
 Note, the codebase is under active development and has not yet exposed a lot of the required functionality.
