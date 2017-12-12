@@ -10,10 +10,10 @@ import java.util.Set;
  */
 public interface IRequirementService {
     Set findAll();
-    Requirement findOne(Long id);
+    Requirement findOne(String id);
     Requirement save(Requirement requirement);
     Requirement update(String requirementId, Requirement requirement) throws Exception;
-    void delete(Long id);
+    void delete(String id);
     // requirementNumber
     Requirement findByRequirementNumber(String requirementNumber);
 

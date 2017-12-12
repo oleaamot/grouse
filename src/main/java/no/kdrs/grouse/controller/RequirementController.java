@@ -61,9 +61,9 @@ public class RequirementController {
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<String> deleteRequirement(@PathVariable Long id) {
+    public ResponseEntity<String> deleteRequirement(@PathVariable String id) {
         requirementService.delete(id);
         return ResponseEntity.status(HttpStatus.OK)
-                .body("Requirement with id " + Long.toString(id) + " was deleted");
+                .body("Requirement with id " + id + " was deleted");
     }
 }

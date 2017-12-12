@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Set;
 
 @Repository
-public interface IFunctionalityRepository extends CrudRepository<Functionality, Long> {
+public interface IFunctionalityRepository extends CrudRepository<Functionality, String> {
 
     @Override
     Functionality save(Functionality Functionality);

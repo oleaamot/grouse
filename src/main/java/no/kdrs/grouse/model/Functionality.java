@@ -21,10 +21,14 @@ public class Functionality implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Number of the functional area. e.g 1.2.3
+     *  This is an internal number that the project themselves decides
+     *
+     */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false, updatable = false)
-    private Long id;
+    @Column(name = "functionality_number", nullable = false, updatable = false)
+    private String functionalityNumber;
 
     /**
      * Text of the functionality
@@ -35,15 +39,6 @@ public class Functionality implements Serializable {
      */
     @Column(name = "title")
     private String title;
-
-     /**
-     * Number of the functional area. e.g 1.2.3
-     *  This is an internal number that the project themselves decides
-     *
-     */
-    @NaturalId
-    @Column(name = "functionality_number", unique = true)
-    private String functionalityNumber;
 
     /**
      * Description of functionality
@@ -71,10 +66,6 @@ public class Functionality implements Serializable {
     @ManyToOne
     @JoinColumn(name="parent")
     private Functionality referenceParentFunctionality;
-
-    public Long getId() {
-        return id;
-    }
 
     public String getTitle() {
         return title;

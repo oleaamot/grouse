@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Set;
 
 @Repository
-public interface IRequirementRepository extends CrudRepository<Requirement, Long> {
+public interface IRequirementRepository extends CrudRepository<Requirement, String> {
 
     @Override
     Requirement save(Requirement Requirement);

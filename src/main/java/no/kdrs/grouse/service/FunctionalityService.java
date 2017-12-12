@@ -26,7 +26,7 @@ public class FunctionalityService implements IFunctionalityService {
     }
 
     @Override
-    public Functionality findOne(Long id) {
+    public Functionality findOne(String id) {
         return functionalityRepository.findOne(id);
     }
 
@@ -48,7 +48,7 @@ public class FunctionalityService implements IFunctionalityService {
     }
     
     @Override
-    public void delete(Long id) {
+    public void delete(String id) {
         functionalityRepository.delete(id);
     }
 

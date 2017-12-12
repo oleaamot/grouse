@@ -18,17 +18,13 @@ public class Requirement implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "requirement_id", nullable = false, updatable = false)
-    private Long id;
-
     /**
      * requirement (no:kravnr)
      * An actual requirement number from the standard
      * e.g 5.2.1
      */
-    @Column(name = "requirement_number")
+    @Id
+    @Column(name = "requirement_number", nullable = false, updatable = false)
     private String requirementNumber;
 
 
@@ -116,14 +112,6 @@ public class Requirement implements Serializable {
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getRequirementNumber() {
@@ -220,7 +208,6 @@ public class Requirement implements Serializable {
     @Override
     public String toString() {
         return "Requirement{" +
-                "id=" + id +
                 ", requirementNumber='" + requirementNumber + '\'' +
                 ", noarkVersion='" + noarkVersion + '\'' +
                 ", requirementType='" + requirementType + '\'' +

@@ -51,9 +51,9 @@ public class FunctionalityController {
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<String> deleteFunctionality(@PathVariable Long id) {
+    public ResponseEntity<String> deleteFunctionality(@PathVariable String id) {
         functionalityService.delete(id);
         return ResponseEntity.status(HttpStatus.OK)
-                .body("Functionality with id " + Long.toString(id) + " was deleted");
+                .body("Functionality with id " + id + " was deleted");
     }
 }

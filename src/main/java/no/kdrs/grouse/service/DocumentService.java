@@ -59,7 +59,7 @@ public class DocumentService implements IDocumentService {
         for (Functionality functionality : functionalityList) {
 
             Query query = em.createQuery("SELECT r FROM Requirement r JOIN r.functionality f WHERE f.id = :idFunctionality");
-            query.setParameter("idFunctionality", functionality.getId());
+            query.setParameter("idFunctionality", functionality.getFunctionalityNumber());
             ArrayList<Requirement> requirementsList = (ArrayList<Requirement>) query.getResultList();
 
             document.addSection(functionality.getTitle());

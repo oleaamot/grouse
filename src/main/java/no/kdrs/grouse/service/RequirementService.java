@@ -26,7 +26,7 @@ public class RequirementService implements IRequirementService {
     }
 
     @Override
-    public Requirement findOne(Long id) {
+    public Requirement findOne(String id) {
         return requirementRepository.findOne(id);
     }
 
@@ -50,7 +50,7 @@ public class RequirementService implements IRequirementService {
     }
     
     @Override
-    public void delete(Long id) {
+    public void delete(String id) {
         requirementRepository.delete(id);
     }
 

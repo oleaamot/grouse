@@ -10,10 +10,10 @@ import java.util.Set;
  */
 public interface IFunctionalityService {
     Set findAll();
-    Functionality findOne(Long id);
+    Functionality findOne(String id);
     Functionality save(Functionality functionality);
     Functionality update(String functionalityId, Functionality functionality) throws Exception;
-    void delete(Long id);
+    void delete(String id);
     // functionalityNumber
     Functionality findByFunctionalityNumber(String functionalityNumber);
 }
