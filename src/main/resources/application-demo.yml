@@ -1,34 +1,27 @@
-# ===================================================================
-# Spring Boot configuration for the "demo" profile.
-#
-# This configuration overrides the application.yml file.
-# ===================================================================
 
-logging:
-  level:
-    org:
-      springframework.web: DEBUG
-      hibernate.SQL: DEBUG
+
+
+# ===================================================================
+# Spring Boot configuration for the Grouse
+#
+# Set to require MySQL in production
+# ===================================================================
 
 server:
   application:
-    name: KDRS-SA Grouse (Demo mode)
+    name: KDRS-SA Grouse (Production mode)
   address: 0.0.0.0
   port: 9294
   contextPath: /grouse
 
 spring:
   datasource:
-    url: jdbc:h2:mem:grouse;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    driverClassName: org.h2.Driver
-    username: sa
-    password:
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
+    url: jdbc:mysql://localhost:3306/kravspec
+    username: INSERT-USERNAME-HERE
+    password: INSERT-PASSWORD-HERE
+    driver-class-name: com.mysql.jdbc.Driver
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.MySQL5Dialect
     properties:
       hibernate:
         hbm2ddl:
@@ -38,4 +31,4 @@ spring:
         hbm2ddl.auto: create-drop
 
 storage:
-  location: /tmp
+  location: /var/grouse/storage
