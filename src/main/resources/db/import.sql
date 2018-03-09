@@ -215,8 +215,8 @@ VALUES ('1.20', 'Krav til validering', 'Rediger meg', 'Rediger meg', 'Rediger me
 
 INSERT INTO functionality_areas (functionality_number, title, description, explanation, consequence, parent)
 VALUES ('2', 'Del 2 - Tekniske krav til ønsket løsning', 'Rediger meg', 'Rediger meg', 'Rediger meg', '0');
-INSERT INTO functionality_areas (functionality_number, title, description, explanation, consequence, parent)
-VALUES ('2.1', 'Krav til arkivdatabase', 'Rediger meg', 'Rediger meg', 'Rediger meg', '2');
+INSERT INTO functionality_areas (functionality_number, title, description, explanation, consequence, parent, show_me)
+VALUES ('2.1', 'Krav til arkivdatabase', 'Rediger meg', 'Rediger meg', 'Rediger meg', '2',TRUE );
 INSERT INTO functionality_areas (functionality_number, title, description, explanation, consequence, parent)
 VALUES ('2.2', 'Tekniske krav', 'Rediger meg', 'Rediger meg', 'Rediger meg', '2');
 INSERT INTO functionality_areas (functionality_number, title, description, explanation, consequence, parent)
