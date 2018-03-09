@@ -62,6 +62,14 @@ public class Functionality implements Serializable {
     @Column(name = "explanation", length = 10000)
     private String explanation;
 
+
+    /**
+     * Whether or not to be displayed in menu
+     *
+     */
+    @Column(name = "show_me")
+    private Boolean showMe;
+
     // Link to parent Functionality
     @ManyToOne
     @JoinColumn(name="parent")
@@ -105,6 +113,14 @@ public class Functionality implements Serializable {
 
     public void setExplanation(String explanation) {
         this.explanation = explanation;
+    }
+
+    public Boolean getShowMe() {
+        return showMe;
+    }
+
+    public void setShowMe(Boolean showMe) {
+        this.showMe = showMe;
     }
 
     @JsonIgnore

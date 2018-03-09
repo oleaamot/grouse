@@ -5,6 +5,7 @@ let grouseController = app.controller('FunctionalityController', ['$scope', '$ht
     function ($scope, $http) {
         console.log("FunctionalityController started");
 
+
         /* When page loads, grab the latest functionality from the database */
         var urlFunctionality = baseUrlApp + "/" + FUNCTIONALITY;
         console.log("Attempting a GET on " + urlFunctionality);

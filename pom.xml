@@ -29,6 +29,8 @@
         <jquery.version>3.2.1</jquery.version>
         <bootstrap.version>3.3.7-1</bootstrap.version>
         <angularjs.version>1.6.6</angularjs.version>
+        <font-awesome.version>5.0.6</font-awesome.version>
+        <metisMenu.version>2.7.0</metisMenu.version>
     </properties>
 
     <dependencies>
@@ -108,6 +110,18 @@
             <version>${jquery.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>font-awesome</artifactId>
+            <version>${font-awesome.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>metisMenu</artifactId>
+            <version>${metisMenu.version}</version>
+        </dependency>
+
         <!-- Testing stuff -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -145,7 +159,7 @@
                                     <version>${angularjs.version}</version>
                                     <type>jar</type>
                                     <includes>**/*.js</includes>
-                                    <outputDirectory>${project.basedir}/web/dependencies/external</outputDirectory>
+                                    <outputDirectory>${project.basedir}/web/dependencies/vendor</outputDirectory>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.webjars</groupId>
@@ -153,7 +167,8 @@
                                     <version>${bootstrap.version}</version>
                                     <type>jar</type>
                                     <includes>**/*.js</includes>
-                                    <outputDirectory>${project.basedir}/web/dependencies/external</outputDirectory>
+                                    <includes>**/*.css</includes>
+                                    <outputDirectory>${project.basedir}/web/dependencies/vendor</outputDirectory>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.webjars</groupId>
@@ -161,7 +176,25 @@
                                     <version>${jquery.version}</version>
                                     <type>jar</type>
                                     <includes>**/*.js</includes>
-                                    <outputDirectory>${project.basedir}/web/dependencies/external</outputDirectory>
+                                    <outputDirectory>${project.basedir}/web/dependencies/vendor</outputDirectory>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.webjars</groupId>
+                                    <artifactId>metisMenu</artifactId>
+                                    <version>${metisMenu.version}</version>
+                                    <type>jar</type>
+                                    <includes>**/*.js</includes>
+                                    <includes>**/*.css</includes>
+                                    <outputDirectory>${project.basedir}/web/dependencies/vendor</outputDirectory>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.webjars</groupId>
+                                    <artifactId>font-awesome</artifactId>
+                                    <version>${font-awesome.version}</version>
+                                    <type>jar</type>
+                                    <includes>**/*.js</includes>
+                                    <includes>**/*.css</includes>
+                                    <outputDirectory>${project.basedir}/web/dependencies/vendor</outputDirectory>
                                 </artifactItem>
                             </artifactItems>
                         </configuration>

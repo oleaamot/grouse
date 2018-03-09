@@ -30,6 +30,15 @@ public class FunctionalityController {
         return new ResponseEntity<Object> (functionalitys, HttpStatus.OK);
     }
 
+    @RequestMapping(method = RequestMethod.GET,
+            value = "meny"
+    )
+    public ResponseEntity<Object> getFunctionalitiesForMenu() {
+        Set<Functionality> functionalitys = functionalityService
+                .findByShowMe(true);
+        return new ResponseEntity<Object> (functionalitys, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/{funksjon:.+}", method = RequestMethod.GET)
     public ResponseEntity<Functionality> getFunctionality(@PathVariable("funksjon") String functionalityNumber) {
         return ResponseEntity.status(HttpStatus.OK)

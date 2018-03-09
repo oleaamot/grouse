@@ -16,4 +16,5 @@ public interface IFunctionalityService {
     void delete(String id);
     // functionalityNumber
     Functionality findByFunctionalityNumber(String functionalityNumber);
+    Set<Functionality> findByShowMe(Boolean menuItem);
 }

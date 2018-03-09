@@ -26,6 +26,11 @@ public class FunctionalityService implements IFunctionalityService {
     }
 
     @Override
+    public Set<Functionality> findByShowMe(Boolean menuItem) {
+        return functionalityRepository.findByShowMe(menuItem);
+    }
+
+    @Override
     public Functionality findOne(String id) {
         return functionalityRepository.findOne(id);
     }

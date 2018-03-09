@@ -1,5 +1,6 @@
 var baseUrlApp = "http://localhost:9294/grouse";
 var baseUrlGui = "http://localhost:9294/grouse";
+var urlToMenuItems = "http://localhost:9294/grouse/meny";
 var startPageName = "krav.html";
 var requirementPageName = "requirement.html";
 var REQUIREMENT = "krav";
@@ -22,6 +23,7 @@ var SetUserRequirementNumber = function (t) {
 var GetUserRequirementNumber = function () {
     return localStorage.getItem("requirementNumber");
 };
+
 
 var changeLocation = function ($scope, url, forceReload) {
     $scope = $scope || angular.element(document).scope();
