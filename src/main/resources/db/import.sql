@@ -25,13 +25,17 @@ INSERT INTO functionality_areas (functionality_number, title, description, expla
    'Å ivareta kravene stilt i den generelle lovgivningen som berører offentlig forvaltning.', 'Rediger meg',
    'Rediger meg', '1');
 
-INSERT INTO functionality_areas (functionality_number, title, description, explanation, consequence, parent)
-VALUES ('1.6', 'Krav til ivaretakelse av spesielle bestemmelser', 'Rediger meg', 'Rediger meg', 'Rediger meg', '1');
+INSERT INTO functionality_areas (functionality_number, title, description,
+                                 explanation, consequence, parent, show_me)
+VALUES ('1.6', 'Krav til ivaretakelse av spesielle bestemmelser', 'Rediger
+meg', 'Rediger meg', 'Rediger meg', '1', true);
 
-INSERT INTO functionality_areas (functionality_number, title, description, explanation, consequence, parent) VALUES
+INSERT INTO functionality_areas (functionality_number, title, description,
+                                 explanation, consequence, parent, show_me)
+VALUES
   ('1.7', 'Krav til brukergrensesnitt og brukervennlighet',
    'Å sørge for at systemløsningen som velges både visuelt og strukturelt støtter brukernes oppgaver, fremmer bruk av systemet på en egnet måte, og letter arbeidshverdagen ved å være så intuitiv som mulig, samt ved å tilby brukeren målrettet hjelp med oppgavene ved behov.',
-   'Rediger meg', 'Rediger meg', '1');
+   'Rediger meg', 'Rediger meg', '1', true);
 
 INSERT INTO functionality_areas (functionality_number, title, description, explanation, consequence, parent) VALUES
   ('1.8', 'Krav til grunnleggende funksjonalitet for journalføring og arkivering', 'Rediger meg', 'Rediger meg',
