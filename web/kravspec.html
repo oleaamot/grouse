@@ -6,13 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- css resources -->
-
-  <!--
-  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/5.0.6/css/font-awesome.min.css" rel="stylesheet">
-  <link href="dependencies/vendor/META-INF/resources/webjars/font-awesome/5.0.6/web-fonts-with-css/css/fontawesome.css"
-        rel="stylesheet" type="text/css">
-  -->
-
   <link href="dependencies/vendor/font-awesome/css/font-awesome.css"
         rel="stylesheet" type="text/css">
 
@@ -47,10 +40,9 @@
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
     </button>
-    <a class="navbar-brand" href="index.html">KDRS Kravspec verktøy</a>
+    <a class="navbar-brand" href="kravspec.html">KDRS Kravspec verktøy</a>
   </div>
 </nav>
-
 
 <div class="col-lg-12">
   <div class="panel panel-default">
@@ -68,133 +60,130 @@
         </div>
       </div>
       <div class="col-sm-3">
-
         <div class="panel panel-default">
           <div class="panel-heading">
             <h4 class="panel-title">
-              <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour"><span class="glyphicon glyphicon-file">
-                    </span>Reports</a>
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                Funksjonelle krav </a>
             </h4>
           </div>
-          <div id="collapseFour" class="panel-collapse collapse">
+          <div id="collapseOne" class="panel-collapse">
             <div class="list-group">
-              <a href="#" class="list-group-item">
-                Cras justo odio
-              </a>
-              <div class="list-group">
-                <a href="#" class="list-group-item">
-                  Cras justo odio
-                </a>
-                <a href="#" class="list-group-item">Dapibus ac facilisis in</a>
-                <a href="#" class="list-group-item">Morbi leo risus</a>
-                <a href="#" class="list-group-item">Porta ac consectetur ac</a>
-                <a href="#" class="list-group-item">Vestibulum at eros</a>
-              </div>
-              <a href="#" class="list-group-item">Dapibus ac facilisis in</a>
-              <a href="#" class="list-group-item">Morbi leo risus</a>
-              <a href="#" class="list-group-item">Porta ac consectetur ac</a>
-              <a href="#" class="list-group-item">Vestibulum at eros</a>
-            </div>
-          </div>
-        </div>
-
-
-        <div>
-          <div class="panel-group" id="accordion">
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h4 class="panel-title">
-                  <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
-                   Section 1 </a>
-                </h4>
-              </div>
-              <div id="collapse1" class="panel-collapse collapse in">
-                <div class="panel-body">
-                  <div ng-repeat="menuItem in menuItems">
+              <div class="list-group" ng-repeat="menuItem in menuItems">
+                <div ng-click="menuItem_selected(menuItem)">
+                  <a href="#" class="list-group-item">
                     {{menuItem.title}}
-                  </div>
-
+                  </a>
                 </div>
               </div>
             </div>
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h4 class="panel-title">
-                  <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
-                    Collapsible Group 2</a>
-                </h4>
-              </div>
-              <div id="collapse2" class="panel-collapse collapse">
-                <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                  sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-                  minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-                  commodo consequat.</div>
+          </div>
+        </div>  <!--  <div class="panel panel-default"> -->
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                Tekniske krav </a>
+            </h4>
+          </div>
+          <div id="collapseTwo" class="panel-collapse collapse">
+            <div class="list-group">
+              <div class="list-group" ng-repeat="menuItem in menuItems">
+                <a href="#" class="list-group-item">
+                  {{menuItem.title}}
+                </a>
               </div>
             </div>
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h4 class="panel-title">
-                  <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
-                    Collapsible Group 3</a>
-                </h4>
+          </div>
+        </div>  <!--  <div class="panel panel-default"> -->
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                Krav til integrasjoner</a>
+            </h4>
+          </div>
+          <div id="collapseThree" class="panel-collapse collapse">
+            <div class="list-group">
+              <div class="list-group" ng-repeat="menuItem in menuItems">
+                <a href="#" class="list-group-item" ng-click="menuItem_selected(menuItem)">
+                  {{menuItem.title}}
+                </a>
               </div>
-              <div id="collapse3" class="panel-collapse collapse">
-                <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                  sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-                  minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-                  commodo consequat.</div>
+            </div>
+          </div>
+        </div> <!--  <div class="panel panel-default"> -->
+      </div> <!-- <div class="col-sm-3"> -->
+      <div class="col-sm-9">
+        <div class="form-check">
+          <div class="bs-callout bs-callout-default">
+            <h4> Beskrivelse </h4>
+            <textarea class="form-control" rows="5"
+                      id="functionality_description_12">{{selectedMenuItem.title}}</textarea>
+          </div>
+          <div class="bs-callout bs-callout-primary">
+            <h4>Forklaring</h4>
+            <textarea class="form-control" rows="5"
+                      id="functionality_explanation_12">{{selectedMenuItem.description}}</textarea>
+          </div>
+          <div class="bs-callout bs-callout-success">
+            <h4>Konsekvens</h4>
+            <textarea class="form-control" rows="5"
+                      id="functionality_consequence_12">{{selectedMenuItem.explanation}}</textarea>
+          </div>
+          <div class="container">
+
+            <div class="center">
+              <button data-toggle="modal" data-target="#requirementsModal"
+                      class="btn btn-primary center-block">Vis krav
+              </button>
+            </div>
+
+            <!--modal-->
+            <div id="requirementsModal" class="modal fade" tabindex="-1"
+                 role="dialog" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h3>Gjeldende krav</h3>
+                  </div>
+                  <div class="modal-body">
+
+                    <div class="row">
+                      <div class="col-md-7">Krav</div>
+                      <div class="col-md-2">Prioritet</div>
+                      <div class="col-md-1">Slett</div>
+                    </div>
+
+                    <div class="row" ng-repeat="menuItem in menuItems">
+                      <div class="col-md-7">
+                        <input type="text" class="form-control" id="requirement"
+                               ng-value="menuItem.title">
+                      </div>
+                      <div class="col-md-2">
+                        <input type="text" class="form-control" id="priority">
+                      </div>
+                      <div class="col-md-1">
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox">
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-
-
       </div>
-      <!--
-
-      <div class="navbar-default sidebar"
-           role="navigation">
-        <div class="sidebar-nav navbar-collapse">
-          <ul class="nav" id="side-menu">
-
-            <li>
-              <a href="#">
-                <!-- Yeah it's a 'hacky' solution, but deadlines .....
-                     Can be optimsed later.
-                <i class="fa fa-sitemap fa-fw">
-                </i>
-                Krav gjennomgang
-                <span
-                  class="fa arrow"></span></a>
-
-              <a href="#">Funksjonelle krav <span class="fa arrow"></span></a>
-              <ul class="nav nav-third-level" ng-repeat="menuItem in menuItems"
-                  ng-click="menuItem_selected(menuItem)">
-                <li>
-                  <a href="#">{{menuItem.title}}</a>
-                </li>
-              </ul>
-
-              <a href="#">Del 2 - Teknikse krav<span class="fa arrow"></span></a>
-              <ul class="nav nav-third-level" ng-repeat="menuItem in menuItems"
-                  ng-click="menuItem_selected(menuItem)">
-                <li>
-                  <a href="#">{{menuItem.title}}</a>
-                </li>
-              </ul>
-
-              <a href="#">Del 3 - Krav til integrasjoner <span class="fa arrow"></span></a>
-              <ul class="nav nav-third-level" ng-repeat="menuItem in menuItems"
-                  ng-click="menuItem_selected(menuItem)">
-                <li>
-                  <a href="#">{{menuItem.title}}</a>
-                </li>
-              </ul>
-              <!-- /.nav-second-level -->
-      </li>
-      </ul>
     </div>
-  </div>
+  </div><!-- <div class="panel-body"> -->
 </div>
 
 </body>

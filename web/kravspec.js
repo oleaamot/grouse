@@ -10,6 +10,7 @@ var app = angular.module('grouse-app', []);
 var requirementsController = app.controller('RequirementsController',
   ['$scope', '$http', function ($scope, $http) {
 
+    $scope.selectedMenuItem = null;
     var token = GetUserToken();
     console.log("Grouse kravspec.js page load. User token is set to " + token);
     $scope.isopen = true;
@@ -23,7 +24,7 @@ var requirementsController = app.controller('RequirementsController',
       console.log(method + " GET urlToMenuItems[" + urlToMenuItems + "] returned " + JSON.stringify(response));
     }, function errorCallback(response) {
       console.log(method + " GET urlToMenuItems[" + urlToMenuItems + "] returned " + JSON.stringify(response));
-    })
+    });
 
     /**
      * menuItem_selected
@@ -31,6 +32,7 @@ var requirementsController = app.controller('RequirementsController',
      * Description of what function does
      */
     $scope.menuItem_selected = function (menuItem) {
-      console.log("menuItems[" + JSON.stringify(menuItem) + "] selected.");
+      console.log("menuItem[" + JSON.stringify(menuItem) + "] selected.");
+      $scope.selectedMenuItem = menuItem;
     };
   }]);
