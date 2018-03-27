@@ -15,22 +15,29 @@ import java.util.Set;
  */
 @Service
 @Transactional
-public class FunctionalityService implements IFunctionalityService {
+public class FunctionalityService
+        implements IFunctionalityService {
 
     private IFunctionalityRepository functionalityRepository;
 
-    public FunctionalityService(IFunctionalityRepository functionalityRepository) {
+    public FunctionalityService(IFunctionalityRepository
+                                        functionalityRepository) {
         this.functionalityRepository = functionalityRepository;
     }
 
     public Set<Functionality> findAll() {
-        Set<Functionality> functionalitys = functionalityRepository.findAll();
-        return functionalitys;
+        Set<Functionality> functionality = functionalityRepository.findAll();
+        return functionality;
     }
 
     @Override
-    public Set<Functionality> findByShowMe(Boolean menuItem) {
-        return functionalityRepository.findByShowMe(menuItem);
+    public Set<Functionality> findByShowMeAndReferenceParentFunctionality(
+            Boolean menuItem, String parent) {
+        Functionality functionality = new Functionality();
+        functionality.setFunctionalityNumber(parent);
+        return functionalityRepository.
+                findByShowMeAndReferenceParentFunctionality(
+                        menuItem, functionality);
     }
 
     @Override

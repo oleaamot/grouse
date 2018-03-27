@@ -16,9 +16,8 @@ public interface IFunctionalityRepository extends CrudRepository<Functionality, 
     @Override
     Set<Functionality> findAll();
 
-    // functionalityNumber
     Functionality findByFunctionalityNumber(String functionalityNumber);
 
-    Set<Functionality> findByShowMe(Boolean menuItem);
-
+    Set<Functionality> findByShowMeAndReferenceParentFunctionality(
+            Boolean menuItem, Functionality parent);
 }

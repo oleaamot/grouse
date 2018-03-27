@@ -1,6 +1,6 @@
 var baseUrlApp = "http://localhost:9294/grouse";
 var baseUrlGui = "http://localhost:9294/grouse";
-var urlToMenuItems = "http://localhost:9294/grouse/meny";
+var urlToMenuItems = "http://localhost:9294/grouse/funksjon/meny";
 var startPageName = "krav.html";
 var requirementPageName = "requirement.html";
 var REQUIREMENT = "krav";

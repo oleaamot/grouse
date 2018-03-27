@@ -12,25 +12,25 @@ var requirementsController = app.controller('RequirementsController',
 
     var token = GetUserToken();
     console.log("Grouse kravspec.js page load. User token is set to " + token);
-
-    var method = "GET;"
+    $scope.isopen = true;
+    var method = 'GET';
     $http({
       method: method,
       url: urlToMenuItems,
       headers: {'Authorization': token}
     }).then(function successCallback(response) {
       $scope.menuItems = response.data;
-    }, function errorCallback(request, response) {
+      console.log(method + " GET urlToMenuItems[" + urlToMenuItems + "] returned " + JSON.stringify(response));
+    }, function errorCallback(response) {
       console.log(method + " GET urlToMenuItems[" + urlToMenuItems + "] returned " + JSON.stringify(response));
     })
 
     /**
-     * functionCall
+     * menuItem_selected
      *
-     * What function does
+     * Description of what function does
      */
-    $scope.functionCall = function () {
-
+    $scope.menuItem_selected = function (menuItem) {
+      console.log("menuItems[" + JSON.stringify(menuItem) + "] selected.");
     };
   }]);
-

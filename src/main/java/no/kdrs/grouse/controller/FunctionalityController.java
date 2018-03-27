@@ -30,13 +30,13 @@ public class FunctionalityController {
         return new ResponseEntity<Object> (functionalitys, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.GET,
-            value = "meny"
+    @RequestMapping(method = RequestMethod.GET, value = "/meny/{parent:.+}"
     )
-    public ResponseEntity<Object> getFunctionalitiesForMenu() {
-        Set<Functionality> functionalitys = functionalityService
-                .findByShowMe(true);
-        return new ResponseEntity<Object> (functionalitys, HttpStatus.OK);
+    public ResponseEntity<Object> getFunctionalityForMenu(
+            @PathVariable("parent") String parent) {
+        Set<Functionality> functionality = functionalityService
+                .findByShowMeAndReferenceParentFunctionality(true, parent);
+        return new ResponseEntity<Object> (functionality, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{funksjon:.+}", method = RequestMethod.GET)

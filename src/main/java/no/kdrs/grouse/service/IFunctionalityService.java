@@ -17,5 +17,6 @@ public interface IFunctionalityService {
             throws EntityNotFoundException;
     void delete(String id);
 
-    Set<Functionality> findByShowMe(Boolean menuItem);
+    Set<Functionality> findByShowMeAndReferenceParentFunctionality(
+            Boolean menuItem, String parent);
 }
