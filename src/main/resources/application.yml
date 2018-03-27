@@ -13,9 +13,9 @@ logging:
 server:
   application:
     name: KDRS-SA Grouse (Demo mode)
-  address: 0.0.0.0
+  servlet:
+    context-path: /grouse
   port: 9294
-  contextPath: /grouse
 
 spring:
   datasource:

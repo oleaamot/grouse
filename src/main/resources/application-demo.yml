@@ -9,10 +9,10 @@
 
 server:
   application:
-    name: KDRS-SA Grouse (Production mode)
-  address: 0.0.0.0
+    name: KDRS-SA Grouse (Demo mode)
+  servlet:
+    context-path: /grouse
   port: 9294
-  contextPath: /grouse
 
 spring:
   datasource:
