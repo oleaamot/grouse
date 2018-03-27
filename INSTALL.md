@@ -21,8 +21,8 @@ If you haven't cloned the project then:
 
 ## Makefile
 
-This option is a wrapper around the maven command. To compile the core and start it automatically, 
-from the top level directory:
+This option is a wrapper around the maven command. To compile the 
+application and start it automatically, from the top level directory run :
 
     make         
     
@@ -38,19 +38,22 @@ check the pom.xml files to find out which jar files will be downloaded.
 You will see a lot of different startup messages, but there should be no
 exceptions. (Please let us know if there are any exceptions).
 
- The program should output some thing like the following if everything is successful
+The program should output some thing like the following if everything is 
+successful
  	
  	Started GrouseApplication in 15.489 seconds (JVM running for 19.948)
 
 ## API
 
-You should be able to see which REST calls are available from the logging information that was written to the
-terminal.  Search for Mapped and you can easily see a list. You will find something similar to the following:
+You should be able to see which REST calls are available from the logging 
+information that was written to the terminal. Search for Mapped and you can 
+easily see a list. You will find something similar to the following:
  
  	`Mapped "{[/krav/{krav:.+}],methods=[GET]}"` 
 
 ## GUI
 
-Grouse uses webjars to download required js resources. You can use make install-gui to force download of required
-js files. But this should also be done when make builds the project. You will require a HTTP server to serve web
+Grouse uses webjars to download required js resources. You can use make 
+install-gui to force download of required js files. But this should also be 
+done when make builds the project. You will require a HTTP server to serve web
 content. 
