@@ -5,6 +5,9 @@ import no.kdrs.grouse.persistence.IProjectRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
+import javax.validation.constraints.NotNull;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -20,14 +23,15 @@ public class ProjectService implements IProjectService {
         this.projectRepository = projectRepository;
     }
 
-    public Set<Project> findAll() {
-        Set<Project> projects = projectRepository.findAll();
+    public Set<Project> findAll(String projectOwner) {
+        Set<Project> projects = projectRepository.
+                findByProjectOwner(projectOwner);
         return projects;
     }
 
     @Override
-    public Project findOne(Long id) {
-        return projectRepository.findOne(id);
+    public Project findById(@NotNull Long id) {
+        return getProjectOrThrow(id);
     }
 
     @Override
@@ -36,21 +40,46 @@ public class ProjectService implements IProjectService {
     }
 
     @Override
-    public Project update(Long id, Project Project) throws Exception {
-        Project originalProject = projectRepository.findOne(id);
-        if (originalProject == null){
-            throw new Exception("No Project exists with Id " + id);
-        }
+    public Project update(Long id, Project project)
+            throws EntityNotFoundException {
+
+        Project originalProject = getProjectOrThrow(id);
+        // copy the values over
+        originalProject.setFileName(project.getFileName());
+        originalProject.setProjectName(project.getProjectName());
+        originalProject.setProjectNumber(project.getProjectNumber());
+
+        // probably don't want to expose this one
+        //originalProject.setProjectOwner(project.getProjectOwner());
         return originalProject;
     }
     
     @Override
     public void delete(Long id) {
-        projectRepository.delete(id);
+        projectRepository.deleteById(id);
     }
 
     @Override
     public Project findByProjectNumberOrderByProjectName(String projectNumber) {
         return projectRepository.findByProjectNumberOrderByProjectName(projectNumber);
+    }
+
+    /**
+     * Internal helper method. Rather than having a find and try catch in
+     * multiple methods, we have it here once. If you call this, be aware
+     * that you will only ever get a valid Project back. If there is no valid
+     * Project, a EntityNotFoundException exception is thrown
+     *
+     * @param id The systemId of the project object to retrieve
+     * @return the project object
+     */
+    private Project getProjectOrThrow(@NotNull Long id)
+            throws EntityNotFoundException {
+        Project project =
+                projectRepository.findById(id)
+                        .orElseThrow(() ->
+                                new EntityNotFoundException(
+                                        "No Project exists with Id " + id));
+        return project;
     }
 }

@@ -42,7 +42,7 @@ public class FunctionalityController {
     @RequestMapping(value = "/{funksjon:.+}", method = RequestMethod.GET)
     public ResponseEntity<Functionality> getFunctionality(@PathVariable("funksjon") String functionalityNumber) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(functionalityService.findByFunctionalityNumber(functionalityNumber));
+                .body(functionalityService.findById(functionalityNumber));
     }
 
     @RequestMapping(method = RequestMethod.POST)

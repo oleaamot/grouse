@@ -1,10 +1,13 @@
 package no.kdrs.grouse.service;
 
 import no.kdrs.grouse.model.Functionality;
+import no.kdrs.grouse.model.Requirement;
 import no.kdrs.grouse.persistence.IFunctionalityRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 /**
@@ -31,34 +34,48 @@ public class FunctionalityService implements IFunctionalityService {
     }
 
     @Override
-    public Functionality findOne(String id) {
-        return functionalityRepository.findOne(id);
+    public Functionality findById(String id) {
+        return getFunctionalityOrThrow(id);
     }
-
     @Override
     public Functionality save(Functionality Functionality) {
         return functionalityRepository.save(Functionality);
     }
 
     @Override
-    public Functionality update(String functionalityId, Functionality functionality) throws Exception {
-        Functionality originalFunctionality = functionalityRepository.findByFunctionalityNumber(functionalityId);
-        if (originalFunctionality == null){
-            throw new Exception("No Noark Functionality exists, identified by functionality number  " + functionalityId);
-        }
+    public Functionality update(String id, Functionality functionality)
+            throws EntityNotFoundException {
+        Functionality originalFunctionality = getFunctionalityOrThrow(id);
+
         originalFunctionality.setDescription(functionality.getDescription());
         originalFunctionality.setConsequence(functionality.getConsequence());
         originalFunctionality.setExplanation(functionality.getExplanation());
+
         return originalFunctionality;
     }
     
     @Override
     public void delete(String id) {
-        functionalityRepository.delete(id);
+        functionalityRepository.deleteById(id);
     }
 
-    @Override
-    public Functionality findByFunctionalityNumber(String functionalityNumber) {
-        return functionalityRepository.findByFunctionalityNumber(functionalityNumber);
+    /**
+     * Internal helper method. Rather than having a find and try catch in
+     * multiple methods, we have it here once. If you call this, be aware
+     * that you will only ever get a valid Functionality back. If there is no valid
+     * Functionality, a EntityNotFoundException exception is thrown
+     *
+     * @param id The systemId of the functionality object to retrieve
+     * @return the functionality object
+     */
+    private Functionality getFunctionalityOrThrow(@NotNull String id)
+            throws EntityNotFoundException {
+        Functionality functionality =
+                functionalityRepository.findById(id)
+                        .orElseThrow(() ->
+                                new EntityNotFoundException(
+                                        "No Functionality exists with Id " + id));
+        return functionality;
     }
+
 }

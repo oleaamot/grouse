@@ -10,7 +10,7 @@ import java.util.Set;
  */
 public interface IRequirementService {
     Set findAll();
-    Requirement findOne(String id);
+    Requirement findById(String id);
     Requirement save(Requirement requirement);
     Requirement update(String requirementId, Requirement requirement) throws Exception;
     void delete(String id);

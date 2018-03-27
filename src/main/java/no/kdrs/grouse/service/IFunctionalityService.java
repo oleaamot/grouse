@@ -3,6 +3,7 @@ package no.kdrs.grouse.service;
 
 import no.kdrs.grouse.model.Functionality;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Set;
 
 /**
@@ -10,11 +11,11 @@ import java.util.Set;
  */
 public interface IFunctionalityService {
     Set findAll();
-    Functionality findOne(String id);
+    Functionality findById(String id);
     Functionality save(Functionality functionality);
-    Functionality update(String functionalityId, Functionality functionality) throws Exception;
+    Functionality update(String functionalityId, Functionality functionality)
+            throws EntityNotFoundException;
     void delete(String id);
-    // functionalityNumber
-    Functionality findByFunctionalityNumber(String functionalityNumber);
+
     Set<Functionality> findByShowMe(Boolean menuItem);
 }

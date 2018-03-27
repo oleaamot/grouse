@@ -15,6 +15,8 @@ public interface IProjectRepository extends CrudRepository<Project, Long> {
     @Override
     Set<Project> findAll();
 
+    Set<Project> findByProjectOwner(String projectOwner);
+
     // projectNumber
     Project findByProjectNumberOrderByProjectName(String projectFirstName);
 }
