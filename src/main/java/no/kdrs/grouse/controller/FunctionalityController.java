@@ -1,15 +1,16 @@
-
 package no.kdrs.grouse.controller;
+
 import no.kdrs.grouse.model.Functionality;
 import no.kdrs.grouse.service.IFunctionalityService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
-import java.util.Set;
+import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
-import static no.kdrs.grouse.utils.Constants.*;
+import static no.kdrs.grouse.utils.Constants.FUNCTIONALITY;
+import static no.kdrs.grouse.utils.Constants.SLASH;
 
 /**
  * Created by tsodring on 9/25/17.
@@ -25,28 +26,30 @@ public class FunctionalityController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<Object> getFunctionalities() {
-        Set<Functionality> functionalitys = functionalityService.findAll();
-        return new ResponseEntity<Object> (functionalitys, HttpStatus.OK);
+    public ResponseEntity<List<Functionality>> getFunctionalities() {
+        return new ResponseEntity<>
+                (functionalityService.findAll(), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/meny/{parent:.+}"
     )
-    public ResponseEntity<Object> getFunctionalityForMenu(
+    public ResponseEntity<List<Functionality>> getFunctionalityForMenu(
             @PathVariable("parent") String parent) {
-        Set<Functionality> functionality = functionalityService
-                .findByShowMeAndReferenceParentFunctionality(true, parent);
-        return new ResponseEntity<Object> (functionality, HttpStatus.OK);
+        return new ResponseEntity<>(functionalityService
+                .findByShowMeAndReferenceParentFunctionality(
+                        true, parent), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{funksjon:.+}", method = RequestMethod.GET)
-    public ResponseEntity<Functionality> getFunctionality(@PathVariable("funksjon") String functionalityNumber) {
+    public ResponseEntity<Functionality>
+    getFunctionality(@PathVariable("funksjon") String functionalityNumber) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(functionalityService.findById(functionalityNumber));
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Functionality> saveFunctionality(@RequestBody Functionality Functionality) {
+    public ResponseEntity<Functionality> saveFunctionality(
+            @RequestBody Functionality Functionality) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(functionalityService.save(Functionality));
     }
@@ -54,9 +57,11 @@ public class FunctionalityController {
     @RequestMapping(value = "/{funksjon:.+}", method = RequestMethod.PUT)
     public ResponseEntity<Functionality> updateFunctionality(
             @PathVariable("funksjon") String functionalityId,
-            @RequestBody Functionality functionality) throws Exception{
+            @RequestBody Functionality functionality)
+            throws EntityNotFoundException {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(functionalityService.update(functionalityId, functionality));
+                .body(functionalityService.update(
+                        functionalityId, functionality));
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

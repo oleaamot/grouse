@@ -1,14 +1,13 @@
 package no.kdrs.grouse.service;
 
 import no.kdrs.grouse.model.Functionality;
-import no.kdrs.grouse.model.Requirement;
 import no.kdrs.grouse.persistence.IFunctionalityRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.constraints.NotNull;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Created by tsodring on 9/25/17.
@@ -25,13 +24,13 @@ public class FunctionalityService
         this.functionalityRepository = functionalityRepository;
     }
 
-    public Set<Functionality> findAll() {
-        Set<Functionality> functionality = functionalityRepository.findAll();
+    public List<Functionality> findAll() {
+        List<Functionality> functionality = functionalityRepository.findAll();
         return functionality;
     }
 
     @Override
-    public Set<Functionality> findByShowMeAndReferenceParentFunctionality(
+    public List<Functionality> findByShowMeAndReferenceParentFunctionality(
             Boolean menuItem, String parent) {
         Functionality functionality = new Functionality();
         functionality.setFunctionalityNumber(parent);

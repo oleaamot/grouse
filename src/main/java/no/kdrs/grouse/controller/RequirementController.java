@@ -1,14 +1,12 @@
-
 package no.kdrs.grouse.controller;
+
 import no.kdrs.grouse.model.Requirement;
 import no.kdrs.grouse.service.IRequirementService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import static no.kdrs.grouse.utils.Constants.*;
 
@@ -26,28 +24,24 @@ public class RequirementController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<Set<Requirement>> getRequirements(
-            @RequestParam(value = REQUIREMENT_TYPE, required = false) String requirementType ) {
-
-        Set<Requirement> requirements = new HashSet<>();
-
-        if (requirementType == null) {
-            requirements = requirementService.findAll();
-        }
-        else {
-            requirementService.findByRequirementType(requirementType);
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(requirements);
+    public ResponseEntity<List<Requirement>> getRequirements(
+            @RequestParam(value = REQUIREMENT_TYPE, required = false)
+                    String requirementType) {
+        return ResponseEntity.status(HttpStatus.OK).
+                body(requirementService.findAll());
     }
 
     @RequestMapping(value = "/{krav:.+}", method = RequestMethod.GET)
-    public ResponseEntity<Requirement> getRequirement(@PathVariable("krav") String requirementNumber) {
+    public ResponseEntity<Requirement> getRequirement(
+            @PathVariable("krav") String requirementNumber) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(requirementService.findByRequirementNumber(requirementNumber));
+                .body(requirementService.
+                        findByRequirementNumber(requirementNumber));
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Requirement> saveRequirement(@RequestBody Requirement Requirement) {
+    public ResponseEntity<Requirement> saveRequirement(
+            @RequestBody Requirement Requirement) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(requirementService.save(Requirement));
     }

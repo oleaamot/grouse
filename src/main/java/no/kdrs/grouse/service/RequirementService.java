@@ -7,7 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.constraints.NotNull;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by tsodring on 9/25/17.
@@ -22,9 +23,9 @@ public class RequirementService implements IRequirementService {
         this.requirementRepository = requirementRepository;
     }
 
-    public Set<Requirement> findAll() {
-        Set<Requirement> requirements = requirementRepository.findAll();
-        return requirements;
+    @SuppressWarnings("unchecked")
+    public List<Requirement> findAll() {
+        return (ArrayList) requirementRepository.findAll();
     }
 
     @Override
@@ -50,7 +51,7 @@ public class RequirementService implements IRequirementService {
 
         return originalRequirement;
     }
-    
+
     @Override
     public void delete(String id) {
         requirementRepository.deleteById(id);
@@ -62,26 +63,24 @@ public class RequirementService implements IRequirementService {
     }
 
     @Override
-    public Set<Requirement> findByRequirementType(String requirementType) {
+    public List<Requirement> findByRequirementType(String requirementType) {
         return requirementRepository.findByRequirementType(requirementType);
     }
 
     /**
      * Internal helper method. Rather than having a find and try catch in
      * multiple methods, we have it here once. If you call this, be aware
-     * that you will only ever get a valid Requirement back. If there is no valid
-     * Requirement, a EntityNotFoundException exception is thrown
+     * that you will only ever get a valid Requirement back. If there is no
+     * valid Requirement, a EntityNotFoundException exception is thrown
      *
      * @param id The systemId of the requirement object to retrieve
      * @return the requirement object
      */
     private Requirement getRequirementOrThrow(@NotNull String id)
             throws EntityNotFoundException {
-        Requirement requirement =
-                requirementRepository.findById(id)
-                        .orElseThrow(() ->
-                                new EntityNotFoundException(
-                                        "No Requirement exists with Id " + id));
-        return requirement;
+        return requirementRepository.findById(id)
+                .orElseThrow(() ->
+                        new EntityNotFoundException(
+                                "No Requirement exists with Id " + id));
     }
 }

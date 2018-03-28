@@ -7,15 +7,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.constraints.NotNull;
-import java.util.Optional;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Created by tsodring on 9/25/17.
  */
 @Service
 @Transactional
-public class ProjectService implements IProjectService {
+public class ProjectService
+        implements IProjectService {
 
     private IProjectRepository projectRepository;
 
@@ -23,10 +23,8 @@ public class ProjectService implements IProjectService {
         this.projectRepository = projectRepository;
     }
 
-    public Set<Project> findAll(String projectOwner) {
-        Set<Project> projects = projectRepository.
-                findByProjectOwner(projectOwner);
-        return projects;
+    public List<Project> findAll(String projectOwner) {
+        return projectRepository.findByProjectOwner(projectOwner);
     }
 
     @Override
@@ -50,10 +48,10 @@ public class ProjectService implements IProjectService {
         originalProject.setProjectNumber(project.getProjectNumber());
 
         // probably don't want to expose this one
-        //originalProject.setProjectOwner(project.getProjectOwner());
+        //originalProject.ListProjectOwner(project.getProjectOwner());
         return originalProject;
     }
-    
+
     @Override
     public void delete(Long id) {
         projectRepository.deleteById(id);
@@ -75,11 +73,9 @@ public class ProjectService implements IProjectService {
      */
     private Project getProjectOrThrow(@NotNull Long id)
             throws EntityNotFoundException {
-        Project project =
-                projectRepository.findById(id)
-                        .orElseThrow(() ->
-                                new EntityNotFoundException(
-                                        "No Project exists with Id " + id));
-        return project;
+        return projectRepository.findById(id)
+                .orElseThrow(() ->
+                        new EntityNotFoundException(
+                                "No Project exists with Id " + id));
     }
 }

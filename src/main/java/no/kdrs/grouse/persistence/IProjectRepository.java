@@ -4,19 +4,13 @@ import no.kdrs.grouse.model.Project;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Set;
+import java.util.List;
 
 @Repository
-public interface IProjectRepository extends CrudRepository<Project, Long> {
+public interface IProjectRepository
+        extends CrudRepository<Project, Long> {
 
-    @Override
-    Project save(Project Project);
-
-    @Override
-    Set<Project> findAll();
-
-    Set<Project> findByProjectOwner(String projectOwner);
-
+    List<Project> findByProjectOwner(String projectOwner);
     // projectNumber
     Project findByProjectNumberOrderByProjectName(String projectFirstName);
 }

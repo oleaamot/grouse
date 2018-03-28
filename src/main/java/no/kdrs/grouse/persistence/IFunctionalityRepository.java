@@ -5,19 +5,14 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Set;
 
 @Repository
-public interface IFunctionalityRepository extends CrudRepository<Functionality, String> {
+public interface IFunctionalityRepository
+        extends CrudRepository<Functionality, String> {
 
     @Override
-    Functionality save(Functionality Functionality);
+    List<Functionality> findAll();
 
-    @Override
-    Set<Functionality> findAll();
-
-    Functionality findByFunctionalityNumber(String functionalityNumber);
-
-    Set<Functionality> findByShowMeAndReferenceParentFunctionality(
+    List<Functionality> findByShowMeAndReferenceParentFunctionality(
             Boolean menuItem, Functionality parent);
 }
