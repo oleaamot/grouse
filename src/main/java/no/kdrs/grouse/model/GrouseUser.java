@@ -1,5 +1,7 @@
 package no.kdrs.grouse.model;
 
+import org.springframework.hateoas.ResourceSupport;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -16,7 +18,8 @@ import java.util.List;
  */
 @Entity
 @Table(name = "user")
-public class GrouseUser {
+public class GrouseUser
+        extends ResourceSupport {
 
     @Id
     @Email

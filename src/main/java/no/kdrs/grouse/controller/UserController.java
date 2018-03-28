@@ -12,6 +12,8 @@ import java.util.List;
 
 import static no.kdrs.grouse.utils.Constants.SLASH;
 import static no.kdrs.grouse.utils.Constants.USER;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 /**
  * Created by tsodring on 28/03/18.
@@ -35,8 +37,11 @@ public class UserController {
     @RequestMapping(value = "/{userid}", method = RequestMethod.GET)
     public ResponseEntity<GrouseUser> getGrouseUser(
             @PathVariable("userid") String id) {
+        GrouseUser user = grouseUserService.findById(id);
+        user.add(linkTo(methodOn(UserController.class).
+                getGrouseUser(id)).withSelfRel());
         return ResponseEntity.status(HttpStatus.OK)
-                .body(grouseUserService.findById(id));
+                .body(user);
     }
 
     @RequestMapping(method = RequestMethod.POST)

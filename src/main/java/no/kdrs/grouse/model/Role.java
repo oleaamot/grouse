@@ -1,5 +1,7 @@
 package no.kdrs.grouse.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -20,6 +22,7 @@ public class Role {
     private String role;
 
     @ManyToMany(mappedBy = "roles")
+    @JsonIgnore
     private List<GrouseUser> users;
 
     public String getRole() {
