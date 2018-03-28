@@ -14,10 +14,4 @@ public interface IRequirementService {
     Requirement save(Requirement requirement);
     Requirement update(String requirementId, Requirement requirement) throws Exception;
     void delete(String id);
-    // requirementNumber
-    Requirement findByRequirementNumber(String requirementNumber);
-
-    // requirementType
-    List<Requirement> findByRequirementType(String requirementType);
-
 }

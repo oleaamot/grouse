@@ -36,7 +36,7 @@ public class RequirementController {
             @PathVariable("krav") String requirementNumber) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(requirementService.
-                        findByRequirementNumber(requirementNumber));
+                        findById(requirementNumber));
     }
 
     @RequestMapping(method = RequestMethod.POST)

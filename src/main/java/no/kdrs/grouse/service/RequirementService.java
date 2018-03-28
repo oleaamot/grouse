@@ -16,7 +16,8 @@ import java.util.List;
  */
 @Service
 @Transactional
-public class RequirementService implements IRequirementService {
+public class RequirementService
+        implements IRequirementService {
 
     private IRequirementRepository requirementRepository;
 
@@ -45,10 +46,8 @@ public class RequirementService implements IRequirementService {
         Requirement originalRequirement = getRequirementOrThrow(id);
 
         originalRequirement.setRequirementText(requirement.getRequirementText());
-        originalRequirement.setConformityLevel(requirement.getConformityLevel());
-        originalRequirement.setConsequence(requirement.getConsequence());
-        originalRequirement.setExplanation(requirement.getExplanation());
-        originalRequirement.setRequirementType(requirement.getRequirementType());
+        originalRequirement.setOrder(requirement.getOrder());
+        originalRequirement.setPriority(requirement.getPriority());
 
         return originalRequirement;
     }
@@ -56,16 +55,6 @@ public class RequirementService implements IRequirementService {
     @Override
     public void delete(String id) {
         requirementRepository.deleteById(id);
-    }
-
-    @Override
-    public Requirement findByRequirementNumber(String requirementNumber) {
-        return requirementRepository.findByRequirementNumber(requirementNumber);
-    }
-
-    @Override
-    public List<Requirement> findByRequirementType(String requirementType) {
-        return requirementRepository.findByRequirementType(requirementType);
     }
 
     /**

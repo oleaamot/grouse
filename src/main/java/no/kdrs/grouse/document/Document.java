@@ -3,9 +3,6 @@ package no.kdrs.grouse.document;
 import no.kdrs.grouse.model.Functionality;
 import no.kdrs.grouse.model.Requirement;
 import org.apache.poi.xwpf.usermodel.*;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTString;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTblPr;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -35,13 +32,13 @@ public class Document {
         this.document = new XWPFDocument();
     }
 
-    public void addRow(Requirement requirement) throws IOException {
+    public void addRow(Requirement requirement) {
         XWPFTableRow row = table.getRow(rowNumber++);
-        row.getCell(COLUMN_NUMBER).setText(requirement.getRequirementNumber());
-        row.getCell(COLUMN_FUNCTIONALITY_TITLE).setText(requirement.getExplanation());
-        row.getCell(COLUMN_PRIORITY).setText(requirement.getRequirementType());
-        row.getCell(COLUMN_ANSWER).setText(requirement.getReferenceRequirement());
-        row.getCell(COLUMN_REFERENCE).setText(requirement.getConsequence());
+        row.getCell(COLUMN_NUMBER).setText(requirement.getOrder().toString());
+        row.getCell(COLUMN_FUNCTIONALITY_TITLE).setText(requirement.getRequirementText());
+        row.getCell(COLUMN_PRIORITY).setText(requirement.getPriority());
+        row.getCell(COLUMN_ANSWER).setText("XQ");
+        row.getCell(COLUMN_REFERENCE).setText("XQ");
      }
 
     public void addSection(String sectionTitle) {

@@ -1,14 +1,13 @@
 package no.kdrs.grouse.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by tsodring on 9/11/17.
@@ -62,7 +61,6 @@ public class Functionality implements Serializable {
     @Column(name = "explanation", length = 10000)
     private String explanation;
 
-
     /**
      * Whether or not to be displayed in menu
      *
@@ -74,6 +72,9 @@ public class Functionality implements Serializable {
     @ManyToOne
     @JoinColumn(name="parent")
     private Functionality referenceParentFunctionality;
+
+    @OneToMany(mappedBy = "referenceFunctionality")
+    private List<Requirement> referenceRequirement = new ArrayList<>();
 
     public String getTitle() {
         return title;
