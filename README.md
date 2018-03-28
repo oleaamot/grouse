@@ -12,8 +12,9 @@ Once compiled to run the Grouse API simply run
 
 Grouse runs in two persistence modes, the default is demo (no assigned profile,
 as shown above) or a 'production' mode using a mysql database 
-(-Dspring.profiles.active=mysql). In demo mode the properties for the 
-application are taken application.yml. Here Grouse uses H2 as a database. 
+(mvn spring-boot:run -Dspring-boot.run.profiles=mysql). In demo mode the 
+properties for the application are taken application.yml. Here Grouse uses H2
+as a database. 
 
 You can test that Grouse is running with one of the following commands: 
 
