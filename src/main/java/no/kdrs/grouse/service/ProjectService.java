@@ -2,6 +2,7 @@ package no.kdrs.grouse.service;
 
 import no.kdrs.grouse.model.Project;
 import no.kdrs.grouse.persistence.IProjectRepository;
+import no.kdrs.grouse.service.interfaces.IProjectService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

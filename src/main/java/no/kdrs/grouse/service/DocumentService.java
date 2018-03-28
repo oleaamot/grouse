@@ -3,6 +3,7 @@ package no.kdrs.grouse.service;
 import no.kdrs.grouse.document.Document;
 import no.kdrs.grouse.model.Functionality;
 import no.kdrs.grouse.model.Requirement;
+import no.kdrs.grouse.service.interfaces.IDocumentService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 

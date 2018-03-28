@@ -1,7 +1,7 @@
 package no.kdrs.grouse.controller;
 
 import no.kdrs.grouse.model.Requirement;
-import no.kdrs.grouse.service.IRequirementService;
+import no.kdrs.grouse.service.interfaces.IRequirementService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

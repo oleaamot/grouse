@@ -1,4 +1,4 @@
-package no.kdrs.grouse.service;
+package no.kdrs.grouse.service.interfaces;
 
 
 import no.kdrs.grouse.model.Functionality;

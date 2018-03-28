@@ -1,7 +1,7 @@
 
 package no.kdrs.grouse.controller;
 
-import no.kdrs.grouse.service.IDocumentService;
+import no.kdrs.grouse.service.interfaces.IDocumentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;

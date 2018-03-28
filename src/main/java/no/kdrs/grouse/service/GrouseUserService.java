@@ -2,6 +2,7 @@ package no.kdrs.grouse.service;
 
 import no.kdrs.grouse.model.GrouseUser;
 import no.kdrs.grouse.persistence.IGrouseUserRepository;
+import no.kdrs.grouse.service.interfaces.IGrouseUserService;
 import no.kdrs.grouse.utils.exception.UserAlreadyExistsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

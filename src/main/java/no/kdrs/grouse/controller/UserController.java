@@ -2,7 +2,7 @@
 package no.kdrs.grouse.controller;
 
 import no.kdrs.grouse.model.GrouseUser;
-import no.kdrs.grouse.service.IGrouseUserService;
+import no.kdrs.grouse.service.interfaces.IGrouseUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
