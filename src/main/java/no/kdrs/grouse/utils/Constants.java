@@ -1,7 +1,5 @@
 package no.kdrs.grouse.utils;
 
-import org.springframework.beans.factory.annotation.Value;
-
 /**
  * Application constants.
  */
@@ -11,6 +9,7 @@ public final class Constants {
     public static final String SLASH = "/";
     public static final String REQUIREMENT = "krav";
     public static final String FUNCTIONALITY = "funksjon";
+    public static final String USER = "bruker";
     public static final String DOCUMENT = "dokument";
     public static final String PROJECT = "prosjekt";
     public static final String REQUIREMENT_TYPE = "krav_type";
