@@ -2,6 +2,7 @@ package no.kdrs.grouse.service.interfaces;
 
 
 import no.kdrs.grouse.model.Project;
+import no.kdrs.grouse.model.ProjectRequirement;
 
 import java.util.List;
 
@@ -16,5 +17,7 @@ public interface IProjectService {
     void delete(Long id);
     // projectNumber
     Project findByProjectNumberOrderByProjectName(String projectNumber);
+    List<ProjectRequirement> findByProjectNumberOrderByProjectName (
+            String projectNumber,String functionalityNumber);
 
 }

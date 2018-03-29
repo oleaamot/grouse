@@ -76,6 +76,10 @@ public class Functionality implements Serializable {
     @OneToMany(mappedBy = "referenceFunctionality")
     private List<Requirement> referenceRequirement = new ArrayList<>();
 
+    @OneToMany(mappedBy = "referenceFunctionality")
+    private List<ProjectRequirement> referenceProjectRequirement =
+            new ArrayList<>();
+
     public String getTitle() {
         return title;
     }
@@ -128,9 +132,16 @@ public class Functionality implements Serializable {
     public Functionality getReferenceParentFunctionality() {
         return referenceParentFunctionality;
     }
-
     @XmlTransient
     public void setReferenceParentFunctionality(Functionality referenceParentFunctionality) {
         this.referenceParentFunctionality = referenceParentFunctionality;
+    }
+
+    public List<ProjectRequirement> getReferenceProjectRequirement() {
+        return referenceProjectRequirement;
+    }
+
+    public void setReferenceProjectRequirement(List<ProjectRequirement> referenceProjectRequirement) {
+        this.referenceProjectRequirement = referenceProjectRequirement;
     }
 }

@@ -1,12 +1,16 @@
 package no.kdrs.grouse.service;
 
 import no.kdrs.grouse.model.Project;
+import no.kdrs.grouse.model.ProjectRequirement;
 import no.kdrs.grouse.persistence.IProjectRepository;
+import no.kdrs.grouse.persistence.IProjectRequirementRepository;
 import no.kdrs.grouse.service.interfaces.IProjectService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.Query;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -18,14 +22,41 @@ import java.util.List;
 public class ProjectService
         implements IProjectService {
 
+    private EntityManager entityManager;
     private IProjectRepository projectRepository;
+    private IProjectRequirementRepository projectRequirementRepository;
 
-    public ProjectService(IProjectRepository projectRepository) {
+
+    public ProjectService(
+            EntityManager entityManager,
+            IProjectRepository projectRepository,
+            IProjectRequirementRepository projectRequirementRepository) {
+        this.entityManager = entityManager;
         this.projectRepository = projectRepository;
+        this.projectRequirementRepository = projectRequirementRepository;
+    }
+
+    public List<ProjectRequirement> findByProjectNumberOrderByProjectName (
+            String projectNumber, String functionalityNumber) {
+        String queryString =
+           "select p from ProjectRequirement as p where " +
+                   "p.referenceProject.id = :projectNumber " +
+                   "AND p.referenceFunctionality.functionalityNumber = " +
+                   ":functionalityNumber";
+
+        Query query = entityManager.createQuery(queryString);
+        query.setParameter("projectNumber", Long.valueOf(projectNumber));
+        query.setParameter("functionalityNumber", functionalityNumber);
+        List<ProjectRequirement> projectRequirements = query.getResultList();
+        return projectRequirements;
     }
 
     public List<Project> findAll(String projectOwner) {
         return projectRepository.findByProjectOwner(projectOwner);
+
+
+
+
     }
 
     @Override

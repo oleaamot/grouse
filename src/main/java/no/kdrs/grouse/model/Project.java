@@ -2,8 +2,7 @@ package no.kdrs.grouse.model;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Created by tsodring on 9/8/17.
@@ -49,11 +48,8 @@ public class Project {
     @Column(name = "project_owner")
     private String projectOwner;
 
-    @ManyToMany(cascade=CascadeType.ALL)
-    @JoinTable(name="project_requirement",
-            joinColumns=@JoinColumn(name="project_id"),
-            inverseJoinColumns=@JoinColumn(name="requirement_id"))
-    Set<Requirement> requirements = new HashSet<>();
+    @OneToMany(mappedBy = "referenceProject", fetch = FetchType.LAZY)
+    private List<ProjectRequirement> referenceProjectRequirement;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -96,12 +92,12 @@ public class Project {
         this.projectNumber = projectNumber;
     }
 
-    public Set<Requirement> getRequirements() {
-        return requirements;
+    public List<ProjectRequirement> getReferenceProjectRequirement() {
+        return referenceProjectRequirement;
     }
 
-    public void setRequirements(Set<Requirement> requirements) {
-        this.requirements = requirements;
+    public void setReferenceProjectRequirement(List<ProjectRequirement> referenceProjectRequirement) {
+        this.referenceProjectRequirement = referenceProjectRequirement;
     }
 
     @Override
