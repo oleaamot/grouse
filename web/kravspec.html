@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="no" ng-app="grouse-app">
+<head>
+  <title>KDRS-Grouse Noark 5 kravspec</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- css resources -->
+  <link href="dependencies/vendor/font-awesome/css/font-awesome.css"
+        rel="stylesheet" type="text/css">
+
+  <link href="dependencies/vendor/metisMenu/metisMenu.css"
+        rel="stylesheet" type="text/css">
+
+  <link href="dependencies/vendor/META-INF/resources/webjars/bootstrap/3.3.7-1/css/bootstrap.css"
+        rel="stylesheet" type="text/css">
+  <link href="dependencies/vendor/META-INF/resources/webjars/metisMenu/2.7.0/metisMenu.css"
+        rel="stylesheet" type="text/css">
+
+  <!-- js resources -->
+  <script src="dependencies/vendor/META-INF/resources/webjars/angularjs/1.6.6/angular.js"></script>
+  <script src="dependencies/vendor/META-INF/resources/webjars/jquery/3.2.1/jquery.js"></script>
+  <script src="dependencies/vendor/META-INF/resources/webjars/bootstrap/3.3.7-1/js/bootstrap.js"></script>
+
+  <!-- internal js resources-->
+  <script src="common.js"></script>
+  <script src="kravspec.js"></script>
+
+
+</head>
+<body ng-controller="RequirementsController">
+
+<nav class="navbar navbar-default navbar-static-top" role="navigation"
+     style="margin-bottom: 0">
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse"
+            data-target=".navbar-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="kravspec.html">KDRS Kravspec verktøy</a>
+  </div>
+</nav>
+
+<div class="col-lg-12">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      Eksempel Kommune kravspec
+    </div>
+    <div class="panel-body">
+      <div class="col-lg-12">
+        <div class="progress">
+          <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
+               aria-valuemin="0" aria-valuemax="100"
+               style="width:40%">
+            40% Complete (success)
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                Funksjonelle krav </a>
+            </h4>
+          </div>
+          <div id="collapseOne" class="panel-collapse">
+            <div class="list-group">
+              <div class="list-group" ng-repeat="menuItem in menuItems">
+                <div ng-click="menuItem_selected(menuItem)">
+                  <a href="#" class="list-group-item">
+                    {{menuItem.title}}
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>  <!--  <div class="panel panel-default"> -->
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                Tekniske krav </a>
+            </h4>
+          </div>
+          <div id="collapseTwo" class="panel-collapse collapse">
+            <div class="list-group">
+              <div class="list-group" ng-repeat="menuItem in menuItems">
+                <a href="#" class="list-group-item">
+                  {{menuItem.title}}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>  <!--  <div class="panel panel-default"> -->
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                Krav til integrasjoner</a>
+            </h4>
+          </div>
+          <div id="collapseThree" class="panel-collapse collapse">
+            <div class="list-group">
+              <div class="list-group" ng-repeat="menuItem in menuItems">
+                <a href="#" class="list-group-item" ng-click="menuItem_selected(menuItem)">
+                  {{menuItem.title}}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div> <!--  <div class="panel panel-default"> -->
+      </div> <!-- <div class="col-sm-3"> -->
+      <div class="col-sm-9">
+        <div class="form-check">
+          <div class="bs-callout bs-callout-default">
+            <h4> Beskrivelse </h4>
+            <textarea class="form-control" rows="5"
+                      id="functionality_description_12">{{selectedMenuItem.title}}</textarea>
+          </div>
+          <div class="bs-callout bs-callout-primary">
+            <h4>Forklaring</h4>
+            <textarea class="form-control" rows="5"
+                      id="functionality_explanation_12">{{selectedMenuItem.description}}</textarea>
+          </div>
+          <div class="bs-callout bs-callout-success">
+            <h4>Konsekvens</h4>
+            <textarea class="form-control" rows="5"
+                      id="functionality_consequence_12">{{selectedMenuItem.explanation}}</textarea>
+          </div>
+          <div class="container">
+
+            <div class="center">
+              <button data-toggle="modal" data-target="#requirementsModal"
+                      class="btn btn-primary center-block">Vis krav
+              </button>
+            </div>
+
+            <!--modal-->
+            <div id="requirementsModal" class="modal fade" tabindex="-1"
+                 role="dialog" aria-hidden="true">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h4>{{selectedMenuItem.title}}</h4>
+                  </div>
+                  <div class="modal-body">
+                    <div class="row">
+                      <div class="col-md-7">Krav</div>
+                      <div class="col-md-2">Prioritet</div>
+                      <div class="col-md-1">Slett</div>
+                    </div>
+                    <div class="row" ng-repeat="requirement in selectedMenuItem.referenceProjectRequirement">
+                      <div class="col-md-8">
+                        <textarea class="form-control" rows="2"
+                                  id="requirement.id">{{requirement.requirementText}}</textarea>
+
+                      </div>
+                      <div class="col-md-1">
+                        <div class="dropdown">
+                          <select ng-model="requirement.priority"
+                                  ng-options="priorityValue for priorityValue in priorityValues">
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-1">
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" ng-change="" ng-model="requirement.delete">
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modal-body">
+                      <button type="button" class="btn btn-default btn-sm pull-right">
+                        <span class="glyphicon glyphicon-plus"></span> Legg til krav
+                      </button>
+                      <button type="button" class="btn btn-default btn-sm pull-right">
+                        <span class="glyphicon glyphicon-plus"></span> Slett merket krav
+                      </button>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button class="btn btn-default" data-dismiss="modal">Lukk</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!-- <div class="panel-body"> -->
+</div>
+
+</body>
+</html>
