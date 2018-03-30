@@ -1,17 +1,14 @@
 
 package no.kdrs.grouse.controller;
 
+import no.kdrs.grouse.model.Project;
 import no.kdrs.grouse.model.ProjectRequirement;
 import no.kdrs.grouse.service.interfaces.IDocumentService;
 import no.kdrs.grouse.service.interfaces.IProjectService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.List;
 
 import static no.kdrs.grouse.utils.Constants.PROJECT;
@@ -34,12 +31,13 @@ public class ProjectController {
     }
 
     @RequestMapping(value = "/{prosjektnummer}", method = RequestMethod.GET)
-    public ResponseEntity<String> getRequirement(
-            @PathVariable("prosjektnummer") String projectNumber)
-            throws IOException {
-        documentService.createDocument(projectNumber);
+    public ResponseEntity<Project> getRequirement(
+            @PathVariable("prosjektnummer") Long projectNumber) {
+
+        Project project =  projectService.findById(projectNumber);
+        //documentService.createDocument(projectNumber);
         return ResponseEntity.status(HttpStatus.OK)
-                .body("Dokument oppretet");
+                .body(project);
     }
 
     @RequestMapping(value = "/{prosjektnummer}/funksjonalitet/{funksjonalitet}",
@@ -57,4 +55,18 @@ public class ProjectController {
                 .body(projectRequirements);
     }
 
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<Project> createProject (
+            @RequestBody Project project) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(projectService.createProject(project));
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE)
+    public ResponseEntity<String> deleteProject (
+            @PathVariable("prosjektnummer") Long projectNumber) {
+        projectService.delete(projectNumber);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body("Prosjekt med id " + projectNumber + "ble slettet");
+    }
 }

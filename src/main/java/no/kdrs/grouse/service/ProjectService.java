@@ -1,9 +1,12 @@
 package no.kdrs.grouse.service;
 
+import no.kdrs.grouse.model.GrouseUser;
 import no.kdrs.grouse.model.Project;
 import no.kdrs.grouse.model.ProjectRequirement;
+import no.kdrs.grouse.model.Requirement;
 import no.kdrs.grouse.persistence.IProjectRepository;
 import no.kdrs.grouse.persistence.IProjectRequirementRepository;
+import no.kdrs.grouse.persistence.IRequirementRepository;
 import no.kdrs.grouse.service.interfaces.IProjectService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +15,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.Query;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,17 +29,20 @@ public class ProjectService
     private EntityManager entityManager;
     private IProjectRepository projectRepository;
     private IProjectRequirementRepository projectRequirementRepository;
-
+    private IRequirementRepository requirementRepository;
 
     public ProjectService(
             EntityManager entityManager,
             IProjectRepository projectRepository,
-            IProjectRequirementRepository projectRequirementRepository) {
+            IProjectRequirementRepository projectRequirementRepository,
+            IRequirementRepository requirementRepository) {
         this.entityManager = entityManager;
         this.projectRepository = projectRepository;
         this.projectRequirementRepository = projectRequirementRepository;
+        this.requirementRepository = requirementRepository;
     }
 
+    @Override
     public List<ProjectRequirement> findByProjectNumberOrderByProjectName (
             String projectNumber, String functionalityNumber) {
         String queryString =
@@ -51,13 +58,9 @@ public class ProjectService
         return projectRequirements;
     }
 
-    public void  deleteProjectRequirement(String projectNumber,
-                                          String requirementNumber) {
-
-    }
-
-    public List<Project> findAll(String projectOwner) {
-        return projectRepository.findByProjectOwner(projectOwner);
+    @Override
+    public List<Project> findAll() {
+        return (ArrayList)projectRepository.findAll();
     }
 
     @Override
@@ -66,8 +69,25 @@ public class ProjectService
     }
 
     @Override
-    public Project save(Project Project) {
-        return projectRepository.save(Project);
+    public Project createProject(Project project) {
+        projectRepository.save(project);
+
+        ArrayList<Requirement> requirements =
+                (ArrayList) requirementRepository.findAll();
+
+        for (Requirement requirement: requirements) {
+            ProjectRequirement projectRequirement = new ProjectRequirement();
+            projectRequirement.setReferenceProject(project);
+            projectRequirement.setOrder(requirement.getOrder());
+            projectRequirement.setPriority(requirement.getPriority());
+            projectRequirement.setRequirementText(
+                    requirement.getRequirementText());
+            projectRequirement.setReferenceFunctionality(
+                    requirement.getFunctionality());
+            projectRequirementRepository.save(projectRequirement);
+        }
+
+        return project;
     }
 
     @Override
@@ -83,6 +103,11 @@ public class ProjectService
         // probably don't want to expose this one
         //originalProject.ListProjectOwner(project.getProjectOwner());
         return originalProject;
+    }
+
+    @Override
+    public List<Project> findByReferenceUser(GrouseUser user) {
+        return projectRepository.findByReferenceUser(user);
     }
 
     @Override

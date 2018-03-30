@@ -2,7 +2,9 @@
 package no.kdrs.grouse.controller;
 
 import no.kdrs.grouse.model.GrouseUser;
+import no.kdrs.grouse.model.Project;
 import no.kdrs.grouse.service.interfaces.IGrouseUserService;
+import no.kdrs.grouse.service.interfaces.IProjectService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,8 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
-import static no.kdrs.grouse.utils.Constants.SLASH;
-import static no.kdrs.grouse.utils.Constants.USER;
+import static no.kdrs.grouse.utils.Constants.*;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
@@ -23,9 +24,12 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 public class UserController {
 
     private IGrouseUserService grouseUserService;
+    private IProjectService projectService;
 
-    UserController(IGrouseUserService grouseUserService) {
+    public UserController(IGrouseUserService grouseUserService,
+                          IProjectService projectService) {
         this.grouseUserService = grouseUserService;
+        this.projectService = projectService;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -42,6 +46,16 @@ public class UserController {
                 getGrouseUser(id)).withSelfRel());
         return ResponseEntity.status(HttpStatus.OK)
                 .body(user);
+    }
+
+    @RequestMapping(value = "/{username}/"+ PROJECT, method = RequestMethod.GET)
+    public ResponseEntity<List<Project>> getGrouseUserProjects(
+            @PathVariable("username") String username) {
+        GrouseUser user = new GrouseUser();
+        user.setUsername(username);
+        List<Project> projects = projectService.findByReferenceUser(user);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(projects);
     }
 
     @RequestMapping(method = RequestMethod.POST)

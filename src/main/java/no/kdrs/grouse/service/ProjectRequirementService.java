@@ -107,6 +107,12 @@ public class ProjectRequirementService
         return em.find(ProjectRequirement.class, requirementNumber);
     }
 
+    @Override
+    public ProjectRequirement createProjectRequirement(
+            Long projectNumber, String functionality,
+            ProjectRequirement projectRequirement) {
+        return projectRequirementRepository.save(projectRequirement);
+    }
 
     /**
      * Internal helper method. Rather than having a find and try catch in

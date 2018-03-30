@@ -11,4 +11,8 @@ public interface IProjectRequirementService {
     void deleteProjectRequirement(Long requirementNumber);
     ProjectRequirement updateProjectRequirement(
             PatchObjects patchObjects, Long requirementNumber) throws Exception;
+
+    ProjectRequirement createProjectRequirement(
+            Long projectNumber,String functionality,
+            ProjectRequirement projectRequirement);
 }

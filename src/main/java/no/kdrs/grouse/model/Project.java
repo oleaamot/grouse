@@ -1,5 +1,7 @@
 package no.kdrs.grouse.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
@@ -40,16 +42,15 @@ public class Project {
     @Column(name = "file_name")
     private String fileName;
 
-    /**
-     *
-     * Link back to the user table identifying who the user is
-     * probably be replace by a ManyToOne relationship
-     */
-    @Column(name = "project_owner")
-    private String projectOwner;
 
     @OneToMany(mappedBy = "referenceProject", fetch = FetchType.LAZY)
     private List<ProjectRequirement> referenceProjectRequirement;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "username",
+            referencedColumnName = "username")
+    private GrouseUser referenceUser;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -75,15 +76,6 @@ public class Project {
         this.fileName = fileName;
     }
 
-    public String getProjectOwner() {
-        return projectOwner;
-    }
-
-    public void setProjectOwner(String projectOwner) {
-        this.projectOwner = projectOwner;
-    }
-
-
     public String getProjectNumber() {
         return projectNumber;
     }
@@ -100,6 +92,14 @@ public class Project {
         this.referenceProjectRequirement = referenceProjectRequirement;
     }
 
+    public GrouseUser getReferenceUser() {
+        return referenceUser;
+    }
+
+    public void setReferenceUser(GrouseUser referenceUser) {
+        this.referenceUser = referenceUser;
+    }
+
     @Override
     public String toString() {
         return "Project{" +
@@ -107,7 +107,6 @@ public class Project {
                 ", projectNumber='" + projectNumber + '\'' +
                 ", projectName='" + projectName + '\'' +
                 ", fileName='" + fileName + '\'' +
-                ", projectOwner='" + projectOwner + '\'' +
                 '}';
     }
 }

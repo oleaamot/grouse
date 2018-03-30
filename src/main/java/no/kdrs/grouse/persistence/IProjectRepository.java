@@ -1,5 +1,6 @@
 package no.kdrs.grouse.persistence;
 
+import no.kdrs.grouse.model.GrouseUser;
 import no.kdrs.grouse.model.Project;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -10,8 +11,6 @@ import java.util.List;
 public interface IProjectRepository
         extends CrudRepository<Project, Long> {
 
-    List<Project> findByProjectOwner(String projectOwner);
-    // projectNumber
+    List<Project> findByReferenceUser(GrouseUser user);
     Project findByProjectNumberOrderByProjectName(String projectFirstName);
-    
 }
