@@ -70,6 +70,10 @@ public class ProjectService
 
     @Override
     public Project createProject(Project project) {
+
+        GrouseUser user = new GrouseUser();
+        user.setUsername("admin@kdrs.no");
+        project.setReferenceUser(user);
         projectRepository.save(project);
 
         ArrayList<Requirement> requirements =

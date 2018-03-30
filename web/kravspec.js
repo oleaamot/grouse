@@ -10,7 +10,15 @@ var app = angular.module('grouse-app', []);
 var requirementsController = app.controller('RequirementsController',
   ['$scope', '$http', function ($scope, $http) {
 
+    $scope.projectsView = true;
+    $scope.requirementsView = false;
+
     $scope.priorityValues = ['O', '1', '2'];
+    $scope.projects = [
+      {projectName: "Eksempel kommune kravspec", createdDate:"2018-03-29", accessedDate:"2018-04-30"},
+      {projectName: "Ås kommune kravspec", createdDate:"2018-04-02", accessedDate:"2018-04-30"},
+      {projectName: "Ski kommune kravspec", createdDate:"2018-04-19", accessedDate:"2018-04-30"}
+    ];
 
     $scope.selectedMenuItem = null;
     $scope.token = GetUserToken();
@@ -37,6 +45,9 @@ var requirementsController = app.controller('RequirementsController',
     $scope.menuItem_selected = function (menuItem) {
       console.log("menuItem[" + JSON.stringify(menuItem) + "] selected.\n");
       $scope.selectedMenuItem = menuItem;
+
+
+
 /*
       var projectNumber = "1";
       //var urlToRequirements = "http://localhost:9294/grouse/prosjekt/" +
@@ -140,6 +151,45 @@ var requirementsController = app.controller('RequirementsController',
       }, function errorCallback(response) {
         console.log(method + " PATCH urlForUpdate[" + urlForUpdate + "] returned " + JSON.stringify(response));
       });
+    };
+
+    /**
+     * updateRequirementPriority
+     *
+     * handles a change in requirement priority.
+     */
+    $scope.projectSelected = function (project) {
+      console.log("projectSelected[" + JSON.stringify(project) + "] selected.\n");
+      $scope.selectedProject = project;
+
+      $scope.projectsView = false;
+      $scope.requirementsView = true;
+
+      /*
+      var urlForUpdate = "http://localhost:9294/grouse/prosjektkrav/" + requirement.id;
+
+      $http({
+        method: 'PATCH',
+        url: urlForUpdate,
+        headers: {'Authorization': $scope.token},
+        data: patchString
+        }).then(function successCallback(response) {
+        $scope.menuItems = response.data;
+        console.log(method + " PATCH urlForUpdate[" + urlForUpdate + "] returned " + JSON.stringify(response));
+      }, function errorCallback(response) {
+        console.log(method + " PATCH urlForUpdate[" + urlForUpdate + "] returned " + JSON.stringify(response));
+      });
+      */
+    };
+    /**
+     * updateRequirementPriority
+     *
+     * handles a change in requirement priority.
+     */
+    $scope.continueSelected = function () {
+      console.log("continueSelected selected.\n");
+      console.log("Attempting to find [" + $scope.selectedMenuItem.functionalityNumber + "]");
+      $scope.selectedMenuItem.showMe = !$scope.selectedMenuItem.showMe;
     };
 
   }]);

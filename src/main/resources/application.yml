@@ -4,11 +4,11 @@
 # This configuration overrides the application.yml file.
 # ===================================================================
 
-logging:
-  level:
-    org:
-      springframework.web: DEBUG
-      hibernate.SQL: DEBUG
+#logging:
+#  level:
+#    org:
+#      springframework.web: DEBUG
+#      hibernate.SQL: DEBUG
 
 server:
   application:
@@ -33,7 +33,7 @@ spring:
       hibernate:
         hbm2ddl:
           import_files_sql_extractor: org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor
-          import_files: db/import.sql,db/functionality.sql,db/requirements.sql,db/requirements2.sql
+          import_files: db/import.sql,db/functionality.sql,db/requirements.sql
         show_sql: true
         hbm2ddl.auto: create-drop
 

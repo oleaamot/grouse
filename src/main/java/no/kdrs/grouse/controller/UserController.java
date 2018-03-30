@@ -60,9 +60,9 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<GrouseUser> saveGrouseUser(
-            @RequestBody GrouseUser GrouseUser) {
+            @RequestBody GrouseUser grouseUser) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(grouseUserService.save(GrouseUser));
+                .body(grouseUserService.save(grouseUser));
     }
 
     @RequestMapping(value = "/{krav:.+}", method = RequestMethod.PUT)

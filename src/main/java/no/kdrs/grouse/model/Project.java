@@ -43,6 +43,7 @@ public class Project {
     private String fileName;
 
 
+    @JsonIgnore
     @OneToMany(mappedBy = "referenceProject", fetch = FetchType.LAZY)
     private List<ProjectRequirement> referenceProjectRequirement;
 
