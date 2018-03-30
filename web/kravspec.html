@@ -157,13 +157,15 @@
                     <div class="row" ng-repeat="requirement in selectedMenuItem.referenceProjectRequirement">
                       <div class="col-md-8">
                         <textarea class="form-control" rows="2"
-                                  id="requirement.id">{{requirement.requirementText}}</textarea>
-
+                                  ng-model="requirement.requirementText"
+                                  ng-blur="updateRequirementText(requirement)"
+                                  id="requirement.id"></textarea>
                       </div>
                       <div class="col-md-1">
                         <div class="dropdown">
                           <select ng-model="requirement.priority"
-                                  ng-options="priorityValue for priorityValue in priorityValues">
+                                  ng-options="priorityValue for priorityValue in priorityValues"
+                                  ng-change="updateRequirementPriority(requirement)">
                           </select>
                         </div>
                       </div>

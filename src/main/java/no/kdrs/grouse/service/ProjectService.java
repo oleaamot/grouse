@@ -51,12 +51,13 @@ public class ProjectService
         return projectRequirements;
     }
 
+    public void  deleteProjectRequirement(String projectNumber,
+                                          String requirementNumber) {
+
+    }
+
     public List<Project> findAll(String projectOwner) {
         return projectRepository.findByProjectOwner(projectOwner);
-
-
-
-
     }
 
     @Override
@@ -87,11 +88,6 @@ public class ProjectService
     @Override
     public void delete(Long id) {
         projectRepository.deleteById(id);
-    }
-
-    @Override
-    public Project findByProjectNumberOrderByProjectName(String projectNumber) {
-        return projectRepository.findByProjectNumberOrderByProjectName(projectNumber);
     }
 
     /**

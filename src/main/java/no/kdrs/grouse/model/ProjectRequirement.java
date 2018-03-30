@@ -38,7 +38,7 @@ public class ProjectRequirement
     /**
      * order (no:kravtype)
      * Used to identify an order that the requirements have to follow
-     * Order == 0, is a formål
+     * Order == 0, is a 'formål'
      */
     @Column(name = "show_order")
     private Integer order;

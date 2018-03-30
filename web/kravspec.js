@@ -89,4 +89,57 @@ var requirementsController = app.controller('RequirementsController',
       */
     };
 
+    /**
+     * updateRequirement
+     *
+     * handles a change in requirement text.
+     */
+    $scope.updateRequirementText = function (requirement) {
+      console.log("updateRequirement[" + JSON.stringify(requirement) + "] selected.\n");
+      $scope.selectedRequirement = requirement;
+
+      var patchString = '[{ "op": "replace", "path": "/requirementText", "value": "' +
+        requirement.requirementText + '"}]';
+
+      var urlForUpdate = "http://localhost:9294/grouse/prosjektkrav/" + requirement.id;
+
+      $http({
+        method: 'PATCH',
+        url: urlForUpdate,
+        headers: {'Authorization': $scope.token},
+        data: patchString
+        }).then(function successCallback(response) {
+        $scope.menuItems = response.data;
+        console.log(method + " PATCH urlForUpdate[" + urlForUpdate + "] returned " + JSON.stringify(response));
+      }, function errorCallback(response) {
+        console.log(method + " PATCH urlForUpdate[" + urlForUpdate + "] returned " + JSON.stringify(response));
+      });
+    };
+/**
+     * updateRequirementPriority
+     *
+     * handles a change in requirement priority.
+     */
+    $scope.updateRequirementPriority = function (requirement) {
+      console.log("updateRequirementPriority[" + JSON.stringify(requirement) + "] selected.\n");
+      $scope.selectedRequirement = requirement;
+
+      var patchString = '[{ "op": "replace", "path": "/priority", "value": "' +
+        requirement.priority + '"}]';
+
+      var urlForUpdate = "http://localhost:9294/grouse/prosjektkrav/" + requirement.id;
+
+      $http({
+        method: 'PATCH',
+        url: urlForUpdate,
+        headers: {'Authorization': $scope.token},
+        data: patchString
+        }).then(function successCallback(response) {
+        $scope.menuItems = response.data;
+        console.log(method + " PATCH urlForUpdate[" + urlForUpdate + "] returned " + JSON.stringify(response));
+      }, function errorCallback(response) {
+        console.log(method + " PATCH urlForUpdate[" + urlForUpdate + "] returned " + JSON.stringify(response));
+      });
+    };
+
   }]);

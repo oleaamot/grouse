@@ -42,7 +42,7 @@ public class ProjectController {
                 .body("Dokument oppretet");
     }
 
-    @RequestMapping(value = "/{prosjektnummer}/krav/{funksjonalitet}",
+    @RequestMapping(value = "/{prosjektnummer}/funksjonalitet/{funksjonalitet}",
             method = RequestMethod.GET)
     public ResponseEntity<List<ProjectRequirement>>
     getRequirementsForFunctionaltiy(
@@ -56,4 +56,5 @@ public class ProjectController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(projectRequirements);
     }
+
 }

@@ -15,9 +15,9 @@ public interface IProjectService {
     Project save(Project Project);
     Project update(Long id, Project Project) throws Exception;
     void delete(Long id);
-    // projectNumber
-    Project findByProjectNumberOrderByProjectName(String projectNumber);
+    void deleteProjectRequirement(String projectNumber,
+                                  String requirementNumber);
     List<ProjectRequirement> findByProjectNumberOrderByProjectName (
-            String projectNumber,String functionalityNumber);
+            String projectNumber, String functionalityNumber);
 
 }

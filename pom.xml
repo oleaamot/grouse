@@ -132,6 +132,14 @@
             <version>${metisMenu.version}</version>
         </dependency>
 
+        <!-- Used for PATCH functionality -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20180130</version>
+        </dependency>
+
+
         <!-- Testing stuff -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
