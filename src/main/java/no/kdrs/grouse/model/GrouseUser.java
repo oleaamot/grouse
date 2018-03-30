@@ -28,7 +28,7 @@ public class GrouseUser
     @Column(name = "username", nullable = false)
     private String username;
 
-    @JsonIgnore
+
     @NotNull
     @Column(name = "password", nullable = false)
     private String password;
