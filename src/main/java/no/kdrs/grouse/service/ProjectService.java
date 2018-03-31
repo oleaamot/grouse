@@ -1,12 +1,7 @@
 package no.kdrs.grouse.service;
 
-import no.kdrs.grouse.model.GrouseUser;
-import no.kdrs.grouse.model.Project;
-import no.kdrs.grouse.model.ProjectRequirement;
-import no.kdrs.grouse.model.Requirement;
-import no.kdrs.grouse.persistence.IProjectRepository;
-import no.kdrs.grouse.persistence.IProjectRequirementRepository;
-import no.kdrs.grouse.persistence.IRequirementRepository;
+import no.kdrs.grouse.model.*;
+import no.kdrs.grouse.persistence.*;
 import no.kdrs.grouse.service.interfaces.IProjectService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +11,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.Query;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,21 +24,28 @@ public class ProjectService
 
     private EntityManager entityManager;
     private IProjectRepository projectRepository;
-    private IProjectRequirementRepository projectRequirementRepository;
     private IRequirementRepository requirementRepository;
+    private IFunctionalityRepository functionalityRepository;
+    private IProjectRequirementRepository projectRequirementRepository;
+    private IProjectFunctionalityRepository projectFunctionalityRepository;
 
     public ProjectService(
             EntityManager entityManager,
             IProjectRepository projectRepository,
+            IRequirementRepository requirementRepository,
+            IFunctionalityRepository functionalityRepository,
             IProjectRequirementRepository projectRequirementRepository,
-            IRequirementRepository requirementRepository) {
+            IProjectFunctionalityRepository projectFunctionalityRepository) {
         this.entityManager = entityManager;
         this.projectRepository = projectRepository;
-        this.projectRequirementRepository = projectRequirementRepository;
         this.requirementRepository = requirementRepository;
+        this.functionalityRepository = functionalityRepository;
+        this.projectRequirementRepository = projectRequirementRepository;
+        this.projectFunctionalityRepository = projectFunctionalityRepository;
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<ProjectRequirement> findByProjectNumberOrderByProjectName (
             String projectNumber, String functionalityNumber) {
         String queryString =
@@ -54,11 +57,11 @@ public class ProjectService
         Query query = entityManager.createQuery(queryString);
         query.setParameter("projectNumber", Long.valueOf(projectNumber));
         query.setParameter("functionalityNumber", functionalityNumber);
-        List<ProjectRequirement> projectRequirements = query.getResultList();
-        return projectRequirements;
+        return query.getResultList();
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<Project> findAll() {
         return (ArrayList)projectRepository.findAll();
     }
@@ -68,9 +71,34 @@ public class ProjectService
         return getProjectOrThrow(id);
     }
 
+    /**
+     * Create a new project.
+     *
+     * The following steps are performed:
+     * 1. Retrieve User object from loggedin user and associate with project
+     * 2. Copy all Requirement objects and create ProjectRequirement objects
+     * 3. Copy all Functionality objects and create ProjectFunctionality objects
+     *
+     * This is done as each project needs their own copy to work on.
+     * Requirements are needed as within the project the used can change the
+     * text, add or remove ProjectRequirements
+     * ProjectFunctionality are needed to save state of the progress. For each
+     * step that is processed a progress value is set. This is useful to be
+     * able to reload the project but also eases the GUI side of things.
+     *
+     * State is stored in the database, not the GUI
+     *
+     * @param project The project object to create
+     * @return The persisted object after it was persisted with associated data
+     */
     @Override
+    @SuppressWarnings("unchecked")
     public Project createProject(Project project) {
 
+        project.setCreatedDate(new Date());
+        project.setAccessedDate(new Date());
+        // TODO: Replace this with logged in user when security is
+        // in place
         GrouseUser user = new GrouseUser();
         user.setUsername("admin@kdrs.no");
         project.setReferenceUser(user);
@@ -89,6 +117,24 @@ public class ProjectService
             projectRequirement.setReferenceFunctionality(
                     requirement.getFunctionality());
             projectRequirementRepository.save(projectRequirement);
+        }
+
+        ArrayList <Functionality> functionalities =
+                (ArrayList) functionalityRepository.findAll();
+        for (Functionality functionality: functionalities) {
+            ProjectFunctionality projectFunctionality =
+                    new ProjectFunctionality();
+            projectFunctionality.setFunctionalityNumber(
+                    functionality.getFunctionalityNumber());
+            projectFunctionality.setConsequence(
+                    functionality.getConsequence());
+            projectFunctionality.setDescription(
+                    functionality.getDescription());
+            projectFunctionality.setExplanation(
+                    functionality.getExplanation());
+                    projectFunctionality.setProcessed(false);
+            projectFunctionality.setReferenceProject(project);
+            projectFunctionalityRepository.save(projectFunctionality);
         }
 
         return project;
