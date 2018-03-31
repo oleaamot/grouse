@@ -15,9 +15,9 @@ var requirementsController = app.controller('RequirementsController',
 
     $scope.priorityValues = ['O', '1', '2'];
     $scope.projects = [
-      {projectName: "Eksempel kommune kravspec", createdDate:"2018-03-29", accessedDate:"2018-04-30"},
-      {projectName: "Ås kommune kravspec", createdDate:"2018-04-02", accessedDate:"2018-04-30"},
-      {projectName: "Ski kommune kravspec", createdDate:"2018-04-19", accessedDate:"2018-04-30"}
+      {projectName: "Eksempel kommune kravspec", organisationName: "Eksempel kommune", createdDate:"2018-03-29", accessedDate:"2018-04-30"},
+      {projectName: "Nytt Noark 5 system", organisationName: "Ås kommune", createdDate:"2018-04-02", accessedDate:"2018-04-30"},
+      {projectName: "Noark 5 med fagsystem", organisationName: "Ski kommune", createdDate:"2018-04-19", accessedDate:"2018-04-30"}
     ];
 
     $scope.selectedMenuItem = null;
