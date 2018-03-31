@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,10 +43,33 @@ public class Project {
     @Column(name = "file_name")
     private String fileName;
 
+    /**
+     * The date the project was created
+     */
+    @Column(name = "created_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
+
+    /**
+     * Name of the organisation
+     */
+    @Column(name = "organisation_name")
+    private String organisationName;
+
+    /**
+     * The date the project was accessed
+     */
+    @Column(name = "accessed_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date accessedDate;
 
     @JsonIgnore
     @OneToMany(mappedBy = "referenceProject", fetch = FetchType.LAZY)
     private List<ProjectRequirement> referenceProjectRequirement;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "referenceProject", fetch = FetchType.LAZY)
+    private List<ProjectFunctionality> referenceProjectFunctionality;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
@@ -69,6 +93,14 @@ public class Project {
         this.projectName = projectName;
     }
 
+    public String getOrganisationName() {
+        return organisationName;
+    }
+
+    public void setOrganisationName(String organisationName) {
+        this.organisationName = organisationName;
+    }
+
     public String getFileName() {
         return fileName;
     }
@@ -85,6 +117,22 @@ public class Project {
         this.projectNumber = projectNumber;
     }
 
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Date getAccessedDate() {
+        return accessedDate;
+    }
+
+    public void setAccessedDate(Date accessedDate) {
+        this.accessedDate = accessedDate;
+    }
+
     public List<ProjectRequirement> getReferenceProjectRequirement() {
         return referenceProjectRequirement;
     }
@@ -99,6 +147,15 @@ public class Project {
 
     public void setReferenceUser(GrouseUser referenceUser) {
         this.referenceUser = referenceUser;
+    }
+
+    public List<ProjectFunctionality> getReferenceProjectFunctionality() {
+        return referenceProjectFunctionality;
+    }
+
+    public void setReferenceProjectFunctionality(
+            List<ProjectFunctionality> referenceProjectFunctionality) {
+        this.referenceProjectFunctionality = referenceProjectFunctionality;
     }
 
     @Override
