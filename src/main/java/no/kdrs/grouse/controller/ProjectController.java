@@ -76,6 +76,18 @@ public class ProjectController {
         for (ProjectFunctionality projectFunctionality :
                 projectFunctionalities) {
 
+            // Add SELF REL to each projectRequirement
+            for (ProjectRequirement projectRequirement :
+                    projectFunctionality
+                            .getReferenceProjectRequirement()) {
+
+                projectRequirement.add(linkTo(methodOn(
+                        ProjectRequirementController.class).
+                        getRequirement(projectRequirement.
+                                getProjectRequirementId())).withSelfRel());
+            }
+
+            // Add REL to retrieve all requirements
             projectFunctionality.add(linkTo(methodOn(
                     ProjectFunctionalityController.class).
                     getRequirements(projectFunctionality.

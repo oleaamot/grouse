@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import static no.kdrs.grouse.utils.Constants.PROJECT_REQUIREMENT;
 import static no.kdrs.grouse.utils.Constants.SLASH;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 /**
  * Created by tsodring on 29/03/18.
@@ -28,9 +30,17 @@ public class ProjectRequirementController {
     @RequestMapping(value = "/{krav}", method = RequestMethod.GET)
     public ResponseEntity<ProjectRequirement> getRequirement(
             @PathVariable("krav") Long requirementNumber) {
+
+        ProjectRequirement projectRequirement = projectRequirementService.
+                getProjectRequirement(requirementNumber);
+
+        projectRequirement.add(linkTo(methodOn
+                (ProjectRequirementController.class).
+                getRequirement(projectRequirement.getProjectRequirementId())).
+                withSelfRel());
+
         return ResponseEntity.status(HttpStatus.OK)
-                .body(projectRequirementService.
-                        getProjectRequirement(requirementNumber));
+                .body(projectRequirement);
     }
 
     @RequestMapping(value = "/{krav}", method = RequestMethod.PATCH)
@@ -38,10 +48,17 @@ public class ProjectRequirementController {
             @PathVariable("krav") Long requirementNumber,
             @RequestBody PatchObjects patchObjects)
                 throws Exception {
+
+        ProjectRequirement projectRequirement = projectRequirementService.
+                updateProjectRequirement(patchObjects, requirementNumber);
+
+        projectRequirement.add(linkTo(methodOn
+                (ProjectRequirementController.class).
+                getRequirement(projectRequirement.getProjectRequirementId())).
+                withSelfRel());
+
         return ResponseEntity.status(HttpStatus.OK)
-                .body(projectRequirementService.
-                        updateProjectRequirement(patchObjects,
-                                requirementNumber));
+                .body(projectRequirement);
     }
 
     @RequestMapping(value = "/{prosjekt}/funksjonalitet/{funksjonalitet}",
@@ -50,10 +67,18 @@ public class ProjectRequirementController {
             @PathVariable("prosjekt") Long projectId,
             @PathVariable("funksjonalitet") String functionality,
             @RequestBody ProjectRequirement projectRequirement) {
+
+        projectRequirementService.
+                createProjectRequirement(projectId, functionality,
+                        projectRequirement);
+
+        projectRequirement.add(linkTo(methodOn
+                (ProjectRequirementController.class).
+                getRequirement(projectRequirement.getProjectRequirementId())).
+                withSelfRel());
+
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(projectRequirementService.
-                        createProjectRequirement(projectId, functionality,
-                                projectRequirement));
+                .body(projectRequirement);
     }
 
 
