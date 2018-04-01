@@ -10,7 +10,5 @@ import java.util.List;
 @Repository
 public interface IProjectRepository
         extends CrudRepository<Project, Long> {
-
     List<Project> findByReferenceUser(GrouseUser user);
-    Project findByProjectNumberOrderByProjectName(String projectFirstName);
 }

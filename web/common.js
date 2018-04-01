@@ -1,10 +1,15 @@
 var baseUrlApp = "http://localhost:9294/grouse";
 var baseUrlGui = "http://localhost:9294/grouse";
-var urlToMenuItems = "http://localhost:9294/grouse/funksjon/meny/1.4";
+var urlToMenuItems = "http://localhost:9294/grouse/bruker/admin@kdrs.no/prosjekt ";
 var startPageName = "krav.html";
 var requirementPageName = "requirement.html";
 var REQUIREMENT = "krav";
 var FUNCTIONALITY = "funksjon";
+
+var REL_PROJECT = "prosjekt";
+var REL_REQUIREMENT = "krav";
+var REL_FUNCTIONALITY = "funksjon";
+
 
 var SetUserToken = function (t) {
     localStorage.setItem("token", t);

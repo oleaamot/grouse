@@ -29,8 +29,8 @@ public class DocumentController {
 
     @RequestMapping(value = "/{prosjektnummer}", method = RequestMethod.GET)
     public ResponseEntity<String> getRequirement(@PathVariable("prosjektnummer")
-                                                         String projectNumber) throws IOException {
-        documentService.createDocument(projectNumber);
+                                                         Long projectId) throws IOException {
+        documentService.createDocument(projectId);
         return ResponseEntity.status(HttpStatus.OK)
                 .body("Dokument oppretet");
     }

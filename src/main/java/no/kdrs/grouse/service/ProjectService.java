@@ -46,24 +46,47 @@ public class ProjectService
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<ProjectRequirement> findByProjectNumberOrderByProjectName (
-            String projectNumber, String functionalityNumber) {
+    public List<ProjectRequirement> findByProjectIdOrderByProjectName(
+            Long projectId, String functionalityNumber) {
         String queryString =
-           "select p from ProjectRequirement as p where " +
-                   "p.referenceProject.id = :projectNumber " +
-                   "AND p.referenceFunctionality.functionalityNumber = " +
-                   ":functionalityNumber";
+                "select p from ProjectRequirement as p where " +
+                        "p.referenceProject.projectId = :projectId " +
+                        "AND p.referenceFunctionality.functionalityNumber = " +
+                        ":functionalityNumber";
 
         Query query = entityManager.createQuery(queryString);
-        query.setParameter("projectNumber", Long.valueOf(projectNumber));
+        query.setParameter("projectId", projectId);
         query.setParameter("functionalityNumber", functionalityNumber);
         return query.getResultList();
+    }
+
+    /**
+     * findFunctionalityForProject
+     * <p>
+     * Get a list of ProjectFunctionality for a give Project
+     *
+     * @param projectId Id of the project to retrieve ProjectFunctionality
+     * @return list of ProjectFunctionality
+     */
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<ProjectFunctionality> findFunctionalityForProject(
+            Long projectId) {
+
+        Project project = new Project();
+        project.setProjectId(projectId);
+
+        List<ProjectFunctionality> projectRequirements =
+                projectFunctionalityRepository.
+                        findByReferenceProjectAndShowMe(project, true);
+
+        return projectRequirements;
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public List<Project> findAll() {
-        return (ArrayList)projectRepository.findAll();
+        return (ArrayList) projectRepository.findAll();
     }
 
     @Override
@@ -73,19 +96,19 @@ public class ProjectService
 
     /**
      * Create a new project.
-     *
+     * <p>
      * The following steps are performed:
      * 1. Retrieve User object from loggedin user and associate with project
      * 2. Copy all Requirement objects and create ProjectRequirement objects
      * 3. Copy all Functionality objects and create ProjectFunctionality objects
-     *
+     * <p>
      * This is done as each project needs their own copy to work on.
      * Requirements are needed as within the project the used can change the
      * text, add or remove ProjectRequirements
      * ProjectFunctionality are needed to save state of the progress. For each
      * step that is processed a progress value is set. This is useful to be
      * able to reload the project but also eases the GUI side of things.
-     *
+     * <p>
      * State is stored in the database, not the GUI
      *
      * @param project The project object to create
@@ -96,7 +119,7 @@ public class ProjectService
     public Project createProject(Project project) {
 
         project.setCreatedDate(new Date());
-        project.setAccessedDate(new Date());
+        project.setChangedDate(new Date());
         // TODO: Replace this with logged in user when security is
         // in place
         GrouseUser user = new GrouseUser();
@@ -104,26 +127,13 @@ public class ProjectService
         project.setReferenceUser(user);
         projectRepository.save(project);
 
-        ArrayList<Requirement> requirements =
-                (ArrayList) requirementRepository.findAll();
-
-        for (Requirement requirement: requirements) {
-            ProjectRequirement projectRequirement = new ProjectRequirement();
-            projectRequirement.setReferenceProject(project);
-            projectRequirement.setOrder(requirement.getOrder());
-            projectRequirement.setPriority(requirement.getPriority());
-            projectRequirement.setRequirementText(
-                    requirement.getRequirementText());
-            projectRequirement.setReferenceFunctionality(
-                    requirement.getFunctionality());
-            projectRequirementRepository.save(projectRequirement);
-        }
-
-        ArrayList <Functionality> functionalities =
+        ArrayList<Functionality> functionalities =
                 (ArrayList) functionalityRepository.findAll();
-        for (Functionality functionality: functionalities) {
+        for (Functionality functionality : functionalities) {
             ProjectFunctionality projectFunctionality =
                     new ProjectFunctionality();
+            projectFunctionality.setTitle(
+                    functionality.getTitle());
             projectFunctionality.setFunctionalityNumber(
                     functionality.getFunctionalityNumber());
             projectFunctionality.setConsequence(
@@ -132,9 +142,33 @@ public class ProjectService
                     functionality.getDescription());
             projectFunctionality.setExplanation(
                     functionality.getExplanation());
-                    projectFunctionality.setProcessed(false);
+            projectFunctionality.setType(
+                    functionality.getType());
+            projectFunctionality.setShowMe(
+                    functionality.getShowMe());
+            projectFunctionality.setProcessed(false);
             projectFunctionality.setReferenceProject(project);
             projectFunctionalityRepository.save(projectFunctionality);
+        }
+
+        ArrayList<Requirement> requirements =
+                (ArrayList) requirementRepository.findAll();
+        for (Requirement requirement : requirements) {
+            ProjectRequirement projectRequirement = new ProjectRequirement();
+            projectRequirement.setReferenceProject(project);
+            projectRequirement.setOrder(requirement.getOrder());
+            projectRequirement.setPriority(requirement.getPriority());
+            projectRequirement.setRequirementText(
+                    requirement.getRequirementText());
+
+            ProjectFunctionality projectFunctionality =
+            projectFunctionalityRepository.findByFunctionalityNumber(
+                    requirement.getFunctionality().getFunctionalityNumber()
+            );
+
+            projectRequirement.setReferenceFunctionality(
+                    projectFunctionality);
+            projectRequirementRepository.save(projectRequirement);
         }
 
         return project;
@@ -148,7 +182,6 @@ public class ProjectService
         // copy the values over
         originalProject.setFileName(project.getFileName());
         originalProject.setProjectName(project.getProjectName());
-        originalProject.setProjectNumber(project.getProjectNumber());
 
         // probably don't want to expose this one
         //originalProject.ListProjectOwner(project.getProjectOwner());

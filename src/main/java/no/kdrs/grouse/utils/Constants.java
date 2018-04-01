@@ -13,6 +13,7 @@ public final class Constants {
     public static final String DOCUMENT = "dokument";
     public static final String PROJECT = "prosjekt";
     public static final String PROJECT_REQUIREMENT = "prosjektkrav";
+    public static final String PROJECT_FUNCTIONALITY = "prosjektfunksjon";
     public static final String REQUIREMENT_TYPE = "krav_type";
 
     // Table cell ordering

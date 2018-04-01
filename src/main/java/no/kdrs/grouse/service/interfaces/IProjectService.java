@@ -3,6 +3,7 @@ package no.kdrs.grouse.service.interfaces;
 
 import no.kdrs.grouse.model.GrouseUser;
 import no.kdrs.grouse.model.Project;
+import no.kdrs.grouse.model.ProjectFunctionality;
 import no.kdrs.grouse.model.ProjectRequirement;
 
 import java.util.List;
@@ -17,7 +18,8 @@ public interface IProjectService {
     Project update(Long id, Project Project) throws Exception;
     void delete(Long id);
     List<Project> findByReferenceUser (GrouseUser user);
-    List<ProjectRequirement> findByProjectNumberOrderByProjectName (
-            String projectNumber, String functionalityNumber);
+    List<ProjectRequirement> findByProjectIdOrderByProjectName (
+            Long projectId, String functionalityNumber);
+    List<ProjectFunctionality> findFunctionalityForProject(Long projectId);
 
 }

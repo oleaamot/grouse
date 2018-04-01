@@ -109,7 +109,7 @@ public class ProjectRequirementService
 
     @Override
     public ProjectRequirement createProjectRequirement(
-            Long projectNumber, String functionality,
+            Long projectId, String functionality,
             ProjectRequirement projectRequirement) {
         return projectRequirementRepository.save(projectRequirement);
     }

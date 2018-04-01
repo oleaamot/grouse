@@ -10,33 +10,51 @@ var app = angular.module('grouse-app', []);
 var requirementsController = app.controller('RequirementsController',
   ['$scope', '$http', function ($scope, $http) {
 
+    $scope.currentUser = JSON.parse("{\"username\":\"admin@kdrs.no\",\"password\":\"{bcrypt}$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC\",\"firstname\":\"John\",\"lastname\":\"Smith\",\"roles\":[{\"role\":\"ROLE_ADMIN\"},{\"role\":\"ROLE_USER\"}],\"links\":[{\"rel\":\"self\",\"href\":\"http://localhost:9294/grouse/bruker/admin@kdrs.no\",\"hreflang\":null,\"media\":null,\"title\":null,\"type\":null,\"deprecation\":null},{\"rel\":\"prosjekt\",\"href\":\"http://localhost:9294/grouse/bruker/admin@kdrs.no/prosjekt\",\"hreflang\":null,\"media\":null,\"title\":null,\"type\":null,\"deprecation\":null}]}");
     $scope.projectsView = true;
     $scope.requirementsView = false;
 
     $scope.priorityValues = ['O', '1', '2'];
-    $scope.projects = [
-      {projectName: "Eksempel kommune kravspec", organisationName: "Eksempel kommune", createdDate:"2018-03-29", accessedDate:"2018-04-30"},
-      {projectName: "Nytt Noark 5 system", organisationName: "Ås kommune", createdDate:"2018-04-02", accessedDate:"2018-04-30"},
-      {projectName: "Noark 5 med fagsystem", organisationName: "Ski kommune", createdDate:"2018-04-19", accessedDate:"2018-04-30"}
-    ];
+
+    $scope.selectedProject = null;
 
     $scope.selectedMenuItem = null;
     $scope.token = GetUserToken();
 
-    console.log("Grouse kravspec.js page load. User token is set to " + $scope.token);
-    $scope.isopen = true;
-    var method = 'GET';
-    $http({
-      method: method,
-      url: urlToMenuItems,
-      headers: {'Authorization': $scope.token}
-    }).then(function successCallback(response) {
-      $scope.menuItems = response.data;
-      console.log(method + " GET urlToMenuItems[" + urlToMenuItems + "] returned " + JSON.stringify(response));
-    }, function errorCallback(response) {
-      console.log(method + " GET urlToMenuItems[" + urlToMenuItems + "] returned " + JSON.stringify(response));
-    });
+    $scope.progressBarValue = 0;
 
+    console.log("Grouse kravspec.js page load. User token is set to " + $scope.token);
+    console.log("Retrieving projects on page load. Current user is [" + $scope.currentUser + "] .\n");
+
+    var token = GetUserToken();
+    /*
+      if (typeof variable === 'undefined' || variable === null) {
+       alert("Mangler identifikasjons token for å fortsette." +
+             "Kan ikke opprette et nytt prosjekt");
+       return;
+      }
+    */
+    for (var rel in $scope.currentUser.links) {
+      var relation = $scope.currentUser.links[rel].rel;
+      if (relation == REL_PROJECT) {
+        var urlForProjects = $scope.currentUser.links[rel].href;
+        console.log("Checking urlForProjects[" + urlForProjects);
+        $http({
+          method: 'GET',
+          url: urlForProjects,
+          headers: {'Authorization': token}
+        }).then(function successCallback(response) {
+          $scope.projects = response.data;
+          console.log(" GET urlForProjects[" + urlForProjects +
+            "] returned " + JSON.stringify(response));
+        }, function errorCallback(response) {
+          alert("Kunne ikke opprette nytt prosjekt. " +
+            JSON.stringify(response));
+          console.log(" GET urlForProjects[" + urlForProjects +
+            "] returned " + JSON.stringify(response));
+        });
+      }
+    }
     /**
      * menuItem_selected
      *
@@ -46,12 +64,10 @@ var requirementsController = app.controller('RequirementsController',
       console.log("menuItem[" + JSON.stringify(menuItem) + "] selected.\n");
       $scope.selectedMenuItem = menuItem;
 
-
-
 /*
-      var projectNumber = "1";
+      var projectId = "1";
       //var urlToRequirements = "http://localhost:9294/grouse/prosjekt/" +
-      //  projectNumber + "/krav/" + menuItem.functionalityNumber;
+      //  projectId + "/krav/" + menuItem.functionalityNumber;
       var urlToRequirements = "http://localhost:9294/grouse/prosjekt/1"
         + "/krav/" + menuItem.functionalityNumber;
 
@@ -79,9 +95,9 @@ var requirementsController = app.controller('RequirementsController',
       console.log("menuItem[" + JSON.stringify(menuItem) + "] selected.\n");
       $scope.selectedMenuItem = menuItem;
       /*
-            var projectNumber = "1";
+            var projectId = "1";
             //var urlToRequirements = "http://localhost:9294/grouse/prosjekt/" +
-            //  projectNumber + "/krav/" + menuItem.functionalityNumber;
+            //  projectId + "/krav/" + menuItem.functionalityNumber;
             var urlToRequirements = "http://localhost:9294/grouse/prosjekt/1"
               + "/krav/" + menuItem.functionalityNumber;
 
@@ -126,7 +142,7 @@ var requirementsController = app.controller('RequirementsController',
         console.log(method + " PATCH urlForUpdate[" + urlForUpdate + "] returned " + JSON.stringify(response));
       });
     };
-/**
+    /**
      * updateRequirementPriority
      *
      * handles a change in requirement priority.
@@ -154,9 +170,11 @@ var requirementsController = app.controller('RequirementsController',
     };
 
     /**
-     * updateRequirementPriority
+     * projectSelected
      *
-     * handles a change in requirement priority.
+     * The user has selected a project, change the view so that the functionality areas
+     * are shown and the user can start choosing details related to the project.
+     *
      */
     $scope.projectSelected = function (project) {
       console.log("projectSelected[" + JSON.stringify(project) + "] selected.\n");
@@ -165,31 +183,123 @@ var requirementsController = app.controller('RequirementsController',
       $scope.projectsView = false;
       $scope.requirementsView = true;
 
+      var token = GetUserToken();
       /*
-      var urlForUpdate = "http://localhost:9294/grouse/prosjektkrav/" + requirement.id;
-
-      $http({
-        method: 'PATCH',
-        url: urlForUpdate,
-        headers: {'Authorization': $scope.token},
-        data: patchString
-        }).then(function successCallback(response) {
-        $scope.menuItems = response.data;
-        console.log(method + " PATCH urlForUpdate[" + urlForUpdate + "] returned " + JSON.stringify(response));
-      }, function errorCallback(response) {
-        console.log(method + " PATCH urlForUpdate[" + urlForUpdate + "] returned " + JSON.stringify(response));
-      });
+      if (typeof variable === 'undefined' || variable === null) {
+       alert("Mangler identifikasjons token for å fortsette." +
+             "Kan ikke opprette et nytt prosjekt");
+       return;
+      }
       */
+      for (var rel in $scope.selectedProject.links) {
+        var relation = $scope.selectedProject.links[rel].rel;
+        if (relation == REL_FUNCTIONALITY) {
+          var urlForFunctionalityRetrieval = $scope.selectedProject.links[rel].href;
+          console.log("Checking urlForFunctionalityRetrieval[" + urlForFunctionalityRetrieval);
+          $http({
+            method: 'GET',
+            url: urlForFunctionalityRetrieval,
+            headers: {'Authorization': token}
+          }).then(function successCallback(response) {
+            console.log("GET [" + urlForFunctionalityRetrieval +
+              "] returned " + JSON.stringify(response));
+            $scope.menuItems = response.data;
+            $scope.selectedMenuItem = null;
+          }, function errorCallback(response) {
+            alert("Kunne ikke hente funksjonalitetsbeskrivelse for prosjekt. " +
+              JSON.stringify(response));
+            console.log("GET urlForFunctionalityRetrieval[" + urlForFunctionalityRetrieval +
+              "] returned " + JSON.stringify(response));
+          });
+        }
+      }
     };
+
     /**
-     * updateRequirementPriority
+     * continueSelected
      *
-     * handles a change in requirement priority.
+     * When a user accepts a subset of defined requirements are acceptable
+     * this method is called. The menuItem gets a success status and the progress
+     * bar is updated.
+     *
      */
     $scope.continueSelected = function () {
       console.log("continueSelected selected.\n");
       console.log("Attempting to find [" + $scope.selectedMenuItem.functionalityNumber + "]");
       $scope.selectedMenuItem.showMe = !$scope.selectedMenuItem.showMe;
+      $scope.selectedMenuItem.processed = true;
+      // Find out how far we have progressed through all requirements
+      // set progress bare accordingly.
+
+      var countTrue = 0;
+      var countFalse = 0;
+
+      for (var rel in $scope.menuItems) {
+
+        $scope.menuItems[rel].processed === true ? countTrue++ : countFalse++;
+        /*
+        if ($scope.menuItems[rel].processed == "true") {
+          countTrue++;
+        }
+        else {
+          countFalse++;
+        }
+        */
+      }
+      console.log("Number that is true is [" + countTrue + "]");
+      console.log("Number that is false is [" + countFalse + "]");
+      console.log("Number that is total is [" + rel + "]");
+      var percentage = (countTrue/++rel)*100;
+      console.log("Percentage is [" + percentage + "]");
+      $scope.progressBarValue = percentage;
+
     };
 
+    /**
+     * createProject
+     *
+     * creates a new project associated with the current user.
+     *
+     * Takes information about the current user from the scope and
+     * traverses the RELs looking for a REL_PROJECT (prosjekt). Once
+     * it finds this it uses the associated HREF as the address of
+     * where to POST the project object.
+     *
+     *
+     */
+    $scope.createProject = function () {
+      console.log("createProject. Current user is [" + $scope.currentUser + "] .\n");
+
+      var token = GetUserToken();/*
+      if (typeof variable === 'undefined' || variable === null) {
+       alert("Mangler identifikasjons token for å fortsette." +
+             "Kan ikke opprette et nytt prosjekt");
+       return;
+      }
+*/
+      for (var rel in $scope.currentUser.links) {
+        var relation = $scope.currentUser.links[rel].rel;
+        if (relation == REL_PROJECT) {
+          var urlForProjectCreation = $scope.currentUser.links[rel].href;
+          console.log("Checking urlForProjectCreation[" + urlForProjectCreation);
+          $http({
+            method: 'POST',
+            url: urlForProjectCreation,
+            headers: {'Authorization': token},
+            data: {
+              projectName: $scope.projectName,
+              organisationName: $scope.organisationName
+            }
+          }).then(function successCallback(response) {
+            console.log("POST urlForProjectCreation[" + urlForProjectCreation +
+              "] returned " + JSON.stringify(response));
+          }, function errorCallback(response) {
+            alert("Kunne ikke opprette nytt prosjekt. " +
+              JSON.stringify(response));
+            console.log("POST urlForProjectCreation[" + urlForProjectCreation +
+              "] returned " + JSON.stringify(response));
+          });
+        }
+      }
+    };
   }]);

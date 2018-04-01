@@ -30,11 +30,11 @@ public class DocumentService implements IDocumentService {
     }
 
     @Override
-    public void createDocument(String projectNumber) throws IOException {
+    public void createDocument(Long projectId) throws IOException {
         String filename = storageLocation + File.separator + "kravspec.docx";
         FileOutputStream file = new FileOutputStream(filename);
         Document document = new Document(file);
-        processRequirements(document, projectNumber);
+        processRequirements(document, projectId);
         document.close();
         file.flush();
         file.close();
@@ -45,13 +45,12 @@ public class DocumentService implements IDocumentService {
      * requirements
      *
      * @param document The Word document
-     * @param projectNumber The project number from which to retreive details
+     * @param projectId The project number from which to retreive details
      *                      to insert into document
      */
     @Override
     @SuppressWarnings("unchecked")
-    public void processRequirements(Document document, String projectNumber)
-            throws IOException {
+    public void processRequirements(Document document, Long projectId) {
 
         Query queryFunctionality =
                 em.createQuery("SELECT f FROM Functionality f");

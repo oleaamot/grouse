@@ -15,4 +15,5 @@ public interface IFunctionalityRepository
 
     List<Functionality> findByShowMeAndReferenceParentFunctionality(
             Boolean menuItem, Functionality parent);
+    Functionality findByFunctionalityNumber(String functionalityNumber);
 }

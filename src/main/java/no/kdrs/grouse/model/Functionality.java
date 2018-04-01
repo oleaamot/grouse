@@ -6,8 +6,6 @@ import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by tsodring on 9/11/17.
@@ -68,17 +66,17 @@ public class Functionality implements Serializable {
     @Column(name = "show_me")
     private Boolean showMe;
 
+    /**
+     * Type of requirement e.g. 'funksjonell', 'teknisk', 'integrasjon'
+     *
+     */
+    @Column(name = "type")
+    private String type;
+
     // Link to parent Functionality
     @ManyToOne
     @JoinColumn(name="parent")
     private Functionality referenceParentFunctionality;
-
-    @OneToMany(mappedBy = "referenceFunctionality")
-    private List<Requirement> referenceRequirement = new ArrayList<>();
-
-    @OneToMany(mappedBy = "referenceFunctionality")
-    private List<ProjectRequirement> referenceProjectRequirement =
-            new ArrayList<>();
 
     public String getTitle() {
         return title;
@@ -128,6 +126,14 @@ public class Functionality implements Serializable {
         this.showMe = showMe;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @JsonIgnore
     public Functionality getReferenceParentFunctionality() {
         return referenceParentFunctionality;
@@ -135,13 +141,5 @@ public class Functionality implements Serializable {
     @XmlTransient
     public void setReferenceParentFunctionality(Functionality referenceParentFunctionality) {
         this.referenceParentFunctionality = referenceParentFunctionality;
-    }
-
-    public List<ProjectRequirement> getReferenceProjectRequirement() {
-        return referenceProjectRequirement;
-    }
-
-    public void setReferenceProjectRequirement(List<ProjectRequirement> referenceProjectRequirement) {
-        this.referenceProjectRequirement = referenceProjectRequirement;
     }
 }

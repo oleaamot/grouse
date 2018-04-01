@@ -9,6 +9,6 @@ import java.io.IOException;
  */
 public interface IDocumentService {
 
-    void createDocument(String projectNumber) throws IOException;
-    void processRequirements(Document document, String projectNumber) throws IOException;
+    void createDocument(Long projectId) throws IOException;
+    void processRequirements(Document document, Long projectId) throws IOException;
 }

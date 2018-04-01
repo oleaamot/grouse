@@ -1,6 +1,7 @@
 package no.kdrs.grouse.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.hateoas.ResourceSupport;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -14,21 +15,15 @@ import java.util.List;
 @Entity
 @Table(name = "projects")
 @XmlRootElement
-public class Project {
+public class Project
+        extends ResourceSupport {
 
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "project_id", nullable = false, updatable = false)
-    private Long id;
-
-    /**
-     * Acts as a secondary key for a row of information. project_number
-     * is what you search on. Normally automatically set to a UUID
-     */
-    @Column(name = "project_number")
-    private String projectNumber;
+    private Long projectId;
 
     /**
      * Assignable descriptive name to the project e.g
@@ -36,6 +31,12 @@ public class Project {
      */
     @Column(name = "project_name")
     private String projectName;
+
+    /**
+     * Name of the organisation
+     */
+    @Column(name = "organisation_name")
+    private String organisationName;
 
     /**
      * Name of the requirements document
@@ -51,17 +52,11 @@ public class Project {
     private Date createdDate;
 
     /**
-     * Name of the organisation
-     */
-    @Column(name = "organisation_name")
-    private String organisationName;
-
-    /**
      * The date the project was accessed
      */
-    @Column(name = "accessed_date")
+    @Column(name = "changed_date")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date accessedDate;
+    private Date changedDate;
 
     @JsonIgnore
     @OneToMany(mappedBy = "referenceProject", fetch = FetchType.LAZY)
@@ -77,12 +72,12 @@ public class Project {
             referencedColumnName = "username")
     private GrouseUser referenceUser;
 
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
+    public void setProjectId(Long projectId) {
+        this.projectId = projectId;
     }
 
-    public Long getId() {
-        return id;
+    public Long getProjectId() {
+        return projectId;
     }
 
     public String getProjectName() {
@@ -109,14 +104,6 @@ public class Project {
         this.fileName = fileName;
     }
 
-    public String getProjectNumber() {
-        return projectNumber;
-    }
-
-    public void setProjectNumber(String projectNumber) {
-        this.projectNumber = projectNumber;
-    }
-
     public Date getCreatedDate() {
         return createdDate;
     }
@@ -125,12 +112,12 @@ public class Project {
         this.createdDate = createdDate;
     }
 
-    public Date getAccessedDate() {
-        return accessedDate;
+    public Date getChangedDate() {
+        return changedDate;
     }
 
-    public void setAccessedDate(Date accessedDate) {
-        this.accessedDate = accessedDate;
+    public void setChangedDate(Date changedDate) {
+        this.changedDate = changedDate;
     }
 
     public List<ProjectRequirement> getReferenceProjectRequirement() {
@@ -161,10 +148,12 @@ public class Project {
     @Override
     public String toString() {
         return "Project{" +
-                "id=" + id +
-                ", projectNumber='" + projectNumber + '\'' +
+                "projectId=" + projectId +
                 ", projectName='" + projectName + '\'' +
+                ", organisationName='" + organisationName + '\'' +
                 ", fileName='" + fileName + '\'' +
+                ", createdDate=" + createdDate +
+                ", changedDate=" + changedDate +
                 '}';
     }
 }

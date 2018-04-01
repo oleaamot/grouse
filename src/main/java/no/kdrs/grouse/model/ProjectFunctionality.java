@@ -1,6 +1,7 @@
 package no.kdrs.grouse.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.hateoas.ResourceSupport;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -24,15 +25,16 @@ import java.util.List;
 @Entity
 @Table(name = "project_functionality_areas")
 @XmlRootElement
-public class ProjectFunctionality implements Serializable {
+public class ProjectFunctionality
+        extends ResourceSupport
+        implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, updatable = false)
-    private Long id;
+    private Long projectFunctionalityId;
 
     /**
      * Number of the functional area. e.g 1.2.3
@@ -88,6 +90,12 @@ public class ProjectFunctionality implements Serializable {
     @Column(name = "processed")
     private Boolean processed;
 
+    /**
+     * Type of requirement e.g. 'funksjonell', 'teknisk', 'integrasjon'
+     *
+     */
+    @Column(name = "type")
+    private String type;
 
     // Link to parent Functionality
     @ManyToOne
@@ -104,12 +112,12 @@ public class ProjectFunctionality implements Serializable {
             referencedColumnName = "project_id")
     private Project referenceProject;
 
-    public Long getId() {
-        return id;
+    public Long getProjectFunctionalityId() {
+        return projectFunctionalityId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setProjectFunctionalityId(Long projectFunctionalityId) {
+        this.projectFunctionalityId = projectFunctionalityId;
     }
 
     public String getTitle() {
@@ -166,6 +174,14 @@ public class ProjectFunctionality implements Serializable {
 
     public void setProcessed(Boolean processed) {
         this.processed = processed;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     @JsonIgnore

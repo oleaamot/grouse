@@ -34,7 +34,7 @@ public class ProjectRequirement
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, updatable = false)
-    private Long id;
+    private Long projectRequirementId;
 
     /**
      * order (no:kravtype)
@@ -75,7 +75,7 @@ public class ProjectRequirement
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "functionality",
             referencedColumnName = "functionality_number")
-    private Functionality referenceFunctionality;
+    private ProjectFunctionality referenceFunctionality;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
@@ -83,12 +83,12 @@ public class ProjectRequirement
             referencedColumnName = "project_id")
     private Project referenceProject;
 
-    public Long getId() {
-        return id;
+    public Long getProjectRequirementId() {
+        return projectRequirementId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setProjectRequirementId(Long projectRequirementId) {
+        this.projectRequirementId = projectRequirementId;
     }
 
     public Integer getOrder() {
@@ -123,11 +123,11 @@ public class ProjectRequirement
         this.requirementNumber = requirementNumber;
     }
 
-    public Functionality getReferenceFunctionality() {
+    public ProjectFunctionality getReferenceFunctionality() {
         return referenceFunctionality;
     }
 
-    public void setReferenceFunctionality(Functionality referenceFunctionality) {
+    public void setReferenceFunctionality(ProjectFunctionality referenceFunctionality) {
         this.referenceFunctionality = referenceFunctionality;
     }
 
@@ -142,7 +142,7 @@ public class ProjectRequirement
     @Override
     public String toString() {
         return "ProjectRequirement{" +
-                "id=" + id +
+                "projectRequirementId=" + projectRequirementId +
                 ", order=" + order +
                 ", requirementText='" + requirementText + '\'' +
                 ", priority='" + priority + '\'' +

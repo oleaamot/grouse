@@ -25,6 +25,7 @@ public class UserController {
 
     private IGrouseUserService grouseUserService;
     private IProjectService projectService;
+    //private EntityLinks entityLinks;
 
     public UserController(IGrouseUserService grouseUserService,
                           IProjectService projectService) {
@@ -38,45 +39,79 @@ public class UserController {
                 body(grouseUserService.findAll());
     }
 
-    @RequestMapping(value = "/{userid}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{" + USER + "}",
+            method = RequestMethod.GET)
     public ResponseEntity<GrouseUser> getGrouseUser(
-            @PathVariable("userid") String id) {
-        GrouseUser user = grouseUserService.findById(id);
+            @PathVariable(USER) String username) {
+        GrouseUser user = grouseUserService.findById(username);
         user.add(linkTo(methodOn(UserController.class).
-                getGrouseUser(id)).withSelfRel());
+                getGrouseUser(username)).withSelfRel());
+        user.add(linkTo(methodOn(UserController.class).
+                createProject(username, null)).withRel(PROJECT));
+
         return ResponseEntity.status(HttpStatus.OK)
                 .body(user);
     }
 
-    @RequestMapping(value = "/{username}/"+ PROJECT, method = RequestMethod.GET)
+    @RequestMapping(value = "/{" + USER + "}/" + PROJECT,
+            method = RequestMethod.GET)
     public ResponseEntity<List<Project>> getGrouseUserProjects(
-            @PathVariable("username") String username) {
+            @PathVariable(USER) String username) {
         GrouseUser user = new GrouseUser();
         user.setUsername(username);
         List<Project> projects = projectService.findByReferenceUser(user);
+        for (Project project : projects) {
+            project.add(linkTo(methodOn(ProjectController.class).
+                    getProject(project.getProjectId())).withSelfRel());
+
+            project.add(linkTo(methodOn(ProjectController.class).
+                    getFunctionalityForProject(project.getProjectId()))
+                    .withRel(FUNCTIONALITY));
+// Same for Requirement
+//            project.add(linkTo(methodOn(ProjectController.class).
+//                    getRequirementsForFunctionality(project.getProjectId()))
+//            .withRel(REQUIREMENT)            );
+        }
+
+        // entityLinks.linkToCollectionResource(UserController.class);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(projects);
     }
 
+    @RequestMapping(value = "/{" + USER + "}/" + PROJECT,
+            method = RequestMethod.POST)
+    public ResponseEntity<Project> createProject(
+            @PathVariable(USER) String username,
+            @RequestBody Project project) {
+        GrouseUser user = new GrouseUser();
+        user.setUsername(username);
+        projectService.createProject(project);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(project);
+    }
+
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<GrouseUser> saveGrouseUser(
-            @RequestBody GrouseUser grouseUser) {
+            @RequestBody GrouseUser user) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(grouseUserService.save(grouseUser));
+                .body(grouseUserService.save(user));
     }
 
-    @RequestMapping(value = "/{krav:.+}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{" + USER + "}",
+            method = RequestMethod.PUT)
     public ResponseEntity<GrouseUser> updateGrouseUser(
-            @PathVariable("krav") String grouseUserId,
-            @RequestBody GrouseUser grouseUser) throws EntityNotFoundException {
+            @PathVariable(USER) String username,
+            @RequestBody GrouseUser user) throws EntityNotFoundException {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(grouseUserService.update(grouseUserId, grouseUser));
+                .body(grouseUserService.update(username, user));
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<String> deleteGrouseUser(@PathVariable String id) {
-        grouseUserService.delete(id);
+    @RequestMapping(value = "/{" + USER + "}",
+            method = RequestMethod.DELETE)
+    public ResponseEntity<String> deleteGrouseUser(
+            @PathVariable String username) {
+        grouseUserService.delete(username);
         return ResponseEntity.status(HttpStatus.OK)
-                .body("GrouseUser with id " + id + " was deleted");
+                .body("GrouseUser with username " + username + " was deleted");
     }
 }

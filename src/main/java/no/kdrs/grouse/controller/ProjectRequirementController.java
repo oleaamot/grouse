@@ -47,12 +47,12 @@ public class ProjectRequirementController {
     @RequestMapping(value = "/{prosjekt}/funksjonalitet/{funksjonalitet}",
             method = RequestMethod.POST)
     public ResponseEntity<ProjectRequirement> createRequirement(
-            @PathVariable("prosjekt") Long projectNumber,
+            @PathVariable("prosjekt") Long projectId,
             @PathVariable("funksjonalitet") String functionality,
             @RequestBody ProjectRequirement projectRequirement) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(projectRequirementService.
-                        createProjectRequirement(projectNumber, functionality,
+                        createProjectRequirement(projectId, functionality,
                                 projectRequirement));
     }
 

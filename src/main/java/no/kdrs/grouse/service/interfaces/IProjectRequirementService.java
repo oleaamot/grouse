@@ -13,6 +13,6 @@ public interface IProjectRequirementService {
             PatchObjects patchObjects, Long requirementNumber) throws Exception;
 
     ProjectRequirement createProjectRequirement(
-            Long projectNumber,String functionality,
+            Long projectId,String functionality,
             ProjectRequirement projectRequirement);
 }
