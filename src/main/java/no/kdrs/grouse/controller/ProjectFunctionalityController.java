@@ -6,10 +6,7 @@ import no.kdrs.grouse.model.ProjectRequirement;
 import no.kdrs.grouse.service.interfaces.IProjectFunctionalityService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,10 +30,10 @@ public class ProjectFunctionalityController {
     @RequestMapping(value = "/{krav}/" + REQUIREMENT,
             method = RequestMethod.GET)
     public ResponseEntity<ProjectFunctionality> getRequirements(
-            @PathVariable("krav") String functionalityNumber) {
+            @PathVariable("krav") Long projectFunctionalityId) {
 
         ProjectFunctionality projectFunctionality = projectFunctionalityService.
-                getProjectFunctionality(functionalityNumber);
+                getProjectFunctionality(projectFunctionalityId);
 
         List<ProjectRequirement> projectRequirements =
                 projectFunctionality.getReferenceProjectRequirement();
@@ -44,13 +41,33 @@ public class ProjectFunctionalityController {
         for (ProjectRequirement projectRequirement : projectRequirements) {
             projectRequirement.add(linkTo(methodOn
                     (ProjectRequirementController.class).
-                    getRequirement(projectRequirement.getProjectRequirementId
-                            ())).withSelfRel());
+                    getRequirement(projectRequirement.
+                            getProjectRequirementId())).withSelfRel());
         }
         projectFunctionality.add(linkTo(methodOn
                 (ProjectFunctionalityController.class).
-                getRequirements(functionalityNumber)).withSelfRel());
+                getRequirements(projectFunctionalityId)).withSelfRel());
+
+        projectFunctionality.add(linkTo(methodOn
+                (ProjectFunctionalityController.class).
+                getRequirements(projectFunctionalityId)).
+                withRel(PROJECT_REQUIREMENT));
+
         return ResponseEntity.status(HttpStatus.OK)
                 .body(projectFunctionality);
+    }
+
+    @RequestMapping(value = "/{krav}/" + REQUIREMENT,
+            method = RequestMethod.POST)
+    public ResponseEntity<ProjectRequirement> createProjectRequirement(
+            @PathVariable("krav") Long projectFunctionalityId,
+            @RequestBody ProjectRequirement projectRequirement) {
+
+        projectFunctionalityService.
+                createProjectRequirement(projectFunctionalityId,
+                        projectRequirement);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(projectRequirement);
     }
 }

@@ -79,7 +79,7 @@ public class ProjectController {
             projectFunctionality.add(linkTo(methodOn(
                     ProjectFunctionalityController.class).
                     getRequirements(projectFunctionality.
-                            getFunctionalityNumber())).withRel(REQUIREMENT));
+                            getProjectFunctionalityId())).withRel(REQUIREMENT));
         }
         return ResponseEntity.status(HttpStatus.OK)
                 .body(projectFunctionalities);
