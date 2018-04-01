@@ -2,6 +2,7 @@ package no.kdrs.grouse.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.hateoas.ResourceSupport;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -27,6 +28,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "project_requirements")
 public class ProjectRequirement
+    extends ResourceSupport
         implements Serializable {
 
     private static final long serialVersionUID = 1L;
