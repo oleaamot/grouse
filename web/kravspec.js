@@ -8,7 +8,7 @@ var app = angular.module('grouse-app', []);
  *
  */
 var requirementsController = app.controller('RequirementsController',
-  ['$scope', '$http', function ($scope, $http) {
+  [ '$scope', '$http', '$window', function ($scope, $http, $window) {
 
     $scope.currentUser = JSON.parse("{\"username\":\"admin@kdrs.no\",\"password\":\"{bcrypt}$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC\",\"firstname\":\"John\",\"lastname\":\"Smith\",\"roles\":[{\"role\":\"ROLE_ADMIN\"},{\"role\":\"ROLE_USER\"}],\"links\":[{\"rel\":\"self\",\"href\":\"http://localhost:9294/grouse/bruker/admin@kdrs.no\",\"hreflang\":null,\"media\":null,\"title\":null,\"type\":null,\"deprecation\":null},{\"rel\":\"prosjekt\",\"href\":\"http://localhost:9294/grouse/bruker/admin@kdrs.no/prosjekt\",\"hreflang\":null,\"media\":null,\"title\":null,\"type\":null,\"deprecation\":null}]}");
     $scope.projectsView = true;
@@ -117,30 +117,42 @@ var requirementsController = app.controller('RequirementsController',
     };
 
     /**
-     * updateRequirement
+     * updateRequirementText
      *
      * handles a change in requirement text.
      */
     $scope.updateRequirementText = function (requirement) {
-      console.log("updateRequirement[" + JSON.stringify(requirement) + "] selected.\n");
+      console.log("updateRequirementText [" + JSON.stringify(requirement) + "] selected.\n");
       $scope.selectedRequirement = requirement;
 
       var patchString = '[{ "op": "replace", "path": "/requirementText", "value": "' +
         requirement.requirementText + '"}]';
 
-      var urlForUpdate = "http://localhost:9294/grouse/prosjektkrav/" + requirement.id;
+      console.log("updateRequirementText. Attempting PATCH[" + patchString + "].\n");
 
-      $http({
-        method: 'PATCH',
-        url: urlForUpdate,
-        headers: {'Authorization': $scope.token},
-        data: patchString
-        }).then(function successCallback(response) {
-        $scope.menuItems = response.data;
-        console.log(method + " PATCH urlForUpdate[" + urlForUpdate + "] returned " + JSON.stringify(response));
-      }, function errorCallback(response) {
-        console.log(method + " PATCH urlForUpdate[" + urlForUpdate + "] returned " + JSON.stringify(response));
-      });
+      for (var rel in $scope.selectedRequirement.links) {
+        var relation = $scope.selectedRequirement.links[rel].rel;
+        if (relation === REL_SELF) {
+          var urlForRequirementChange = $scope.selectedRequirement.links[rel].href;
+          console.log("Checking urlForRequirementTextChange [" + urlForRequirementChange );
+          $http({
+            method: 'PATCH',
+            url: urlForRequirementChange ,
+            headers: {'Authorization': token},
+            data: patchString
+          }).then(function successCallback(response) {
+            console.log("PATCH [" + urlForRequirementChange +
+              "] returned " + JSON.stringify(response));
+            $scope.selectedRequirement = response.data;
+          }, function errorCallback(response) {
+            alert("Kunne ikke endre krav for funksjon. " +
+              JSON.stringify(response));
+            console.log("PATCH urlForRequirementChange l[" + urlForRequirementChange  +
+              "] returned " + JSON.stringify(response));
+          });
+        }
+      }
+
     };
     /**
      * updateRequirementPriority
@@ -153,20 +165,49 @@ var requirementsController = app.controller('RequirementsController',
 
       var patchString = '[{ "op": "replace", "path": "/priority", "value": "' +
         requirement.priority + '"}]';
+      console.log("updateRequirementPriority. Attempting PATCH[" + patchString + "].\n");
 
-      var urlForUpdate = "http://localhost:9294/grouse/prosjektkrav/" + requirement.id;
+      for (var rel in $scope.selectedRequirement.links) {
+        var relation = $scope.selectedRequirement.links[rel].rel;
+        if (relation === REL_SELF) {
+          var urlForRequirementChange = $scope.selectedRequirement.links[rel].href;
+          console.log("Checking urlForRequirementChange [" + urlForRequirementChange );
+          $http({
+            method: 'PATCH',
+            url: urlForRequirementChange ,
+            headers: {'Authorization': token},
+            data: patchString
+          }).then(function successCallback(response) {
+            console.log("PATCH [" + urlForRequirementChange +
+              "] returned " + JSON.stringify(response));
+            $scope.selectedRequirement = response.data;
+          }, function errorCallback(response) {
+            alert("Kunne ikke endre krav for funksjon. " +
+              JSON.stringify(response));
+            console.log("PATCH urlForRequirementChange l[" + urlForRequirementChange  +
+              "] returned " + JSON.stringify(response));
+          });
+        }
+      }
+    };
 
-      $http({
-        method: 'PATCH',
-        url: urlForUpdate,
-        headers: {'Authorization': $scope.token},
-        data: patchString
-        }).then(function successCallback(response) {
-        $scope.menuItems = response.data;
-        console.log(method + " PATCH urlForUpdate[" + urlForUpdate + "] returned " + JSON.stringify(response));
-      }, function errorCallback(response) {
-        console.log(method + " PATCH urlForUpdate[" + urlForUpdate + "] returned " + JSON.stringify(response));
-      });
+    $scope.addRequirement = function () {
+      console.log("addRequirement selected.");
+      var requirement = {
+        requirementText : "hello",
+        priority : "O"
+      };
+      $scope.menuItems[1].referenceProjectRequirement.push(requirement);
+    };
+
+    $scope.deleteRequirementAndRow = function (index) {
+      console.log("deleteRequirementAndRow selected.");
+
+      var requirement = $scope.menuItems[index].referenceProjectRequirement.requirementText;
+      if ($window.confirm("Er du sikker du vil slette: " + requirement)) {
+        //Remove the item from Array using Index.
+        $scope.menuItems[index].referenceProjectRequirement.splice(index, 1);
+      }
     };
 
     /**
@@ -235,17 +276,9 @@ var requirementsController = app.controller('RequirementsController',
       var countFalse = 0;
 
       for (var rel in $scope.menuItems) {
-
         $scope.menuItems[rel].processed === true ? countTrue++ : countFalse++;
-        /*
-        if ($scope.menuItems[rel].processed == "true") {
-          countTrue++;
-        }
-        else {
-          countFalse++;
-        }
-        */
       }
+
       console.log("Number that is true is [" + countTrue + "]");
       console.log("Number that is false is [" + countFalse + "]");
       console.log("Number that is total is [" + rel + "]");

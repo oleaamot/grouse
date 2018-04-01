@@ -251,14 +251,15 @@
                       <div class="col-md-2">Prioritet</div>
                       <div class="col-md-1">Slett</div>
                     </div>
-                    <div class="row" ng-repeat="requirement in selectedMenuItem.referenceProjectRequirement">
+                    <div class="row"
+                         ng-repeat="requirement in selectedMenuItem.referenceProjectRequirement track by $index">
                       <div class="col-md-8">
                         <textarea class="form-control" rows="2"
                                   ng-model="requirement.requirementText"
                                   ng-blur="updateRequirementText(requirement)"
                                   id="requirement.id"></textarea>
                       </div>
-                      <div class="col-md-1">
+                      <div class="col-md-2">
                         <div class="dropdown">
                           <select ng-model="requirement.priority"
                                   ng-options="priorityValue for priorityValue in priorityValues"
@@ -266,20 +267,19 @@
                           </select>
                         </div>
                       </div>
-                      <div class="col-md-1">
-                        <div class="checkbox">
-                          <label>
-                            <input type="checkbox" ng-change="" ng-model="requirement.delete">
-                          </label>
+                      <div class="col-md-2">
+                        <div>
+                          <button type="button" class="btn btn-default btn-sm pull-right"
+                            ng-click="deleteRequirementAndRow($index)">
+                            <span class="glyphicon glyphicon-trash"></span> Slett krav
+                          </button>
                         </div>
                       </div>
                     </div>
                     <div class="modal-body">
-                      <button type="button" class="btn btn-default btn-sm pull-right">
+                      <button type="button" class="btn btn-default btn-sm pull-right"
+                      ng-click="addRequirement()">
                         <span class="glyphicon glyphicon-plus"></span> Legg til krav
-                      </button>
-                      <button type="button" class="btn btn-default btn-sm pull-right">
-                        <span class="glyphicon glyphicon-plus"></span> Slett merket krav
                       </button>
                     </div>
                   </div>

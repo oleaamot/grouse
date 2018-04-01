@@ -7,6 +7,7 @@ var REQUIREMENT = "krav";
 var FUNCTIONALITY = "funksjon";
 
 var REL_PROJECT = "prosjekt";
+var REL_SELF = "self";
 var REL_REQUIREMENT = "krav";
 var REL_FUNCTIONALITY = "funksjon";
 
