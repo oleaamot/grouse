@@ -58,7 +58,7 @@ public class UserController {
     @RequestMapping(value = "/{" + USER + "}/" + PROJECT,
             method = RequestMethod.GET)
     public ResponseEntity<List<Project>> getGrouseUserProjects(
-            @PathVariable(USER) String username) {
+            @PathVariable(USER) String username) throws Exception {
         GrouseUser user = new GrouseUser();
         user.setUsername(username);
         List<Project> projects = projectService.findByReferenceUser(user);
@@ -69,6 +69,11 @@ public class UserController {
             project.add(linkTo(methodOn(ProjectController.class).
                     getFunctionalityForProject(project.getProjectId()))
                     .withRel(FUNCTIONALITY));
+
+            project.add(linkTo(DocumentController.class, DocumentController.class.
+                    getMethod("downloadDocument", Long.class,
+                            HttpServletResponse.class), project.getProjectId()).
+                    withRel(DOCUMENT));
 // Same for Requirement
 //            project.add(linkTo(methodOn(ProjectController.class).
 //                    getRequirementsForFunctionality(project.getProjectId()))

@@ -95,7 +95,7 @@ public class DocumentController {
         if (resource.exists() || resource.isReadable()) {
             response.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
             response.addHeader("Content-disposition", "\"attachment;" +
-                    "filename=somefile.ext\"" + project.getFileName());
+                    "filename=\"" + project.getFileName()+"\"");
             InputStream filestream = resource.getInputStream();
             try {
                 long bytesTotal = IOUtils.copyLarge(filestream,

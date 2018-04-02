@@ -39,7 +39,8 @@ public class DocumentService
         document.close();
         file.flush();
         file.close();
-        project.setDocumentCreated(true);
+        // TODO: Temp disabled so we can call multiple times
+        //project.setDocumentCreated(true);
     }
 
     /**

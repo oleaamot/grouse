@@ -8,7 +8,7 @@ var app = angular.module('grouse-app', []);
  *
  */
 var requirementsController = app.controller('RequirementsController',
-  [ '$scope', '$http', '$window', function ($scope, $http, $window) {
+  ['$scope', '$http', '$window', function ($scope, $http, $window) {
 
     $scope.currentUser = JSON.parse("{\"username\":\"admin@kdrs.no\",\"password\":\"{bcrypt}$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC\",\"firstname\":\"John\",\"lastname\":\"Smith\",\"roles\":[{\"role\":\"ROLE_ADMIN\"},{\"role\":\"ROLE_USER\"}],\"links\":[{\"rel\":\"self\",\"href\":\"http://localhost:9294/grouse/bruker/admin@kdrs.no\",\"hreflang\":null,\"media\":null,\"title\":null,\"type\":null,\"deprecation\":null},{\"rel\":\"prosjekt\",\"href\":\"http://localhost:9294/grouse/bruker/admin@kdrs.no/prosjekt\",\"hreflang\":null,\"media\":null,\"title\":null,\"type\":null,\"deprecation\":null}]}");
     $scope.projectsView = true;
@@ -17,8 +17,9 @@ var requirementsController = app.controller('RequirementsController',
     $scope.priorityValues = ['O', '1', '2'];
 
     $scope.selectedProject = null;
-
+    $scope.progressBarText = null;
     $scope.selectedMenuItem = null;
+    $scope.documentHref = null;
     $scope.token = GetUserToken();
 
     $scope.progressBarValue = 0;
@@ -64,26 +65,26 @@ var requirementsController = app.controller('RequirementsController',
       console.log("menuItem[" + JSON.stringify(menuItem) + "] selected.\n");
       $scope.selectedMenuItem = menuItem;
 
-/*
-      var projectId = "1";
-      //var urlToRequirements = "http://localhost:9294/grouse/prosjekt/" +
-      //  projectId + "/krav/" + menuItem.functionalityNumber;
-      var urlToRequirements = "http://localhost:9294/grouse/prosjekt/1"
-        + "/krav/" + menuItem.functionalityNumber;
+      /*
+            var projectId = "1";
+            //var urlToRequirements = "http://localhost:9294/grouse/prosjekt/" +
+            //  projectId + "/krav/" + menuItem.functionalityNumber;
+            var urlToRequirements = "http://localhost:9294/grouse/prosjekt/1"
+              + "/krav/" + menuItem.functionalityNumber;
 
-      console.log("kravspec.js menuItem:. Attempting GET on " + urlToRequirements);
+            console.log("kravspec.js menuItem:. Attempting GET on " + urlToRequirements);
 
-      $http({
-        method: 'GET',
-        url: urlToRequirements,
-        headers: {'Authorization': $scope.token}
-      }).then(function successCallback(response) {
-        $scope.menuItems = response.data;
-        console.log(method + " GET urlToMenuItems[" + urlToMenuItems + "] returned " + JSON.stringify(response));
-      }, function errorCallback(response) {
-        console.log(method + " GET urlToMenuItems[" + urlToMenuItems + "] returned " + JSON.stringify(response));
-      });
-*/
+            $http({
+              method: 'GET',
+              url: urlToRequirements,
+              headers: {'Authorization': $scope.token}
+            }).then(function successCallback(response) {
+              $scope.menuItems = response.data;
+              console.log(method + " GET urlToMenuItems[" + urlToMenuItems + "] returned " + JSON.stringify(response));
+            }, function errorCallback(response) {
+              console.log(method + " GET urlToMenuItems[" + urlToMenuItems + "] returned " + JSON.stringify(response));
+            });
+      */
     };
 
     /**
@@ -115,10 +116,10 @@ var requirementsController = app.controller('RequirementsController',
         var relation = $scope.selectedRequirement.links[rel].rel;
         if (relation === REL_SELF) {
           var urlForRequirementChange = $scope.selectedRequirement.links[rel].href;
-          console.log("Checking urlForRequirementTextChange [" + urlForRequirementChange );
+          console.log("Checking urlForRequirementTextChange [" + urlForRequirementChange);
           $http({
             method: 'PATCH',
-            url: urlForRequirementChange ,
+            url: urlForRequirementChange,
             headers: {'Authorization': token},
             data: patchString
           }).then(function successCallback(response) {
@@ -128,7 +129,7 @@ var requirementsController = app.controller('RequirementsController',
           }, function errorCallback(response) {
             alert("Kunne ikke endre krav for funksjon. " +
               JSON.stringify(response));
-            console.log("PATCH urlForRequirementChange l[" + urlForRequirementChange  +
+            console.log("PATCH urlForRequirementChange l[" + urlForRequirementChange +
               "] returned " + JSON.stringify(response));
           });
         }
@@ -152,10 +153,10 @@ var requirementsController = app.controller('RequirementsController',
         var relation = $scope.selectedRequirement.links[rel].rel;
         if (relation === REL_SELF) {
           var urlForRequirementChange = $scope.selectedRequirement.links[rel].href;
-          console.log("Checking urlForRequirementChange [" + urlForRequirementChange );
+          console.log("Checking urlForRequirementChange [" + urlForRequirementChange);
           $http({
             method: 'PATCH',
-            url: urlForRequirementChange ,
+            url: urlForRequirementChange,
             headers: {'Authorization': token},
             data: patchString
           }).then(function successCallback(response) {
@@ -165,7 +166,7 @@ var requirementsController = app.controller('RequirementsController',
           }, function errorCallback(response) {
             alert("Kunne ikke endre krav for funksjon. " +
               JSON.stringify(response));
-            console.log("PATCH urlForRequirementChange l[" + urlForRequirementChange  +
+            console.log("PATCH urlForRequirementChange l[" + urlForRequirementChange +
               "] returned " + JSON.stringify(response));
           });
         }
@@ -175,8 +176,8 @@ var requirementsController = app.controller('RequirementsController',
     $scope.addRequirement = function () {
       console.log("addRequirement selected.");
       var requirement = {
-        requirementText : "hello",
-        priority : "O"
+        requirementText: "hello",
+        priority: "O"
       };
       $scope.menuItems[1].referenceProjectRequirement.push(requirement);
     };
@@ -262,22 +263,48 @@ var requirementsController = app.controller('RequirementsController',
       console.log("Number that is true is [" + countTrue + "]");
       console.log("Number that is false is [" + countFalse + "]");
       console.log("Number that is total is [" + rel + "]");
-      var percentage = (countTrue/++rel)*100;
+      var percentage = (countTrue / ++rel) * 100;
       console.log("Percentage is [" + percentage + "]");
       $scope.progressBarValue = percentage;
-
+      console.log("Number that is total is [" + rel + "]");
       // The GUI thinks the document is ready to be created
       if (countTrue === rel) {
+        console.log("countTrue === rel CHECKING $scope.selectedProject.documentCreated " + $scope.selectedProject.documentCreated);
         // We do this check to avoid regenerating the document every time someone reloads the project
         // But if they go back and change something, we need to set documentCreated to false
-        if ($scope.selectedProject.documentCreated === false) {
+        //if ($scope.selectedProject.documentCreated === false) {
+        {for (var rel in $scope.selectedProject.links) {
+            console.log("checking $scope.selectedProject.links[rel].rel [" + $scope.selectedProject.links[rel].rel + "]");
 
+            var relation = $scope.selectedProject.links[rel].rel;
+            console.log("relation [" + relation + "]");
+            console.log("REL_DOCUMENT" + REL_DOCUMENT+"]");
+            if (relation == REL_DOCUMENT) {
+              var urlForDocumentCreation = $scope.selectedProject.links[rel].href;
+              console.log("Checking urlForDocumentCreation[" + urlForDocumentCreation);
+              $http({
+                method: 'POST',
+                url: urlForDocumentCreation,
+                headers: {'Authorization': token}
+              }).then(function successCallback(response) {
+                console.log("POST urlForDocumentCreation [" + urlForDocumentCreation +
+                  "] returned " + JSON.stringify(response));
+
+                // If 201 CREATED, set a download link in progress bar
+                $scope.progressBarText = "Last ned dokument";
+                $scope.documentHref = urlForDocumentCreation;
+              }, function errorCallback(response) {
+                alert("Kunne ikke opprette Dokument. " +
+                  JSON.stringify(response));
+                console.log("POST urlForDocumentCreation [" + urlForDocumentCreation +
+                  "] returned " + JSON.stringify(response));
+              });
+            }
+          }
         }
-
-
-        // If 201 CREATED, set a download link in progress bar
       }
     };
+
 
     /**
      * createProject
@@ -294,13 +321,14 @@ var requirementsController = app.controller('RequirementsController',
     $scope.createProject = function () {
       console.log("createProject. Current user is [" + $scope.currentUser + "] .\n");
 
-      var token = GetUserToken();/*
-      if (typeof variable === 'undefined' || variable === null) {
-       alert("Mangler identifikasjons token for å fortsette." +
-             "Kan ikke opprette et nytt prosjekt");
-       return;
-      }
-*/
+      var token = GetUserToken();
+      /*
+            if (typeof variable === 'undefined' || variable === null) {
+             alert("Mangler identifikasjons token for å fortsette." +
+                   "Kan ikke opprette et nytt prosjekt");
+             return;
+            }
+      */
       for (var rel in $scope.currentUser.links) {
         var relation = $scope.currentUser.links[rel].rel;
         if (relation == REL_PROJECT) {
