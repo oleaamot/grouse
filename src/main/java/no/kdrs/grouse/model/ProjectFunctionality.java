@@ -13,17 +13,29 @@ import java.util.List;
 
 /**
  * Created by tsodring on 31/03/18.
- *
+ * <p>
  * A copy of the fields in Functionality, with a project number. When creating a
  * project, we need to be able to copy all the fields from Functionality to
  * project_functionalitys and associate the copy of the functionalitys with a
  * project number. This is because the user needs to have status associated
  * with progress of going through the functionality.
- *
  */
 
 @Entity
-@Table(name = "project_functionality_areas")
+@Table(name = "project_functionality_areas",
+        uniqueConstraints = {
+        @UniqueConstraint(
+                columnNames={"functionality_number", "project_number"})
+        }
+/*        indexes = {
+
+                @Index(columnList = "functionality_number",
+                        name = "functionality_number_idx"),
+                @Index(columnList =
+                        "project_number",
+                        name = "project_number_idx")
+        }
+        */)
 @XmlRootElement
 public class ProjectFunctionality
         extends ResourceSupport
@@ -38,25 +50,22 @@ public class ProjectFunctionality
 
     /**
      * Number of the functional area. e.g 1.2.3
-     *  This is an internal number that the project themselves decides
-     *
+     * This is an internal number that the project themselves decides
      */
-    @Column(name = "functionality_number", nullable = false, updatable = false)
+    @Column(name = "functionality_number")
     private String functionalityNumber;
 
     /**
      * Text of the functionality
-     *
+     * <p>
      * e.g functionality_number '1.7.2.19' has title
-     *    'Krav knyttet til masseoppdatering'
-     *
+     * 'Krav knyttet til masseoppdatering'
      */
     @Column(name = "title")
     private String title;
 
     /**
      * Description of functionality
-     *
      */
     @Column(name = "description", length = 10000)
     private String description;
@@ -64,21 +73,18 @@ public class ProjectFunctionality
 
     /**
      * Description of consequence of excluding this functionality
-     *
      */
     @Column(name = "consequence", length = 10000)
     private String consequence;
 
     /**
      * Description of consequence of excluding this functionality
-     *
      */
     @Column(name = "explanation", length = 10000)
     private String explanation;
 
     /**
      * Whether or not to be displayed in menu
-     *
      */
     @Column(name = "show_me")
     private Boolean showMe;
@@ -92,14 +98,13 @@ public class ProjectFunctionality
 
     /**
      * Type of requirement e.g. 'funksjonell', 'teknisk', 'integrasjon'
-     *
      */
     @Column(name = "type")
     private String type;
 
     // Link to parent Functionality
     @ManyToOne
-    @JoinColumn(name="parent")
+    @JoinColumn(name = "parent")
     private ProjectFunctionality referenceParentFunctionality;
 
     @OneToMany(mappedBy = "referenceFunctionality")
@@ -188,6 +193,7 @@ public class ProjectFunctionality
     public ProjectFunctionality getReferenceParentFunctionality() {
         return referenceParentFunctionality;
     }
+
     @XmlTransient
     public void setReferenceParentFunctionality(
             ProjectFunctionality referenceParentFunctionality) {
@@ -201,6 +207,11 @@ public class ProjectFunctionality
     public void setReferenceProjectRequirement(
             List<ProjectRequirement> referenceProjectRequirement) {
         this.referenceProjectRequirement = referenceProjectRequirement;
+    }
+
+    public void addReferenceProjectRequirement(
+            ProjectRequirement projectRequirement) {
+        referenceProjectRequirement.add(projectRequirement);
     }
 
     public Project getReferenceProject() {

@@ -21,7 +21,7 @@ public class Project
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "project_id", nullable = false, updatable = false)
     private Long projectId;
 
@@ -39,10 +39,30 @@ public class Project
     private String organisationName;
 
     /**
-     * Name of the requirements document
+     * Name of the requirements document when it is downloaded
      */
     @Column(name = "file_name")
     private String fileName;
+
+    /**
+     * Name of the requirements document stored on disk
+     */
+    @Column(name = "file_name_internal")
+    private String fileNameInternal;
+
+
+    /**
+     * Name of the requirements document
+     */
+    @Column(name = "document_created")
+    private Boolean documentCreated;
+
+    /**
+     * Used to identify if all the steps have been
+     * carried out in the project
+     */
+    @Column(name = "project_complete")
+    private Boolean projectComplete;
 
     /**
      * The date the project was created
@@ -118,6 +138,30 @@ public class Project
 
     public void setChangedDate(Date changedDate) {
         this.changedDate = changedDate;
+    }
+
+    public Boolean getDocumentCreated() {
+        return documentCreated;
+    }
+
+    public void setDocumentCreated(Boolean documentCreated) {
+        this.documentCreated = documentCreated;
+    }
+
+    public Boolean getProjectComplete() {
+        return projectComplete;
+    }
+
+    public void setProjectComplete(Boolean projectComplete) {
+        this.projectComplete = projectComplete;
+    }
+
+    public String getFileNameInternal() {
+        return fileNameInternal;
+    }
+
+    public void setFileNameInternal(String fileNameInternal) {
+        this.fileNameInternal = fileNameInternal;
     }
 
     public List<ProjectRequirement> getReferenceProjectRequirement() {

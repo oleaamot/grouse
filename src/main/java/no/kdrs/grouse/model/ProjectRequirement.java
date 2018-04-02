@@ -34,8 +34,8 @@ public class ProjectRequirement
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false, updatable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "id", nullable = false)
     private Long projectRequirementId;
 
     /**
@@ -76,7 +76,7 @@ public class ProjectRequirement
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "functionality",
-            referencedColumnName = "functionality_number")
+            referencedColumnName = "id")
     private ProjectFunctionality referenceFunctionality;
 
     @JsonIgnore

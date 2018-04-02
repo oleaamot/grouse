@@ -1,7 +1,7 @@
 package no.kdrs.grouse.document;
 
-import no.kdrs.grouse.model.Functionality;
-import no.kdrs.grouse.model.Requirement;
+import no.kdrs.grouse.model.ProjectFunctionality;
+import no.kdrs.grouse.model.ProjectRequirement;
 import org.apache.poi.xwpf.usermodel.*;
 
 import java.io.IOException;
@@ -32,13 +32,13 @@ public class Document {
         this.document = new XWPFDocument();
     }
 
-    public void addRow(Requirement requirement) {
+    public void addRow(ProjectRequirement requirement) {
         XWPFTableRow row = table.getRow(rowNumber++);
         row.getCell(COLUMN_NUMBER).setText(requirement.getOrder().toString());
         row.getCell(COLUMN_FUNCTIONALITY_TITLE).setText(requirement.getRequirementText());
         row.getCell(COLUMN_PRIORITY).setText(requirement.getPriority());
-        row.getCell(COLUMN_ANSWER).setText("XQ");
-        row.getCell(COLUMN_REFERENCE).setText("XQ");
+        row.getCell(COLUMN_ANSWER).setText("");
+        row.getCell(COLUMN_REFERENCE).setText("");
      }
 
     public void addSection(String sectionTitle) {
@@ -48,7 +48,8 @@ public class Document {
         run.addBreak();
     }
 
-    public void createTable(Integer numberOfRows, Functionality functionality) {
+    public void createTable(Integer numberOfRows, ProjectFunctionality
+            functionality) {
         rowNumber = 1;
         // Add 1 to include the header
         table = document.createTable(numberOfRows+1, REQUIRMENT_TABLE_NUMBER_COLUMNS);

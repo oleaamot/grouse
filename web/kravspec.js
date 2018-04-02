@@ -94,26 +94,7 @@ var requirementsController = app.controller('RequirementsController',
     $scope.selectForDelete = function (menuItem) {
       console.log("menuItem[" + JSON.stringify(menuItem) + "] selected.\n");
       $scope.selectedMenuItem = menuItem;
-      /*
-            var projectId = "1";
-            //var urlToRequirements = "http://localhost:9294/grouse/prosjekt/" +
-            //  projectId + "/krav/" + menuItem.functionalityNumber;
-            var urlToRequirements = "http://localhost:9294/grouse/prosjekt/1"
-              + "/krav/" + menuItem.functionalityNumber;
 
-            console.log("kravspec.js menuItem:. Attempting GET on " + urlToRequirements);
-
-            $http({
-              method: 'GET',
-              url: urlToRequirements,
-              headers: {'Authorization': $scope.token}
-            }).then(function successCallback(response) {
-              $scope.menuItems = response.data;
-              console.log(method + " GET urlToMenuItems[" + urlToMenuItems + "] returned " + JSON.stringify(response));
-            }, function errorCallback(response) {
-              console.log(method + " GET urlToMenuItems[" + urlToMenuItems + "] returned " + JSON.stringify(response));
-            });
-      */
     };
 
     /**
@@ -205,7 +186,6 @@ var requirementsController = app.controller('RequirementsController',
 
       var requirement = $scope.menuItems[index].referenceProjectRequirement.requirementText;
       if ($window.confirm("Er du sikker du vil slette: " + requirement)) {
-        //Remove the item from Array using Index.
         $scope.menuItems[index].referenceProjectRequirement.splice(index, 1);
       }
     };
@@ -286,6 +266,17 @@ var requirementsController = app.controller('RequirementsController',
       console.log("Percentage is [" + percentage + "]");
       $scope.progressBarValue = percentage;
 
+      // The GUI thinks the document is ready to be created
+      if (countTrue === rel) {
+        // We do this check to avoid regenerating the document every time someone reloads the project
+        // But if they go back and change something, we need to set documentCreated to false
+        if ($scope.selectedProject.documentCreated === false) {
+
+        }
+
+
+        // If 201 CREATED, set a download link in progress bar
+      }
     };
 
     /**

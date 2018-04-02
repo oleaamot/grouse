@@ -1,6 +1,7 @@
 package no.kdrs.grouse.service.interfaces;
 
 import no.kdrs.grouse.document.Document;
+import no.kdrs.grouse.model.Project;
 
 import java.io.IOException;
 
@@ -9,6 +10,7 @@ import java.io.IOException;
  */
 public interface IDocumentService {
 
-    void createDocument(Long projectId) throws IOException;
-    void processRequirements(Document document, Long projectId) throws IOException;
+    void createDocument(Project project) throws IOException;
+    void processRequirements(Document document, Project project)
+            throws IOException;
 }

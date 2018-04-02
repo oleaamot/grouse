@@ -116,16 +116,22 @@ public class ProjectService
      */
     @Override
     @SuppressWarnings("unchecked")
-    public Project createProject(Project project) {
-
+    public void createProject_A(Project project) {
         project.setCreatedDate(new Date());
         project.setChangedDate(new Date());
+        project.setDocumentCreated(false);
         // TODO: Replace this with logged in user when security is
         // in place
         GrouseUser user = new GrouseUser();
         user.setUsername("admin@kdrs.no");
         project.setReferenceUser(user);
         projectRepository.save(project);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public void createProject_B(Project project) {
+
 
         ArrayList<Functionality> functionalities =
                 (ArrayList) functionalityRepository.findAll();
@@ -150,7 +156,11 @@ public class ProjectService
             projectFunctionality.setReferenceProject(project);
             projectFunctionalityRepository.save(projectFunctionality);
         }
+    }
 
+    @Override
+    @SuppressWarnings("unchecked")
+    public void createProject_C(Project project) {
         ArrayList<Requirement> requirements =
                 (ArrayList) requirementRepository.findAll();
         for (Requirement requirement : requirements) {
@@ -161,17 +171,28 @@ public class ProjectService
             projectRequirement.setRequirementText(
                     requirement.getRequirementText());
 
+
+            Functionality functionality = requirement.getFunctionality();
+
+            String functionalityNumber = functionality
+                    .getFunctionalityNumber();
+
+            List<ProjectFunctionality> projectFunctionalityList =
+                    projectFunctionalityRepository.
+                            findByFunctionalityNumberAndReferenceProject(
+                                    functionalityNumber, project);
+
             ProjectFunctionality projectFunctionality =
-            projectFunctionalityRepository.findByFunctionalityNumber(
-                    requirement.getFunctionality().getFunctionalityNumber()
-            );
+                    projectFunctionalityList.get(0);
 
             projectRequirement.setReferenceFunctionality(
                     projectFunctionality);
+
+            projectFunctionality.
+                    addReferenceProjectRequirement(projectRequirement);
+
             projectRequirementRepository.save(projectRequirement);
         }
-
-        return project;
     }
 
     @Override

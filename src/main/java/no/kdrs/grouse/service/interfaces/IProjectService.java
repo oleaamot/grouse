@@ -14,7 +14,10 @@ import java.util.List;
 public interface IProjectService {
     List<Project> findAll();
     Project findById(Long id);
-    Project createProject(Project Project);
+    //Project createProject(Project Project);
+    void createProject_A(Project Project);
+    void createProject_B(Project Project);
+    void createProject_C(Project Project);
     Project update(Long id, Project Project) throws Exception;
     void delete(Long id);
     List<Project> findByReferenceUser (GrouseUser user);

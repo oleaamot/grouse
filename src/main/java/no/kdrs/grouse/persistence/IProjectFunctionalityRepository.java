@@ -13,6 +13,12 @@ public interface IProjectFunctionalityRepository
 
     List<ProjectFunctionality> findByReferenceProjectAndShowMe(
             Project project, Boolean showMe);
-    ProjectFunctionality findByFunctionalityNumber
-            (String projectFunctionalityId);
+
+    List<ProjectFunctionality> findByReferenceProject(Project project);
+
+    List<ProjectFunctionality>
+    findByFunctionalityNumber(String functionalityNumber);
+
+    List<ProjectFunctionality> findByFunctionalityNumberAndReferenceProject(
+            String functionalityNumber, Project project);
 }

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 import static no.kdrs.grouse.utils.Constants.*;
@@ -42,7 +43,8 @@ public class UserController {
     @RequestMapping(value = "/{" + USER + "}",
             method = RequestMethod.GET)
     public ResponseEntity<GrouseUser> getGrouseUser(
-            @PathVariable(USER) String username) {
+            @PathVariable(USER) String username)
+    throws Exception {
         GrouseUser user = grouseUserService.findById(username);
         user.add(linkTo(methodOn(UserController.class).
                 getGrouseUser(username)).withSelfRel());
@@ -82,10 +84,25 @@ public class UserController {
             method = RequestMethod.POST)
     public ResponseEntity<Project> createProject(
             @PathVariable(USER) String username,
-            @RequestBody Project project) {
+            @RequestBody Project project) throws Exception {
         GrouseUser user = new GrouseUser();
         user.setUsername(username);
-        projectService.createProject(project);
+        projectService.createProject_A(project);
+        projectService.createProject_B(project);
+        projectService.createProject_C(project);
+
+        project.add(linkTo(methodOn(ProjectController.class).
+                getProject(project.getProjectId())).withSelfRel());
+
+        project.add(linkTo(methodOn(ProjectController.class).
+                getFunctionalityForProject(project.getProjectId()))
+                .withRel(FUNCTIONALITY));
+
+        project.add(linkTo(DocumentController.class, DocumentController.class.
+                getMethod("downloadDocument", Long.class,
+                        HttpServletResponse.class), project.getProjectId()).
+                withRel(DOCUMENT));
+
         return ResponseEntity.status(HttpStatus.OK)
                 .body(project);
     }
