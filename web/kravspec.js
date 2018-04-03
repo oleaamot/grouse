@@ -56,6 +56,7 @@ var requirementsController = app.controller('RequirementsController',
         });
       }
     }
+
     /**
      * menuItem_selected
      *
@@ -64,27 +65,6 @@ var requirementsController = app.controller('RequirementsController',
     $scope.menuItem_selected = function (menuItem) {
       console.log("menuItem[" + JSON.stringify(menuItem) + "] selected.\n");
       $scope.selectedMenuItem = menuItem;
-
-      /*
-            var projectId = "1";
-            //var urlToRequirements = "http://localhost:9294/grouse/prosjekt/" +
-            //  projectId + "/krav/" + menuItem.functionalityNumber;
-            var urlToRequirements = "http://localhost:9294/grouse/prosjekt/1"
-              + "/krav/" + menuItem.functionalityNumber;
-
-            console.log("kravspec.js menuItem:. Attempting GET on " + urlToRequirements);
-
-            $http({
-              method: 'GET',
-              url: urlToRequirements,
-              headers: {'Authorization': $scope.token}
-            }).then(function successCallback(response) {
-              $scope.menuItems = response.data;
-              console.log(method + " GET urlToMenuItems[" + urlToMenuItems + "] returned " + JSON.stringify(response));
-            }, function errorCallback(response) {
-              console.log(method + " GET urlToMenuItems[" + urlToMenuItems + "] returned " + JSON.stringify(response));
-            });
-      */
     };
 
     /**
@@ -183,11 +163,45 @@ var requirementsController = app.controller('RequirementsController',
     };
 
     $scope.deleteRequirementAndRow = function (index) {
-      console.log("deleteRequirementAndRow selected.");
+      console.log("deleteRequirementAndRow selected. Index is [" + index + "]");
 
-      var requirement = $scope.menuItems[index].referenceProjectRequirement.requirementText;
-      if ($window.confirm("Er du sikker du vil slette: " + requirement)) {
-        $scope.menuItems[index].referenceProjectRequirement.splice(index, 1);
+      console.log("Working on [" + JSON.stringify($scope.selectedMenuItem.referenceProjectRequirement[index]) + "]");
+
+
+      var requirement = $scope.selectedMenuItem.referenceProjectRequirement[index].requirementText;
+      if ($window.confirm("Er du sikker du vil slette følgende krav: \n" + requirement)) {
+        $scope.selectedMenuItem.referenceProjectRequirement.splice(index, 1);
+
+        var token = GetUserToken();
+        /*
+              if (typeof variable === 'undefined' || variable === null) {
+               alert("Mangler identifikasjons token for å fortsette." +
+                     "Kan ikke opprette et nytt prosjekt");
+               return;
+              }
+        */
+        console.log("Working on [" + JSON.stringify($scope.selectedMenuItem.referenceProjectRequirement[index].links) + "]");
+        for (var rel in $scope.selectedMenuItem.referenceProjectRequirement[index].links) {
+          var relation = $scope.selectedMenuItem.referenceProjectRequirement[index].links[rel].rel;
+          if (relation == REL_SELF) {
+            var urlForProjectProjectRequirement = $scope.selectedMenuItem.referenceProjectRequirement[index].links[rel].href;
+            console.log("Checking urlForProjectProjectRequirement[" + urlForProjectProjectRequirement);
+            $http({
+              method: 'DELETE',
+              url: urlForProjectProjectRequirement,
+              headers: {'Authorization': token}
+            }).then(function successCallback(response) {
+              console.log("DELETE urlForProjectProjectRequirement [" + urlForProjectProjectRequirement +
+                "] returned " + JSON.stringify(response));
+            }, function errorCallback(response) {
+              alert("Kunne ikke slette prosjekt krav. " +
+                JSON.stringify(response));
+              console.log("DELETE urlForProjectProjectRequirement [" + urlForProjectProjectRequirement +
+                "] returned " + response);
+            });
+          }
+        }
+
       }
     };
 
