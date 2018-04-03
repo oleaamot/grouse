@@ -89,6 +89,7 @@ public class ProjectRequirementController {
             @PathVariable("krav") Long requirementNumber) {
                 projectRequirementService.
                         deleteProjectRequirement(requirementNumber);
-        return ResponseEntity.status(HttpStatus.OK).body("OK");
+        return ResponseEntity.status(HttpStatus.OK).body("{\"result\":\"OK\" " +
+                "}");
     }
 }

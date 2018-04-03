@@ -120,6 +120,9 @@ public class ProjectService
         project.setCreatedDate(new Date());
         project.setChangedDate(new Date());
         project.setDocumentCreated(false);
+
+        // TODO: Fixed value but can be overriden
+        project.setFileName("kravspec.docx");
         // TODO: Replace this with logged in user when security is
         // in place
         GrouseUser user = new GrouseUser();

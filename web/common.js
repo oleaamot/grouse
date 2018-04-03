@@ -1,4 +1,3 @@
-var baseUrlApp = "http://localhost:9294/grouse";
 var requirementPageName = "requirement.html";
 var REQUIREMENT = "krav";
 var FUNCTIONALITY = "funksjon";

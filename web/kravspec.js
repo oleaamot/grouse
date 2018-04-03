@@ -10,11 +10,17 @@ var app = angular.module('grouse-app', []);
 var requirementsController = app.controller('RequirementsController',
   ['$scope', '$http', '$window', function ($scope, $http, $window) {
 
+    $scope.currentUser = JSON.parse("{\"username\":\"admin@kdrs.no\",\"password\":\"{bcrypt}$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC\",\"firstname\":\"John\",\"lastname\":\"Smith\",\"roles\":[{\"role\":\"ROLE_ADMIN\"},{\"role\":\"ROLE_USER\"}],\"links\":[{\"rel\":\"self\",\"href\":\"https://nikita.hioa.no/grouse/bruker/admin@kdrs.no\",\"hreflang\":null,\"media\":null,\"title\":null,\"type\":null,\"deprecation\":null},{\"rel\":\"prosjekt\",\"href\":\"https://nikita.hioa.no/grouse/bruker/admin@kdrs.no/prosjekt\",\"hreflang\":null,\"media\":null,\"title\":null,\"type\":null,\"deprecation\":null}]}");
     $scope.currentUser = JSON.parse("{\"username\":\"admin@kdrs.no\",\"password\":\"{bcrypt}$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC\",\"firstname\":\"John\",\"lastname\":\"Smith\",\"roles\":[{\"role\":\"ROLE_ADMIN\"},{\"role\":\"ROLE_USER\"}],\"links\":[{\"rel\":\"self\",\"href\":\"http://localhost:9294/grouse/bruker/admin@kdrs.no\",\"hreflang\":null,\"media\":null,\"title\":null,\"type\":null,\"deprecation\":null},{\"rel\":\"prosjekt\",\"href\":\"http://localhost:9294/grouse/bruker/admin@kdrs.no/prosjekt\",\"hreflang\":null,\"media\":null,\"title\":null,\"type\":null,\"deprecation\":null}]}");
+
     $scope.projectsView = true;
+    $scope.requirementsView = false;
     $scope.requirementsView = false;
 
     $scope.priorityValues = ['O', '1', '2'];
+
+    $scope.newRequirementText ="";
+    $scope.newRequirementPriority ="O";
 
     $scope.selectedProject = null;
     $scope.progressBarText = null;
@@ -155,23 +161,43 @@ var requirementsController = app.controller('RequirementsController',
 
     $scope.addRequirement = function () {
       console.log("addRequirement selected.");
-      var requirement = {
-        requirementText: "hello",
-        priority: "O"
-      };
-      $scope.menuItems[1].referenceProjectRequirement.push(requirement);
+
+      // Make sure you push the one returned from the database
+      for (var rel in $scope.selectedMenuItem.links) {
+        var relation = $scope.selectedMenuItem.links[rel].rel;
+        if (relation == REL_REQUIREMENT) {
+          var urlForProjectRequirementCreation = $scope.selectedMenuItem.links[rel].href;
+          console.log("Checking urlForProjectRequirementCreation[" + urlForProjectRequirementCreation);
+          $http({
+            method: 'POST',
+            url: urlForProjectRequirementCreation,
+            headers: {'Authorization': token},
+            data : {
+              "requirementText":  $scope.newRequirementText,
+              "priority": $scope.newRequirementPriority
+            }
+          }).then(function successCallback(response) {
+            console.log("POST urlForProjectRequirementCreation [" + urlForProjectRequirementCreation +
+              "] returned " + JSON.stringify(response));
+            $scope.selectedMenuItem.referenceProjectRequirement.push(response.data);
+          }, function errorCallback(response) {
+            alert("Kunne ikke slette prosjekt krav. " +
+              JSON.stringify(response));
+            console.log("POST urlForProjectRequirementCreation [" + urlForProjectRequirementCreation +
+              "] returned " + response);
+          });
+        }
+      }
+
+
     };
 
     $scope.deleteRequirementAndRow = function (index) {
       console.log("deleteRequirementAndRow selected. Index is [" + index + "]");
-
       console.log("Working on [" + JSON.stringify($scope.selectedMenuItem.referenceProjectRequirement[index]) + "]");
-
 
       var requirement = $scope.selectedMenuItem.referenceProjectRequirement[index].requirementText;
       if ($window.confirm("Er du sikker du vil slette følgende krav: \n" + requirement)) {
-        $scope.selectedMenuItem.referenceProjectRequirement.splice(index, 1);
-
         var token = GetUserToken();
         /*
               if (typeof variable === 'undefined' || variable === null) {
@@ -184,19 +210,20 @@ var requirementsController = app.controller('RequirementsController',
         for (var rel in $scope.selectedMenuItem.referenceProjectRequirement[index].links) {
           var relation = $scope.selectedMenuItem.referenceProjectRequirement[index].links[rel].rel;
           if (relation == REL_SELF) {
-            var urlForProjectProjectRequirement = $scope.selectedMenuItem.referenceProjectRequirement[index].links[rel].href;
-            console.log("Checking urlForProjectProjectRequirement[" + urlForProjectProjectRequirement);
+            var urlForProjectRequirementDeletion = $scope.selectedMenuItem.referenceProjectRequirement[index].links[rel].href;
+            console.log("Checking urlForProjectRequirementDeletion[" + urlForProjectRequirementDeletion);
             $http({
               method: 'DELETE',
-              url: urlForProjectProjectRequirement,
+              url: urlForProjectRequirementDeletion,
               headers: {'Authorization': token}
             }).then(function successCallback(response) {
-              console.log("DELETE urlForProjectProjectRequirement [" + urlForProjectProjectRequirement +
+              console.log("DELETE urlForProjectRequirementDeletion [" + urlForProjectRequirementDeletion +
                 "] returned " + JSON.stringify(response));
+              $scope.selectedMenuItem.referenceProjectRequirement.splice(index, 1);
             }, function errorCallback(response) {
               alert("Kunne ikke slette prosjekt krav. " +
                 JSON.stringify(response));
-              console.log("DELETE urlForProjectProjectRequirement [" + urlForProjectProjectRequirement +
+              console.log("DELETE urlForProjectRequirementDeletion [" + urlForProjectRequirementDeletion +
                 "] returned " + response);
             });
           }
@@ -359,6 +386,8 @@ var requirementsController = app.controller('RequirementsController',
           }).then(function successCallback(response) {
             console.log("POST urlForProjectCreation[" + urlForProjectCreation +
               "] returned " + JSON.stringify(response));
+
+            $scope.projects.push(response.data);
           }, function errorCallback(response) {
             alert("Kunne ikke opprette nytt prosjekt. " +
               JSON.stringify(response));

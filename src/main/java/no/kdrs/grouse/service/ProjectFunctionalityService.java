@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.constraints.NotNull;
+import java.util.Optional;
 
 /**
  * Created by tsodring on 01/04/18.
@@ -38,6 +39,21 @@ public class ProjectFunctionalityService
     @Override
     public ProjectRequirement createProjectRequirement(
             Long projectFunctionalityId, ProjectRequirement projectRequirement) {
+
+        Optional<ProjectFunctionality> projectFunctionality =
+        projectFunctionalityRepository.findById(projectFunctionalityId);
+        if (projectFunctionality.isPresent()) {
+            projectRequirement.setReferenceFunctionality(
+                    projectFunctionality.get());
+            projectRequirement.setReferenceProject(projectFunctionality.
+                    get().getReferenceProject());
+        }
+        else {
+            throw new EntityNotFoundException(
+                    "Cannot find ProjectFunctionality [" +
+                            projectFunctionalityId + "]");
+        }
+
         return projectRequirementRepository.save(projectRequirement);
     }
 

@@ -8,6 +8,8 @@ import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.InputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
@@ -79,7 +81,7 @@ public class DocumentController {
     }
 
     @RequestMapping("/{prosjektnummer}")
-    public void downloadDocument(
+    public HttpEntity<byte[]> downloadDocument(
             @PathVariable("prosjektnummer") Long projectId,
                 HttpServletResponse response)
             throws IOException {
@@ -92,27 +94,17 @@ public class DocumentController {
 
         Path file = Paths.get(project.getFileNameInternal());
         Resource resource = new UrlResource(file.toUri());
-        if (resource.exists() || resource.isReadable()) {
-            response.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-            response.addHeader("Content-disposition", "\"attachment;" +
-                    "filename=\"" + project.getFileName()+"\"");
-            InputStream filestream = resource.getInputStream();
-            try {
-                long bytesTotal = IOUtils.copyLarge(filestream,
-                        response.getOutputStream());
-                filestream.close();
-            } finally {
-                try {
-                    // Try close without exceptions if copy() threw an
-                    // exception.  If close() is called twice, the second
-                    // close() should be ignored.
-                    filestream.close();
-                } catch (IOException e) {
-                    // swallow any error to expose exceptions from
-                    // IOUtil.copy() if the second close() failed.
-                }
-            }
-            response.flushBuffer();
-        }
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("Content-Type","application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+        String header = "Content-Disposition";
+        String value = "\"attachment; filename=\"" + project.getFileName()+"\"";
+        responseHeaders.add(header, value);
+
+
+        byte[] documentBody = new byte[(int)Files.size(file)];
+        IOUtils.readFully(resource.getInputStream(),
+                documentBody);
+
+        return  new HttpEntity<byte[]>(documentBody, responseHeaders);
     }
 }

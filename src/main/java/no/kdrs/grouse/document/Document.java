@@ -34,14 +34,14 @@ public class Document {
 
     public void addRow(ProjectRequirement requirement) {
         XWPFTableRow row = table.getRow(rowNumber++);
-        row.getCell(COLUMN_NUMBER).setText(requirement.getOrder().toString());
+        row.getCell(COLUMN_NUMBER).setText(Integer.toString(rowNumber));
         row.getCell(COLUMN_FUNCTIONALITY_TITLE).setText(requirement.getRequirementText());
         row.getCell(COLUMN_PRIORITY).setText(requirement.getPriority());
         row.getCell(COLUMN_ANSWER).setText("");
         row.getCell(COLUMN_REFERENCE).setText("");
      }
 
-    public void addSection(String sectionTitle) {
+    public   void addSection(String sectionTitle) {
         XWPFParagraph paragraph = document.createParagraph();
         XWPFRun run = paragraph.createRun();
         run.setText(sectionTitle);

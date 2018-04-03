@@ -67,6 +67,11 @@ public class ProjectFunctionalityController {
                 createProjectRequirement(projectFunctionalityId,
                         projectRequirement);
 
+        projectRequirement.add(linkTo(methodOn
+                (ProjectRequirementController.class).
+                getRequirement(projectRequirement.
+                        getProjectRequirementId())).withSelfRel());
+
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(projectRequirement);
     }

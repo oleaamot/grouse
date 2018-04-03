@@ -98,7 +98,7 @@
               </form>
             </div>
             <div class="modal-footer">
-              <button type="button" ng-click="createProject()"
+              <button type="button" ng-click="createProject()" data-dismiss="modal"
                       class="btn btn-primary pull-right">Opprett prosjekt
               </button>
             </div>
@@ -248,9 +248,31 @@
                   </div>
                   <div class="modal-body">
                     <div class="row">
-                      <div class="col-md-7">Krav</div>
+                      <div class="well well-lg clearfix">
+                        <div class="col-md-8">
+                        <textarea class="form-control" rows="2"
+                                  ng-model="newRequirementText" placeholder="Krav tekst">
+                        </textarea>
+                        </div>
+                        <div class="col-md-2">
+                          <select ng-model="newRequirementPriority"
+                                  ng-options="priorityValue for priorityValue in priorityValues">
+                          </select>
+                        </div>
+                        <div class="col-md-2">
+                          <button type="button" class="btn btn-default btn-sm pull-right"
+                                  ng-click="addRequirement()">
+                            <span class="glyphicon glyphicon-plus"></span> Legg til krav
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    s
+
+                    <div class="row">
+                      <div class="col-md-8">Krav</div>
                       <div class="col-md-2">Prioritet</div>
-                      <div class="col-md-1">Slett</div>
+                      <div class="col-md-2">Slett</div>
                     </div>
                     <div class="row"
                          ng-repeat="requirement in selectedMenuItem.referenceProjectRequirement track by $index">
@@ -271,17 +293,11 @@
                       <div class="col-md-2">
                         <div>
                           <button type="button" class="btn btn-default btn-sm pull-right"
-                            ng-click="deleteRequirementAndRow($index)">
+                                  ng-click="deleteRequirementAndRow($index)">
                             <span class="glyphicon glyphicon-trash"></span> Slett krav
                           </button>
                         </div>
                       </div>
-                    </div>
-                    <div class="modal-body">
-                      <button type="button" class="btn btn-default btn-sm pull-right"
-                      ng-click="addRequirement()">
-                        <span class="glyphicon glyphicon-plus"></span> Legg til krav
-                      </button>
                     </div>
                   </div>
                   <div class="modal-footer">
