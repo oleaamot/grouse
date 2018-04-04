@@ -3,10 +3,15 @@ package no.kdrs.grouse.document;
 import no.kdrs.grouse.model.ProjectFunctionality;
 import no.kdrs.grouse.model.ProjectRequirement;
 import org.apache.poi.xwpf.usermodel.*;
+import org.odftoolkit.simple.TextDocument;
+import org.odftoolkit.simple.table.Cell;
+import org.odftoolkit.simple.table.Table;
+import org.odftoolkit.simple.text.list.List;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigInteger;
+import java.net.URI;
 
 import static no.kdrs.grouse.utils.Constants.*;
 
@@ -17,6 +22,7 @@ public class Document {
 
     private OutputStream out;
     private XWPFDocument document;
+    private TextDocument outputOdt;
 
     // A table object that gets reinstantiated every time a new table is
     // created. Not using an array of tables as we likely do not need access
@@ -30,6 +36,31 @@ public class Document {
     public Document(OutputStream out) {
         this.out = out;
         this.document = new XWPFDocument();
+
+	try {
+	    outputOdt = TextDocument.newTextDocument();
+
+	    // add image
+	    outputOdt.newImage(new URI("grouse-logo.png"));
+
+	    // add paragraph
+	    outputOdt.addParagraph("KDRS-Grouse Kravspec Noark 5 ODF!");
+
+	    // add list
+	    outputOdt.addParagraph("The following is a list.");
+	    List list = outputOdt.addList();
+	    String[] items = {"item1", "item2", "item3"};
+	    list.addItems(items);
+
+	    // add table
+	    Table table = outputOdt.addTable(2, 2);
+	    Cell cell = table.getCellByPosition(0, 0);
+	    cell.setStringValue("KDRS-Grouse Kravspec Noark 5 ODF!");
+
+	    outputOdt.save("kravspec.odt");
+	} catch (Exception e) {
+	    System.err.println("ERROR: unable to create output file.");
+	}
     }
 
     public void addRow(ProjectRequirement requirement) {
