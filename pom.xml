@@ -197,6 +197,28 @@
                                         ${project.basedir}/web/dependencies/vendor/
                                     </outputDirectory>
                                 </artifactItem>
+                                <!-- 3.3.7-1 version left in temp until
+                                GUI is updated to 4.0 -->
+                                <artifactItem>
+                                    <groupId>org.webjars</groupId>
+                                    <artifactId>bootstrap</artifactId>
+                                    <version>3.3.7-1</version>
+                                    <type>jar</type>
+                                    <includes>**/*.js</includes>
+                                    <outputDirectory>
+                                        ${project.basedir}/web/dependencies/vendor/
+                                    </outputDirectory>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.webjars</groupId>
+                                    <artifactId>bootstrap</artifactId>
+                                    <version>3.3.7-1</version>
+                                    <type>jar</type>
+                                    <includes>**/*.css</includes>
+                                    <outputDirectory>
+                                        ${project.basedir}/web/dependencies/vendor/
+                                    </outputDirectory>
+                                </artifactItem>
                                 <artifactItem>
                                     <groupId>org.webjars</groupId>
                                     <artifactId>jquery</artifactId>
